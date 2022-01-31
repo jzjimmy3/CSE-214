@@ -1,4 +1,11 @@
 //Jimmy Zhang ID: 112844431 CSE 214 R02
+//Q : For the equals method , when comparing A and C Bookshelves,here is a null pointer error because object is
+// empty,is there a way to check if object is empty, and if so don't compare Shelf A and C
+//Q : Is there a way to not be repetitive with code because I keep using Scanner input = new Scanner(System.in)
+//Q : Can you check all my exceptions?
+//Q: How to print null as none?
+//Q: In duplicateBookInstructions is it better to create multiple variable or leave it as a call functions;
+//Q: How to do clone in java?
 
 import java.util.Scanner;
 
@@ -18,6 +25,7 @@ public class RipoffRental {
 
     public static void menuOptions(){
         System.out.println("Welcome to Jack's aMAzin' Textbook Rentals, highest price guaranteed!");
+        System.out.print("Please enter a book shelf for viewing[A,B,C]: ");
         bookShelfNum = shelfValue();
         System.out.println("What would you like to do?\n" +
                 "   A) Add Book\n" +
@@ -32,7 +40,6 @@ public class RipoffRental {
                 "   Q) Quit"
         );
     }
-
 
     public static void chooseMenuOptions(){
         System.out.print("Please select an option: ");
@@ -68,7 +75,6 @@ public class RipoffRental {
 
     public static Bookshelf shelfValue(){
         Scanner input = new Scanner(System.in);
-        System.out.print("Please enter a book shelf for viewing[A,B,C]: ");
         bookShelfValue = input.next();
         switch (bookShelfValue.toUpperCase()){
             case "A": return shelfA;
@@ -105,6 +111,16 @@ public class RipoffRental {
     }
 
     private static void loanBookInstructions() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Please enter a recipient: ");
+        String recipient = input.nextLine();
+        System.out.print("Please enter an index: ");
+        int bookIndex = input.nextInt();
+        System.out.print("Please enter condition(1-5): ");
+        int condition = input.nextInt();
+
+        bookShelfNum.getBook(bookIndex).setBorrower(recipient);
+        bookShelfNum.getBook(bookIndex).setCondition(condition);
     }
 
     private static void removeBookInstructions() {
@@ -114,22 +130,33 @@ public class RipoffRental {
         bookShelfNum.removeBook(indexInput);
     }
     private static void duplicateBookInstructions() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Please enter a source index: ");
+        int sourceIndex = input.nextInt();
+        System.out.print("Please enter a destination index: ");
+        int destinationIndex = input.nextInt();
+
+        Book elem = bookShelfNum.getBook(sourceIndex);
+        bookShelfNum.addBook(destinationIndex, new Book(elem.getTitle(), elem.getAuthor(),elem.getCondition()));
     }
 
     private static void changeShelfInstructions() {
+        System.out.print("Please enter a book shelf for viewing[A,B,C]: ");
         bookShelfNum = shelfValue();
     }
 
     private static void overwriteInstructions() {
+        System.out.println("Please select shelf to overwrite: ");
+        Bookshelf bookshelf = shelfValue();
+
     }
 
     private static void equalInstructions() {
-        Scanner input = new Scanner(System.in);
         System.out.print("Please Select a shelf: ");
-        String index1 = input.next().toUpperCase();
+        Bookshelf bookShelf1= shelfValue();
         System.out.print("Please Select another shelf: ");
-        String index2 = input.next().toUpperCase();
-        System.out.println(shelfA.equals(shelfB));
+        Bookshelf bookShelf2= shelfValue();
+        System.out.println(bookShelf1.equals(bookShelf2));
     }
 
     private static void printInstructions() {

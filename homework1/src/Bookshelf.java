@@ -147,7 +147,18 @@ public class Bookshelf {
 //    }
 
     public boolean equals(Object obj){
-        return (this == obj);
+        if(obj instanceof Bookshelf){
+            Bookshelf bookshelf = (Bookshelf) obj;
+            for(int i = 0; i < books.length;i++){
+                Book book = bookshelf.getBook(i);
+                if(books[i].getTitle().equals(book.getTitle()) &&
+                        books[i].getAuthor().equals(book.getAuthor()) &&
+                        books[i].getCondition()== book.getCondition()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 @Override

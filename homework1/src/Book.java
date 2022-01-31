@@ -1,7 +1,5 @@
 //Jimmy Zhang ID: 112844431 CSE 214 R02
 
-import java.util.Objects;
-
 public class Book {
     private String title, author, borrower;
     private int condition;
@@ -25,20 +23,16 @@ public class Book {
         this.author = author;
         this.condition = condition;
     }
-//    public boolean equals(Object obj){
-//        if(obj instanceof Book){
-//            if(((Book) obj).author == this.author  && ((Book) obj).title == this.title){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Book book = (Book) obj;
-        return condition == book.condition && Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(borrower, book.borrower);
+    public boolean equals(Object obj){
+        if(obj instanceof Book){
+            Book book = (Book) obj;
+            if(condition == book.condition && title.equals(book.title) && author.equals(book.author) && borrower.equals(book.borrower)){
+                return true;
+            }
+        }
+        return false;
     }
+
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
