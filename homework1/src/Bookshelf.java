@@ -8,10 +8,16 @@ public class Bookshelf {
     private int count = 0;
     public Bookshelf(){}
 
+    /**
+     * @param books
+     */
     public Bookshelf(Book[] books) {
         this.books = books;
     }
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         Bookshelf myBookShelf = new Bookshelf();
         Book myBook1 = new Book("Harry Potter1", "JK Rowling1", 1);
@@ -34,6 +40,9 @@ public class Bookshelf {
         System.out.println(myBookShelf.toString());
     }
 
+    /**
+     * @return
+     */
     public int numBooks(){
         // How do I make this O(1)??
         int numOfBooks = 0;
@@ -48,6 +57,10 @@ public class Bookshelf {
         // This method should run in O(1) time.
     }
 
+    /**
+     * @param index
+     * @return
+     */
     public Book getBook(int index){
         if(index >= CAPACITY){
             throw new ArrayIndexOutOfBoundsException("Array Index is greater than the max CAPACITY of: " + CAPACITY);
@@ -58,6 +71,10 @@ public class Bookshelf {
 //    Throws an ArrayIndexOutOfBoundsException if the index is invalid
 //    The list should be unchanged
     }
+
+    /**
+     * @param index
+     */
 //
     public void removeBook(int index){
         // Assuming max 20 books, the index goes from 0-19, so index "20" would be out of bounds.
@@ -86,6 +103,11 @@ public class Bookshelf {
 //        Throws an EmptyShelfException(you must write this, an empty class extending Exception is the best way to do this) if there is no book on the shelf.
 //        Removes the given book and moves all books to the right of it leftwards by one index
     }
+
+    /**
+     * @param index
+     * @param book
+     */
 //
     public void addBook(int index, Book book){
         if(index >= CAPACITY){
@@ -106,6 +128,11 @@ public class Bookshelf {
         //    Throws an IllegalArgumentException if the index is too high and would create a hole in the array
         //    Throws a FullShelfException if more than 20 books are added to the shelf (you must write this, just make an empty class that extends Exception) if the array is full.
     }
+
+    /**
+     * @param index1
+     * @param index2
+     */
     public void swapBooks(int index1, int index2){
         if(index1 >= CAPACITY || index2 >= CAPACITY){
             throw new IllegalArgumentException("Array Index is greater than the max CAPACITY of: " + CAPACITY);
@@ -146,6 +173,10 @@ public class Bookshelf {
 //
 //    }
 
+    /**
+     * @param obj
+     * @return
+     */
     public boolean equals(Object obj){
         if(obj instanceof Bookshelf){
             Bookshelf bookshelf = (Bookshelf) obj;
