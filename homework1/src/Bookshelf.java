@@ -2,7 +2,7 @@
 
 import java.util.Arrays;
 
-public class Bookshelf {
+public class Bookshelf implements Cloneable {
     final int CAPACITY = 20;
     private Book[] books = new Book[CAPACITY];
     private int count = 0;
@@ -169,9 +169,36 @@ public class Bookshelf {
 //
 //    }
 
-//    public Object clone(){
+//    public Bookshelf clone(){
+//        Bookshelf bookshelf = new Bookshelf(this.books);
+//        Bookshelf bookshelfNEW = new Bookshelf();
 //
+//        for(int i = 0; i< bookshelf.CAPACITY; i++){
+//            String a = bookshelf.getBook(i).getTitle();
+//            String b = bookshelf.getBook(i).getAuthor();
+//            int c = bookshelf.getBook(i).getCondition();
+//            Book bookNEW = new Book(a,b,c);
+//            bookNEW.setBorrower(null);
+//
+//            // bookshelf A - Harry potter, JkRowling, 4, Jimmy
+//            // New bookshelf - ""                        "" - null
+////            bookshelf.addBook(i,new Book(a, b, c , null));
+//            bookshelfNEW.addBook(i,bookNEW);
+//        }
+//        return bookshelf;
 //    }
+
+    public Bookshelf clone(){
+        Bookshelf bookshelf = new Bookshelf(this.books);
+        Bookshelf bookshelfCopy = bookshelf.clone();
+        for(int i = 0; i < bookshelf.CAPACITY; i++){
+            Book book = new Book();
+            bookshelfCopy.addBook(i,book.clone());
+        }
+        return bookshelfCopy;
+    }
+
+
 
     /**
      * @param obj

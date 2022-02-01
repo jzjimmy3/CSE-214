@@ -138,6 +138,8 @@ public class RipoffRental {
 
         Book elem = bookShelfNum.getBook(sourceIndex);
         bookShelfNum.addBook(destinationIndex, new Book(elem.getTitle(), elem.getAuthor(),elem.getCondition()));
+
+
     }
 
     private static void changeShelfInstructions() {
@@ -146,8 +148,11 @@ public class RipoffRental {
     }
 
     private static void overwriteInstructions() {
-        System.out.println("Please select shelf to overwrite: ");
+        System.out.println("Please select shelf to clone: ");
         Bookshelf bookshelf = shelfValue();
+        System.out.println("Please select shelf to overwrite: ");
+
+        System.out.println(bookshelf.clone());
 
     }
 

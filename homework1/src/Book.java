@@ -1,6 +1,6 @@
 //Jimmy Zhang ID: 112844431 CSE 214 R02
 
-public class Book {
+public class Book implements Cloneable{
     private String title, author, borrower;
     private int condition;
 
@@ -23,6 +23,13 @@ public class Book {
         this.author = author;
         this.condition = condition;
     }
+
+    public Book clone(){
+        Book book = new Book(this.title,this.author,this.condition);
+        Book newBook = book.clone();
+        return newBook;
+    }
+
     public boolean equals(Object obj){
         if(obj instanceof Book){
             Book book = (Book) obj;
