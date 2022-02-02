@@ -188,14 +188,18 @@ public class Bookshelf implements Cloneable {
 //        return bookshelf;
 //    }
 
-    public Bookshelf clone(){
-        Bookshelf bookshelf = new Bookshelf(this.books);
-        Bookshelf bookshelfCopy = bookshelf.clone();
-        for(int i = 0; i < bookshelf.CAPACITY; i++){
-            Book book = new Book();
-            bookshelfCopy.addBook(i,book.clone());
-        }
-        return bookshelfCopy;
+    public Bookshelf clone() throws CloneNotSupportedException {
+//        Bookshelf bookshelfCopy = new Bookshelf(this.books);
+////        Bookshelf bookshelfCopy = bookshelf.clone();
+//        for(int i = 0; i < bookshelfCopy.CAPACITY; i++){
+//            Book book = new Book();
+//            bookshelfCopy.addBook(i, bookshelfCopy.getBook(i).clone());
+//        }
+//        return bookshelfCopy;
+
+        Bookshelf bookshelf = (Bookshelf) (super.clone());
+        bookshelf.books = (books.clone());
+        return bookshelf;
     }
 
 

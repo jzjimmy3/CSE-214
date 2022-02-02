@@ -17,7 +17,7 @@ public class RipoffRental {
     private static Bookshelf shelfB = new Bookshelf();
     private static Bookshelf shelfC = new Bookshelf();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         menuOptions();
         while(quitValue != true)
             chooseMenuOptions();
@@ -41,7 +41,7 @@ public class RipoffRental {
         );
     }
 
-    public static void chooseMenuOptions(){
+    public static void chooseMenuOptions() throws CloneNotSupportedException {
         System.out.print("Please select an option: ");
 
         Scanner input = new Scanner(System.in);
@@ -147,7 +147,7 @@ public class RipoffRental {
         bookShelfNum = shelfValue();
     }
 
-    private static void overwriteInstructions() {
+    private static void overwriteInstructions() throws CloneNotSupportedException {
         System.out.println("Please select shelf to clone: ");
         Bookshelf bookshelf = shelfValue();
         System.out.println("Please select shelf to overwrite: ");
