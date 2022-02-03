@@ -24,7 +24,7 @@ public class Bookshelf implements Cloneable {
         }catch  (ArrayIndexOutOfBoundsException e){
             throw new ArrayIndexOutOfBoundsException("Array Index is greater than the max CAPACITY of: " + CAPACITY);
         }catch (Exception e){
-            throw new Exception("There is an Error!");
+            throw new Exception("There is an Error! Try Again!");
         }
     }
 
@@ -56,12 +56,6 @@ public class Bookshelf implements Cloneable {
         }catch (Exception e){
             throw new Exception("There is an error!");
         }
-
-
-//        Gets the reference to the Book at the given index
-//        Throws an ArrayIndexOutOfBoundsException if the index is invalid
-//        Throws an EmptyShelfException(you must write this, an empty class extending Exception is the best way to do this) if there is no book on the shelf.
-//        Removes the given book and moves all books to the right of it leftwards by one index
     }
 
     /**
@@ -84,6 +78,7 @@ public class Bookshelf implements Cloneable {
             }
             books = newBooks;
             count++;
+            System.out.println();
             System.out.println("Book added!");
         }catch(ArrayIndexOutOfBoundsException e){
             //Illegal Argument Exception is a superset of ArrayOut of bounds, so calling it is inclusive.
@@ -106,16 +101,19 @@ public class Bookshelf implements Cloneable {
      * @param index2
      */
     public void swapBooks(int index1, int index2){
-        if(index1 >= CAPACITY || index2 >= CAPACITY){
-            throw new IllegalArgumentException("Array Index is greater than the max CAPACITY of: " + CAPACITY);
+        try{
+            if(books[index1] != null && books[index2] != null){
+                Book temp;
+                temp = books[index1];
+                books[index1] = books[index2];
+                books[index2] = temp;
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            throw new ArrayIndexOutOfBoundsException("Index is invalid");
+        }catch(Exception e){
+            System.out.println("Invalid, Try Again!");
         }
-        if(books[index1] != null && books[index2] != null){
-            Book temp;
-            temp = books[index1];
-            books[index1] = books[index2];
-            books[index2] = temp;
-        }
-        System.out.println("Book Swapped");
+
 
         //    If the indices are valid, the two books are swapped.
         //    Throws an ArrayIndexOutOfBoundsException if either index is invalid
@@ -127,17 +125,13 @@ public class Bookshelf implements Cloneable {
      * @throws CloneNotSupportedException
      */
     public Bookshelf clone() throws CloneNotSupportedException {
-//        Bookshelf bookshelfCopy = new Bookshelf(this.books);
-////        Bookshelf bookshelfCopy = bookshelf.clone();
-//        for(int i = 0; i < bookshelfCopy.CAPACITY; i++){
-//            Book book = new Book();
-//            bookshelfCopy.addBook(i, bookshelfCopy.getBook(i).clone());
-//        }
-//        return bookshelfCopy;
+        try{
+            Bookshelf bookshelf = (Bookshelf) (super.clone());
+            return bookshelf;
 
-        Bookshelf bookshelf = (Bookshelf) (super.clone());
-        bookshelf.books = (books.clone());
-        return bookshelf;
+        }catch (CloneNotSupportedException e){
+            throw new CloneNotSupportedException("Can't Clone");
+        }
     }
 
     /**
@@ -172,12 +166,12 @@ public class Bookshelf implements Cloneable {
                 ", count=" + count +
                 '}';
     }
-    public class EmptyShelfException extends Exception{
+    public static class EmptyShelfException extends Exception{
         public EmptyShelfException(String errorMessage) {
             super(errorMessage);
         }
     }
-    class FullShelfException extends Exception{
+    public static class FullShelfException extends Exception{
         public FullShelfException(String errorMessage) {
             super(errorMessage);
         }
