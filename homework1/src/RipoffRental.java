@@ -98,6 +98,7 @@ public class RipoffRental {
         int positionInput = input.nextInt();
 
         Book book = new Book(titleInput,authorInput,conditionInput);
+
         bookShelfNum.addBook(positionInput,book);
     }
 
@@ -148,12 +149,13 @@ public class RipoffRental {
     }
 
     private static void overwriteInstructions() throws CloneNotSupportedException {
-        System.out.println("Please select shelf to clone: ");
-        Bookshelf bookshelf = shelfValue();
+//        Scanner input = new Scanner(System.in);
         System.out.println("Please select shelf to overwrite: ");
-
-        System.out.println(bookshelf.clone());
-
+        Bookshelf bookshelf = bookShelfNum;
+        Bookshelf bookshelfCopy = bookshelf.clone();
+        Bookshelf bookshelfReplace = shelfValue();
+        bookshelfReplace = bookshelfCopy;
+        System.out.println(bookshelfReplace);
     }
 
     private static void equalInstructions() {
