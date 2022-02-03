@@ -24,11 +24,10 @@ public class Book implements Cloneable{
         this.condition = condition;
     }
 
-//    public Book clone(){
-//        Book book = new Book();
-//        Book newBook = book.clone();
-//        return newBook;
-//    }
+    public Book clone() throws CloneNotSupportedException {
+        Book newBook = (Book) (super.clone());
+        return newBook;
+    }
 
     public boolean equals(Object obj){
         if(obj instanceof Book){
