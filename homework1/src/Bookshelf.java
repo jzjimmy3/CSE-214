@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 
 public class Bookshelf implements Cloneable {
-    final int CAPACITY = 20;
+    final static int CAPACITY = 20;
     private Book[] books = new Book[CAPACITY];
     private int count = 0;
 

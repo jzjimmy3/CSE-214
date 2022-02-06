@@ -202,8 +202,8 @@ public class RipoffRental {
 
     private static void printInstructions() throws Exception {
         System.out.println("Bookshelf " + bookShelfValue + ":");
-        System.out.println("Spot Title                                                Author              Condition          Borrower" );
-        System.out.println("-----------------------------------------------------------------------------------------------------------");
+        System.out.println("Spot      Title                                                Author              Condition          Borrower" );
+        System.out.println("----------------------------------------------------------------------------------------------------------------------");
 
         for(int i = 0 ; i < shelfRow.CAPACITY; i++){
             String borrower = "<none>";
@@ -216,12 +216,11 @@ public class RipoffRental {
             }
 
             if(shelfRow.getBook(i) != null){
-                System.out.println(i + 1 + ". " +
-                        shelfRow.getBook(i).getTitle() + "        " +
-                        shelfRow.getBook(i).getAuthor() + "        " +
-                        shelfRow.getBook(i).getCondition()+ "        "+
-                        borrower
-                );
+                System.out.println();
+                System.out.printf("%d",i+1);
+                System.out.print(". ");
+                System.out.printf("%-54s%-30s%-15s%-20s ",shelfRow.getBook(i).getTitle(), shelfRow.getBook(i).getAuthor(),
+                        shelfRow.getBook(i).getCondition(),borrower);
             }
         }
     }
