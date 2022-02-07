@@ -1,10 +1,11 @@
 //Jimmy Zhang ID: 112844431 CSE 214 R02
-//Q: I don't know how to implement Deep Clone and Shallow Clone
-//Q: JavaDocs
-//Q: should everything be in a try catch exception?
 
 import java.util.Scanner;
 
+/**
+ * This class is created to run all the methods created from Book and Bookshelf class
+ * @author Jimmy Zhang
+ */
 public class RipoffRental {
     private static String menuOptionsValue, bookShelfValue;
     private static boolean  quitValue;
@@ -26,6 +27,9 @@ public class RipoffRental {
         }
     }
 
+    /**
+     * This method displays the options available manipulating the bookshelf.
+     */
     public static void menuOptions(){
         System.out.println("Welcome to Jack's aMAzin' Textbook Rentals, highest price guaranteed!");
         System.out.print("Please enter a book shelf for viewing[A,B,C]: ");
@@ -45,6 +49,8 @@ public class RipoffRental {
     }
 
     /**
+     * This method allows users to the chosen option menus to be implemented.
+     * A switch statement is used to call its respective functions
      * @throws CloneNotSupportedException
      */
     public static void chooseMenuOptions() throws Exception {
@@ -77,6 +83,10 @@ public class RipoffRental {
 
     }
 
+    /**
+     * This method determines the shelf we are currently looking at or trying to manipulate.
+     * @return
+     */
     public static Bookshelf shelfValue(){
         bookShelfValue = input.next();
         switch (bookShelfValue.toUpperCase()){
@@ -88,6 +98,10 @@ public class RipoffRental {
         return null;
     }
 
+    /**
+     * This method displays the instructions necessary to add a book.
+     * The Scanner object is used to request user input on title, author, condition, and shelf position.
+     */
     public static void addBookInstructions(){
         try{
             input.nextLine();
@@ -106,7 +120,10 @@ public class RipoffRental {
             System.out.println("Error" + e.getMessage());
         }
     }
-
+    /**
+     * This method displays the instructions necessary to swap a book.
+     * The Scanner object is used to request user input on index1 and index2.
+     */
     private static void swapBookInstructions() {
         System.out.print("Please enter an index: ");
         int index1Input = input.nextInt();
@@ -122,6 +139,10 @@ public class RipoffRental {
         }
     }
 
+    /**
+     * This method displays the instructions necessary to loan a book.
+     * The Scanner object is used to request user input on recipient, index, and condition.
+     */
     private static void loanBookInstructions() throws Exception {
         try{
             input.nextLine();
@@ -141,6 +162,10 @@ public class RipoffRental {
         }
     }
 
+    /**
+     * This method displays the instructions necessary to remove a book.
+     * The Scanner object is used to request user input on index.
+     */
     private static void removeBookInstructions() throws Exception {
         System.out.print("Please enter an index to remove book: ");
         int indexInput = input.nextInt();
@@ -150,6 +175,11 @@ public class RipoffRental {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * This method displays the instructions necessary to duplicate a book.
+     * The Scanner object is used to request user input on source index, and destination index.
+     */
     private static void duplicateBookInstructions() throws Exception {
         System.out.print("Please enter a source index: ");
         int sourceIndex = input.nextInt();
@@ -166,12 +196,20 @@ public class RipoffRental {
         }
     }
 
+    /**
+     * This method displays the instructions necessary to change viewing shelf.
+     * The method is dependent on shelfValue() method.
+     */
     private static void changeShelfInstructions() {
         System.out.print("Please enter a book shelf for viewing[A,B,C]: ");
         shelfRow = shelfValue();
         System.out.println("Shelf " + bookShelfValue + " selected.");
     }
 
+    /**
+     * This method displays the instructions necessary to overwrite a shelf.
+     * The method is dependent on Bookshelf's clone method
+     */
     private static void overwriteInstructions() throws CloneNotSupportedException {
         System.out.print("Please select shelf to overwrite: ");
         Bookshelf bookshelfReplace = shelfRow.clone();
@@ -188,6 +226,10 @@ public class RipoffRental {
         System.out.println("Shelf " + result.toUpperCase() + " overwritten with a copy of Shelf " + bookShelfValue);
     }
 
+    /**
+     * This method displays the instructions necessary to determine where two shelves are equal.
+     * The method is dependent on Bookshelf's equals method
+     */
     private static void equalInstructions() throws Bookshelf.EmptyShelfException {
         System.out.print("Please select a shelf: ");
         Bookshelf bookShelf1= shelfValue();
@@ -200,6 +242,9 @@ public class RipoffRental {
         }
     }
 
+    /**
+     * This method displays the instructions necessary to print the contents of the Bookshelf.
+     */
     private static void printInstructions() throws Exception {
         System.out.println("Bookshelf " + bookShelfValue + ":");
         System.out.println("Spot      Title                                                Author              Condition          Borrower" );
@@ -224,7 +269,9 @@ public class RipoffRental {
             }
         }
     }
-
+    /**
+     * This method displays the instructions necessary to quit all viewing options.
+     */
     private static void quitInstructions() {
         quitValue = true;
         System.out.print("Goodbye!");

@@ -3,6 +3,11 @@
 import java.util.Arrays;
 import java.util.InputMismatchException;
 
+/**
+ * This class represents a Bookshelf that implements the Cloneable interface.
+ * It has a Capacity of the maximum number of bookshelf Book[] to store books in an array and a count variable.
+ * @author Jimmy Zhang
+ */
 public class Bookshelf implements Cloneable {
     final static int CAPACITY = 20;
     private Book[] books = new Book[CAPACITY];
@@ -15,7 +20,9 @@ public class Bookshelf implements Cloneable {
     }
 
     /**
+     * This method is used to get the book in the bookshelf when a specified index is given.
      * @param index
+     *      Specified position of the book on the shelf
      * @return
      */
     public Book getBook(int index) throws Exception {
@@ -29,7 +36,9 @@ public class Bookshelf implements Cloneable {
     }
 
     /**
+     * This method is used to remove a book from the bookshelf when a specified index is given.
      * @param index
+     *      Specified position of the book on the shelf
      */
 
     public void removeBook(int index) throws Exception {
@@ -59,8 +68,11 @@ public class Bookshelf implements Cloneable {
     }
 
     /**
+     * This method is used to remove add a book from the bookshelf when a specified index is given and the Book object itself.
      * @param index
+     *      Specified position of the book on the shelf
      * @param book
+     *      The book object
      */
 //
     public void addBook(int index, Book book) throws Exception {
@@ -97,8 +109,11 @@ public class Bookshelf implements Cloneable {
 
 
     /**
+     * This method takes two books and swaps them
      * @param index1
+     *      Specified position of a book on the shelf
      * @param index2
+     *      Specified position of another book on the shelf
      */
     public void swapBooks(int index1, int index2){
         try{
@@ -114,13 +129,10 @@ public class Bookshelf implements Cloneable {
             System.out.println("Invalid, Try Again!");
         }
 
-
-        //    If the indices are valid, the two books are swapped.
-        //    Throws an ArrayIndexOutOfBoundsException if either index is invalid
-        //    The list should be unchanged if either index was invalid
     }
 
     /**
+     * This method takes the bookshelf and duplicates it
      * @return
      * @throws CloneNotSupportedException
      */
@@ -135,6 +147,7 @@ public class Bookshelf implements Cloneable {
     }
 
     /**
+     * This method compares two bookshelves and determines if they have the same book content
      * @param obj
      * @return
      */
@@ -166,11 +179,18 @@ public class Bookshelf implements Cloneable {
                 ", count=" + count +
                 '}';
     }
+
+    /**
+     * This method is created to thrown an EmptyShelfException
+     */
     public static class EmptyShelfException extends Exception{
         public EmptyShelfException(String errorMessage) {
             super(errorMessage);
         }
     }
+    /**
+     * This method is created to thrown an FullShelfException
+     */
     public static class FullShelfException extends Exception{
         public FullShelfException(String errorMessage) {
             super(errorMessage);
