@@ -1,17 +1,11 @@
-//public DeliveryListNode(Delivery initData)
-//Default constructor.
-//Preconditions:
-//initData is not null.
-//Postconditions:
-//This DeliveryListNode has been initialized to wrap the indicated Delivery, and prev and next have been set to null.
-//Throws:
-//IllegalArgumentException if initData is null.
-
+// Jimmy zhang ID: 112844431
 
 public class DeliveryListNode {
     private Delivery data;
     private DeliveryListNode next;
     private DeliveryListNode prev;
+
+    public DeliveryListNode(){};
 
     public DeliveryListNode(Delivery initData) {
         this.data = initData;
@@ -25,4 +19,13 @@ public class DeliveryListNode {
     public void setNext(DeliveryListNode next) { this.next = next; }
     public DeliveryListNode getPrev() { return prev; }
     public void setPrev(DeliveryListNode prev) { this.prev = prev; }
+
+    @Override
+    public String toString() {
+        return "DeliveryListNode{" +
+                "\n data=" + data +
+                "\n next=" + next +
+                "\n prev=" + prev +
+                '}';
+    }
 }
