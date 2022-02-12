@@ -3,9 +3,6 @@
 // The DeliveryList class is made up of lists of Delivery Nodes, but how do I connect them? In bookshelf, they were connected through Books[].
 // How can I print doubly linked list?
 
-
-
-
 import java.util.Scanner;
 
 public class DeliveryDriver {
@@ -74,8 +71,8 @@ public class DeliveryDriver {
 
     private static void addDelivery() {
         System.out.print("Please enter a source: ");
-        String source = input.nextLine();
         input.nextLine();
+        String source = input.nextLine();
 
         System.out.print("Please enter a destination: ");
         String destination = input.nextLine();
@@ -111,13 +108,21 @@ public class DeliveryDriver {
     }
 
     private static void printCurrentList(){
-        System.out.println(deliveryListA.getHead().getNext());
+        DeliveryListNode temp = deliveryListA.getHead();
+        if(deliveryListA.getHead() == null) {
+            System.out.println("Empty Delivery List");
+            return;
+        }else{
+            System.out.println("Delivery List: ");
+            while( temp != null) {
+                System.out.print(temp.getData() + " -> ");
+                temp = temp.getNext();
+            }
+        }
     }
 
     public static void setQuitValue(){
         quitValue = false;
         System.out.println("Next time, try UPS!");
     }
-
-
 }

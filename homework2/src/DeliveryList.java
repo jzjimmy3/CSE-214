@@ -14,8 +14,9 @@ public class DeliveryList {
     public void setHead(DeliveryListNode head) { this.head = head; }
     public DeliveryListNode getTail() { return tail; }
     public void setTail(DeliveryListNode tail) { this.tail = tail; }
-    // public DeliveryListNode getCursor() { return cursor; }
+     public DeliveryListNode getCursors() { return cursor; }
     public void setCursor(DeliveryListNode cursor) { this.cursor = cursor; }
+
 
     public int numDeliveries(){
         return totalDeliveries;
@@ -60,29 +61,52 @@ public class DeliveryList {
         if(newDelivery == null){
             throw new IllegalArgumentException("This is an illegal argument");
         }
+
         DeliveryListNode newNode = new DeliveryListNode(newDelivery);
         DeliveryListNode temp = cursor;
 
-        if(cursor == null){
-            System.out.println("hello");
+        //no cursor
+        if(head == null){
             setHead(newNode);
             setTail(newNode);
             setCursor(newNode);
-            //newNode.setNext(new DeliveryListNode(new Delivery("zxcv","zxcv","zxcv")));
+            head.setPrev(null);
+            tail.setNext(null);
         }
-        else if(cursor == tail){
-            System.out.println("hello1");
-            newNode.setNext(null);
-            temp.setNext(newNode);
-            newNode.setPrev(cursor);
-        }
-        else{
-            System.out.println("hello2");
+        //cursor in middle
+        else if(temp != null && temp.getNext() != null){
             newNode.setNext(cursor.getNext());
-            temp.setNext(newNode);
-            newNode.setPrev(cursor);
-            newNode.getNext().setNext(newNode);
+            cursor.setNext(newNode);
+            newNode.setPrev(temp);
+            newNode.getNext().setPrev(newNode);
         }
+        //cursor at tail
+        else{
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
+            tail = newNode;
+        }
+
+//        if(cursor == null){
+//            System.out.println("hello");
+//            setHead(newNode);
+//            setTail(newNode);
+//            setCursor(newNode);
+//            //newNode.setNext(new DeliveryListNode(new Delivery("zxcv","zxcv","zxcv")));
+//        }
+//        else if(cursor == tail){
+//            System.out.println("hello1");
+//            newNode.setNext(null);
+//            temp.setNext(newNode);
+//            newNode.setPrev(cursor);
+//        }
+//        else{
+//            System.out.println("hello2");
+//            newNode.setNext(cursor.getNext());
+//            temp.setNext(newNode);
+//            newNode.setPrev(cursor);
+//            newNode.getNext().setNext(newNode);
+//        }
     }
 
     public void appendToTail(Delivery newDelivery){
@@ -111,10 +135,10 @@ public class DeliveryList {
     @Override
     public String toString() {
         return "DeliveryList{" +
-                "\n head=" + head +
-                "\n tail=" + tail +
-                "\n cursor=" + cursor +
-                "\n totalDeliveries=" + totalDeliveries +
+                "\n   head = " + head +
+                "\n   tail = " + tail +
+                "\n   cursor = " + cursor +
+                "\n   totalDeliveries = " + totalDeliveries +
                 '}';
     }
 

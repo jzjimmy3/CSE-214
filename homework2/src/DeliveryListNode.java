@@ -23,9 +23,9 @@ public class DeliveryListNode {
     @Override
     public String toString() {
         return "DeliveryListNode{" +
-                "\n data=" + data +
-                "\n next=" + next +
-                "\n prev=" + prev +
+                "data=" + data +
+                "next="+ getNext() +
+                "prev=" + getPrev() +
                 '}';
     }
 }
