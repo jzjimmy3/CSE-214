@@ -14,7 +14,7 @@ public class DeliveryList {
     public void setHead(DeliveryListNode head) { this.head = head; }
     public DeliveryListNode getTail() { return tail; }
     public void setTail(DeliveryListNode tail) { this.tail = tail; }
-     public DeliveryListNode getCursors() { return cursor; }
+//     public DeliveryListNode getCursor() { return cursor; }
     public void setCursor(DeliveryListNode cursor) { this.cursor = cursor; }
 
 
@@ -32,28 +32,31 @@ public class DeliveryList {
     public void resetCursorToHead(){
         if(head != null){
             cursor = head;
+            System.out.println("Cursor is at Head.");
         }else{
-            cursor = null;
+            System.out.println("List is Empty!");
         }
     }
 
     public void cursorForward() throws EndOfListException {
-        DeliveryListNode temp = cursor;
-        if(temp.getNext() != null){
-            if(temp == tail){
+        if(cursor.getNext() != null){
+//            DeliveryListNode temp = cursor;
+            if(cursor == tail){
                 throw new EndOfListException("The list is at the tail");
             }
-            temp.setNext(temp.getNext());
+            cursor = cursor.getNext(); // why can't I do cursor.setNext(cursor.getNext())
+            System.out.println("Cursor has moved forward");
         }
     }
 
     public void cursorBackward() throws EndOfListException{
-        DeliveryListNode temp = cursor;
-        if(temp.getPrev() != null){
-            if(temp == head){
+        if(cursor.getPrev() != null){
+            // DeliveryListNode temp = cursor;
+            if(cursor == head){
                 throw new EndOfListException("The list is at the head");
             }
-            temp.setPrev(temp.getPrev());
+            cursor = cursor.getPrev(); // why can't I do cursor.setNext(cursor.getNext())
+            System.out.println("Cursor has moved Backward");
         }
     }
 
@@ -123,13 +126,32 @@ public class DeliveryList {
         }
     }
 
-    public Delivery removeCursor(){
-        if(cursor != null && cursor.getNext()!= null){
-            Delivery delivery = cursor.getData();
-            cursor.setNext(cursor.getNext());
-            return delivery;
+    public Delivery removeCursor() throws EndOfListException {
+        if(cursor == head){
+            head = null;
+            cursor = null;
+            tail = null;
         }
-         return null;
+        else if(cursor == head && cursor.getNext() != null){
+            head = cursor.getNext();
+        }
+        else if(cursor.getPrev() != null && cursor.getNext()!= null){
+            DeliveryListNode temp = cursor;
+            Delivery delivery = cursor.getData();
+            //remove cursor
+            temp.getPrev().setNext(temp.getNext());
+            temp.getNext().setPrev(temp.getPrev());
+            if(cursor != tail){
+                cursorForward();
+            } else{
+                cursorBackward();
+            }
+
+            return delivery;
+        }else{
+            return null;
+        }
+        return null;
     }
 
     @Override

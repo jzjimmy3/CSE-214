@@ -2,6 +2,7 @@
 // Why am I getting error in this code?
 // The DeliveryList class is made up of lists of Delivery Nodes, but how do I connect them? In bookshelf, they were connected through Books[].
 // How can I print doubly linked list?
+//What is the order I should add or remove a linked list?
 
 import java.util.Scanner;
 
@@ -14,7 +15,7 @@ public class DeliveryDriver {
     public static DeliveryList deliveryListA = new DeliveryList();
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         mainMenu();
         while(quitValue){
             chooseMainMenu();
@@ -39,7 +40,7 @@ public class DeliveryDriver {
         );
     }
 
-    public static void chooseMainMenu(){
+    public static void chooseMainMenu() throws Exception {
         System.out.print("Please select an option: ");
         menuValue = input.next().toUpperCase();
         switch(menuValue){
@@ -84,24 +85,38 @@ public class DeliveryDriver {
     }
 
     private static void removeDelivery() {
+        //removes Delivery, doesn't save anything
+
     }
 
-    private static void cutCursor() {
+    private static void cutCursor() throws DeliveryList.EndOfListException {
+        //removes Delivery, stores object for future pasting
+        //cursor moves forward
+        deliveryListA.removeCursor();
+        deliveryListA.cursorForward();
+        System.out.println("Cursor is cut.");
     }
 
     private static void pasteCursor() {
     }
 
     private static void cursorToHead() {
+        deliveryListA.resetCursorToHead();
     }
 
     private static void cursorToTail() {
+        if(deliveryListA.getHead() != null){
+            deliveryListA.setCursor(deliveryListA.getTail());
+            System.out.println("Cursor is at Tail.");
+        }
     }
 
-    private static void cursorForward() {
+    private static void cursorForward() throws DeliveryList.EndOfListException {
+        deliveryListA.cursorForward();
     }
 
-    private static void cursorBackward() {
+    private static void cursorBackward() throws DeliveryList.EndOfListException {
+        deliveryListA.cursorBackward();
     }
 
     private static void switchDeliveryList() {
@@ -114,9 +129,12 @@ public class DeliveryDriver {
             return;
         }else{
             System.out.println("Delivery List: ");
+            System.out.println("---------------------------------------------------------");
+
             while( temp != null) {
-                System.out.print(temp.getData() + " -> ");
+                System.out.print(temp.getData() + "\n");
                 temp = temp.getNext();
+                System.out.println();
             }
         }
     }

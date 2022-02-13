@@ -20,10 +20,7 @@ public class Delivery {
 
     @Override
     public String toString() {
-        return "Delivery{" +
-                "source='" + source + '\'' +
-                ", dest='" + dest + '\'' +
-                ", instruction='" + instruction + '\'' +
-                '}';
+        return "To: " + source + " | From: " + dest + "\n" +
+                "Instructions:" + instruction;
     }
 }
