@@ -22,10 +22,25 @@ public class DeliveryListNode {
 
     @Override
     public String toString() {
-        return "DeliveryListNode{" +
-                "data=" + data +
-                "next="+ getNext() +
-                "prev=" + getPrev() +
-                '}';
+//        return "DeliveryListNode{" +
+//                "data=" + data +
+//                "next="+ getNext() +
+//                "prev=" + getPrev() +
+//                '}';
+        DeliveryList deliveryList = new DeliveryList();
+        DeliveryListNode current = deliveryList.getCursors().getNext();
+        if (current == null) {
+            return "[]";
+        }
+        else {
+            String result = "[" + current.data;
+            while (current.next != null)
+            {
+                result += current.data + ", ";
+                current = current.next;
+            }
+            result += "]";
+            return result;
+        }
     }
 }

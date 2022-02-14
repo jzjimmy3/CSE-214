@@ -3,6 +3,8 @@
 // How can I print doubly linked list?
 // What is the order I should add or remove a linked list?
 // In switchDeliveryList() why can't I use the ternary operator?
+// should I put everything in try catch?
+//check the backwards function, why does cursor.getPrev( produce Method threw 'java.lang.NullPointerException' exception. Cannot evaluate DeliveryListNode.toString()
 
 import java.util.Scanner;
 
@@ -87,13 +89,17 @@ public class DeliveryDriver {
         list.insertAfterCursor(newDelivery);
     }
 
-    private static void removeDelivery() throws DeliveryList.EndOfListException {
-        list.removeCursor();
+    private static void removeDelivery() throws Exception {
+        try{
+            list.removeCursor();
+        }catch (NullPointerException e){
+            System.out.println(e.getMessage());
+        }catch (DeliveryList.EndOfListException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void cutCursor() throws DeliveryList.EndOfListException {
-        //removes Delivery, stores object for future pasting
-        //cursor moves forward
         xCopy = list.removeCursor();
         System.out.println("Cursor is cut.");
     }
@@ -111,10 +117,7 @@ public class DeliveryDriver {
     }
 
     private static void cursorToTail() {
-        if(list.getHead() != null){
-            list.setCursor(list.getTail());
-            System.out.println("Cursor is at Tail.");
-        }
+        list.resetCursorToTail();
     }
 
     private static void cursorForward() throws DeliveryList.EndOfListException {

@@ -14,7 +14,7 @@ public class DeliveryList {
     public void setHead(DeliveryListNode head) { this.head = head; }
     public DeliveryListNode getTail() { return tail; }
     public void setTail(DeliveryListNode tail) { this.tail = tail; }
-//     public DeliveryListNode getCursor() { return cursor; }
+    public DeliveryListNode getCursors() { return cursor; }
     public void setCursor(DeliveryListNode cursor) { this.cursor = cursor; }
 
 
@@ -37,25 +37,29 @@ public class DeliveryList {
             System.out.println("List is Empty!");
         }
     }
+    public void resetCursorToTail(){
+        if(head != null){
+            setCursor(tail);
+            System.out.println("Cursor is at Tail.");
+        }else{
+            System.out.println("List is Empty!");
+        }
+    }
 
     public void cursorForward() throws EndOfListException {
-        if(cursor.getNext() != null){
-//            DeliveryListNode temp = cursor;
-            if(cursor == tail){
-                throw new EndOfListException("The list is at the tail");
-            }
-            cursor = cursor.getNext(); // why can't I do cursor.setNext(cursor.getNext())
+        if(cursor == tail){
+            throw new EndOfListException("The list is at the tail");
+        }else{
+            cursor = cursor.getNext();
             System.out.println("Cursor has moved forward");
         }
     }
 
     public void cursorBackward() throws EndOfListException{
-        if(cursor.getPrev() != null){
-            // DeliveryListNode temp = cursor;
-            if(cursor == head){
-                throw new EndOfListException("The list is at the head");
-            }
-            cursor = cursor.getPrev(); // why can't I do cursor.setNext(cursor.getNext())
+        if(cursor == head){
+            throw new EndOfListException("The list is at the head");
+        }else{
+            cursor = cursor.getPrev();
             System.out.println("Cursor has moved Backward");
         }
     }
@@ -76,7 +80,7 @@ public class DeliveryList {
             head.setPrev(null);
             tail.setNext(null);
         }
-        //cursor in middle
+        //cursor in middle and tail
         else if(temp != null && temp.getNext() != null){
             newNode.setNext(cursor.getNext());
             cursor.setNext(newNode);
@@ -85,31 +89,14 @@ public class DeliveryList {
         }
         //cursor at tail
         else{
+            System.out.println("I'm at tail");
             tail.setNext(newNode);
             newNode.setPrev(tail);
+//
+//            newNode.setNext(null);
+//            tail.getNext().setPrev(null);
             tail = newNode;
         }
-
-//        if(cursor == null){
-//            System.out.println("hello");
-//            setHead(newNode);
-//            setTail(newNode);
-//            setCursor(newNode);
-//            //newNode.setNext(new DeliveryListNode(new Delivery("zxcv","zxcv","zxcv")));
-//        }
-//        else if(cursor == tail){
-//            System.out.println("hello1");
-//            newNode.setNext(null);
-//            temp.setNext(newNode);
-//            newNode.setPrev(cursor);
-//        }
-//        else{
-//            System.out.println("hello2");
-//            newNode.setNext(cursor.getNext());
-//            temp.setNext(newNode);
-//            newNode.setPrev(cursor);
-//            newNode.getNext().setNext(newNode);
-//        }
     }
 
     public void appendToTail(Delivery newDelivery){
@@ -127,34 +114,63 @@ public class DeliveryList {
     }
 
     public Delivery removeCursor() throws EndOfListException {
-        Delivery delivery = cursor.getData();
-        if(cursor == head && cursor.getNext() != null ){
-            head = head.getNext();
-            cursor = head;
-        }
-        else if(cursor == head && cursor.getNext() == null){
-            head = null;
-            cursor = null;
-            tail = null;
-        }
-        else if(cursor.getPrev() != null && cursor.getNext()!= null){
+        try {
             DeliveryListNode temp = cursor;
-            //remove cursor
-            temp.getPrev().setNext(temp.getNext());
-            temp.getNext().setPrev(temp.getPrev());
-            if(cursor != tail){
-                cursorForward();
-            } else{
+            Delivery delivery = cursor.getData();
+            // If cursor at beginning
+            if (cursor == head && cursor.getNext() != null) {
+                head = head.getNext();
+                cursor = head;
+                System.out.println("Hello");
+            // If cursor at end
+            } else if (cursor == tail) {
                 cursorBackward();
+                temp.getPrev().setNext(null);
+                temp.setPrev(null);
+                System.out.println("Hello1");
+                // If cursor in middle
+            } else {
+                System.out.println("Hello2");
+                cursor.getPrev().setNext(temp.getNext());
+                cursor.getNext().setPrev(temp.getPrev());
+                cursorForward();
             }
-            System.out.println("Hello");
             return delivery;
-        }else{
-            System.out.println("Hello1");
-
-            return null;
+        }catch (NullPointerException e){
+            throw new NullPointerException("Null Pointer, try again.");
         }
-        return delivery;
+
+
+//        try {
+//            Delivery delivery = cursor.getData();
+//            if (cursor == head && cursor.getNext() != null) {
+//                head = head.getNext();
+//                cursor = head;
+//            } else if (cursor == head && cursor.getNext() == null) {
+//                head = null;
+//                cursor = null;
+//                tail = null;
+//            } else if (cursor.getPrev() != null && cursor.getNext() != null) {
+//                DeliveryListNode temp = cursor;
+//                //remove cursor
+//                temp.getPrev().setNext(temp.getNext());
+//                temp.getNext().setPrev(temp.getPrev());
+//                if (cursor != tail) {
+//                    cursorForward();
+//                } else {
+//                    cursorBackward();
+//                }
+//                System.out.println("Hello");
+//                return delivery;
+//            } else {
+//                System.out.println("Hello1");
+//
+//                return null;
+//            }
+//            return delivery;
+//        }catch (NullPointerException e){
+//            throw new NullPointerException("Null Pointer, try again.");
+//        }
     }
 
     @Override
