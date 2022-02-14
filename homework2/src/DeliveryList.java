@@ -127,17 +127,18 @@ public class DeliveryList {
     }
 
     public Delivery removeCursor() throws EndOfListException {
-        if(cursor == head){
+        Delivery delivery = cursor.getData();
+        if(cursor == head && cursor.getNext() != null ){
+            head = head.getNext();
+            cursor = head;
+        }
+        else if(cursor == head && cursor.getNext() == null){
             head = null;
             cursor = null;
             tail = null;
         }
-        else if(cursor == head && cursor.getNext() != null){
-            head = cursor.getNext();
-        }
         else if(cursor.getPrev() != null && cursor.getNext()!= null){
             DeliveryListNode temp = cursor;
-            Delivery delivery = cursor.getData();
             //remove cursor
             temp.getPrev().setNext(temp.getNext());
             temp.getNext().setPrev(temp.getPrev());
@@ -146,12 +147,14 @@ public class DeliveryList {
             } else{
                 cursorBackward();
             }
-
+            System.out.println("Hello");
             return delivery;
         }else{
+            System.out.println("Hello1");
+
             return null;
         }
-        return null;
+        return delivery;
     }
 
     @Override

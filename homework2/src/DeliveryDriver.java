@@ -1,8 +1,8 @@
 // In book shelf, we ust Book[] array, but what about doubly linked lists? Is there something similar?
 // Why am I getting error in this code?
-// The DeliveryList class is made up of lists of Delivery Nodes, but how do I connect them? In bookshelf, they were connected through Books[].
 // How can I print doubly linked list?
-//What is the order I should add or remove a linked list?
+// What is the order I should add or remove a linked list?
+// In switchDeliveryList() why can't I use the ternary operator?
 
 import java.util.Scanner;
 
@@ -11,8 +11,11 @@ public class DeliveryDriver {
     public static boolean quitValue = true;
     public static Scanner input = new Scanner(System.in);
     public static String menuValue;
-
+    public static Delivery xCopy;
+    public static String deliveryListValue;
     public static DeliveryList deliveryListA = new DeliveryList();
+    public static DeliveryList deliveryListB = new DeliveryList();
+    public static DeliveryList list = deliveryListA;
 
 
     public static void main(String[] args) throws Exception {
@@ -81,54 +84,64 @@ public class DeliveryDriver {
         System.out.print("Please enter any special instructions: ");
         String instructions = input.nextLine();
         Delivery newDelivery = new Delivery(source, destination, instructions);
-        deliveryListA.insertAfterCursor(newDelivery);
+        list.insertAfterCursor(newDelivery);
     }
 
-    private static void removeDelivery() {
-        //removes Delivery, doesn't save anything
-
+    private static void removeDelivery() throws DeliveryList.EndOfListException {
+        list.removeCursor();
     }
 
     private static void cutCursor() throws DeliveryList.EndOfListException {
         //removes Delivery, stores object for future pasting
         //cursor moves forward
-        deliveryListA.removeCursor();
-        deliveryListA.cursorForward();
+        xCopy = list.removeCursor();
         System.out.println("Cursor is cut.");
     }
 
     private static void pasteCursor() {
+        try{
+            list.insertAfterCursor(xCopy);
+        }catch(NullPointerException e){
+            throw new NullPointerException("The value you are trying to paste is empty");
+        }
     }
 
     private static void cursorToHead() {
-        deliveryListA.resetCursorToHead();
+        list.resetCursorToHead();
     }
 
     private static void cursorToTail() {
-        if(deliveryListA.getHead() != null){
-            deliveryListA.setCursor(deliveryListA.getTail());
+        if(list.getHead() != null){
+            list.setCursor(list.getTail());
             System.out.println("Cursor is at Tail.");
         }
     }
 
     private static void cursorForward() throws DeliveryList.EndOfListException {
-        deliveryListA.cursorForward();
+        list.cursorForward();
     }
 
     private static void cursorBackward() throws DeliveryList.EndOfListException {
-        deliveryListA.cursorBackward();
+        list.cursorBackward();
     }
 
     private static void switchDeliveryList() {
+        // (switchDelivery == deliveryListA) ? (switchDelivery = deliveryListB) : (switchDelivery = deliveryListA);
+
+        if ((list == deliveryListA)) {
+            list = deliveryListB;
+        } else {
+            list = deliveryListA;
+        }
     }
 
     private static void printCurrentList(){
-        DeliveryListNode temp = deliveryListA.getHead();
-        if(deliveryListA.getHead() == null) {
+        DeliveryListNode temp = list.getHead();
+        if(list.getHead() == null) {
             System.out.println("Empty Delivery List");
             return;
         }else{
-            System.out.println("Delivery List: ");
+            System.out.println("Delivery List: " + getDeliveryListValue());
             System.out.println("---------------------------------------------------------");
 
             while( temp != null) {
@@ -142,5 +155,15 @@ public class DeliveryDriver {
     public static void setQuitValue(){
         quitValue = false;
         System.out.println("Next time, try UPS!");
+    }
+
+    // new methods
+    public static String getDeliveryListValue(){
+        if(list == deliveryListA){
+            deliveryListValue = "Biz Billy's Deliveries: ";
+        }else{
+            deliveryListValue = "Money Mike's Deliveries: ";
+        }
+        return deliveryListValue;
     }
 }
