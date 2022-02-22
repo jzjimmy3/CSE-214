@@ -79,7 +79,6 @@ public class DeliveryList {
             throw new EndOfListException("The list is at the tail");
         }else{
             cursor = cursor.getNext();
-            System.out.println("Cursor has moved forward");
         }
     }
 
@@ -92,7 +91,6 @@ public class DeliveryList {
             throw new EndOfListException("The list is at the head");
         }else{
             cursor = cursor.getPrev();
-            System.out.println("Cursor has moved Backward");
         }
     }
 
@@ -115,10 +113,6 @@ public class DeliveryList {
             setCursor(newNode);
             newNode.setNext(null);
             newNode.setPrev(null);
-//            head.setNext(null);
-//            head.setPrev(null);
-//            tail.setNext(null);
-//            tail.setPrev(null);
         }
         //cursor in middle and tail
         else if(temp != null && temp.getNext() != null){
@@ -129,11 +123,8 @@ public class DeliveryList {
         }
         //cursor at tail
         else{
-            System.out.println("I'm at tail");
             tail.setNext(newNode);
             newNode.setPrev(tail);
-//            newNode.setNext(null);
-//            tail.getNext().setPrev(null);
             tail = newNode;
             tail.setNext(null);
         }
@@ -175,6 +166,7 @@ public class DeliveryList {
                 cursorBackward();
                 temp.getPrev().setNext(null);
                 temp.setPrev(null);
+                tail = cursor;
                 // If cursor in middle
             } else {
                 cursor.getPrev().setNext(temp.getNext());

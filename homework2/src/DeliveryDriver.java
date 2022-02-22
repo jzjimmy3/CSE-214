@@ -26,7 +26,6 @@ public class DeliveryDriver {
         mainMenu();
         while(quitValue){
             chooseMainMenu();
-            System.out.println();
         }
     }
 
@@ -58,6 +57,7 @@ public class DeliveryDriver {
         try{
             System.out.print("Please select an option: ");
             menuValue = input.next().toUpperCase();
+
             switch(menuValue){
                 case "A" : addDelivery();
                     break;
@@ -83,6 +83,7 @@ public class DeliveryDriver {
                     break;
                 default:break;
             }
+            System.out.println();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -104,6 +105,8 @@ public class DeliveryDriver {
             String instructions = input.nextLine();
             Delivery newDelivery = new Delivery(source, destination, instructions);
             list.insertAfterCursor(newDelivery);
+            System.out.println();
+            System.out.println("Order Inserted.");
 
         }catch (NullPointerException e) {
             System.out.println(e.getMessage());
@@ -118,6 +121,7 @@ public class DeliveryDriver {
     private static void removeDelivery() throws Exception {
         try{
             list.removeCursor();
+            System.out.println("Delivery to " + list.getCursor().getDest() + "has been removed");
         }catch (NullPointerException e){
             System.out.println(e.getMessage());
         }catch (DeliveryList.EndOfListException e){
@@ -185,6 +189,7 @@ public class DeliveryDriver {
     private static void cursorForward() throws DeliveryList.EndOfListException {
         try{
             list.cursorForward();
+            System.out.println("Cursor moved forward");
         }catch(NullPointerException e){
             throw new NullPointerException("Null Pointer");
         }
@@ -197,7 +202,8 @@ public class DeliveryDriver {
      */
     private static void cursorBackward() throws DeliveryList.EndOfListException {
         try{
-        list.cursorBackward();
+            list.cursorBackward();
+            System.out.println("Cursor moved backward");
         }catch(NullPointerException e){
             throw new NullPointerException("Null Pointer");
         }catch(DeliveryList.EndOfListException e){
@@ -212,6 +218,7 @@ public class DeliveryDriver {
     private static void switchDeliveryList() {
         try{
             list = (list == deliveryListA) ? deliveryListB : deliveryListA;
+            System.out.println(getDeliveryListValue() + "is selected.");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -226,13 +233,16 @@ public class DeliveryDriver {
                 System.out.println("Empty Delivery List");
                 return;
             }else{
-                System.out.println("Delivery List: " + getDeliveryListValue());
+                System.out.println(getDeliveryListValue()+": ");
                 System.out.println("---------------------------------------------------------");
 
                 while( temp != null) {
                     if(list.getCursors() == temp){
                         System.out.println("->");
-                    }else{
+                    }else if (temp == list.getHead()){
+                        System.out.print("");
+                    }
+                    else{
                         System.out.println('~');
                     }
                     System.out.print(temp.getData() + "\n");
@@ -260,9 +270,9 @@ public class DeliveryDriver {
      */
     public static String getDeliveryListValue() {
         if (list == deliveryListA) {
-            deliveryListValue = "Biz Billy's Deliveries: ";
+            deliveryListValue = "Biz Billy's Deliveries ";
         } else {
-            deliveryListValue = "Money Mike's Deliveries: ";
+            deliveryListValue = "Money Mike's Deliveries ";
         }
         return deliveryListValue;
     }

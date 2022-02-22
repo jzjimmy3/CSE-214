@@ -38,7 +38,7 @@ public class Delivery {
      */
     @Override
     public String toString() {
-        return "To: " + source + " | From: " + dest + "\n" +
-                "Instructions:" + instruction;
+        return "To: " + dest + " | From: " + source + "\n" +
+                "Instructions: " + instruction;
     }
 }
