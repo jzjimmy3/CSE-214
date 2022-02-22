@@ -238,7 +238,7 @@ public class RipoffRental {
         try{
             System.out.println(bookShelf1.equals(bookShelf2) ? "These shelves are equal" : "These shelves are not equal");
         }catch (Exception e){
-            System.out.println("Unexpected Error! Try Again!");
+            System.out.println("These shelves are not equal");
         }
     }
 
