@@ -13,11 +13,13 @@ public class FindPlace implements Command {
 
     @Override
     public String toString() {
-        return "Showing results for: " + destination;//Showing results for Microsoft Store
+        // toString is supposed to be for Current Screen
+        return "Showing Results for " + destination;//Showing results for Microsoft Store
     }
 
     @Override
     public String toShortString() {
-        return "->" + destination;//Microsoft Store
+        //toShortString is supposed to be for Stack
+        return "F: " + destination;//Microsoft Store
     }
 }

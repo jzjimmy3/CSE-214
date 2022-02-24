@@ -17,13 +17,21 @@ public class CommandStack extends Vector {
         return stack.isEmpty() ? true:false;
     }
     public String getScreenCommand(){
-//        Command c = (Command) stack.peek();
-        return "Showing results for.." + ((Command) stack.peek()).toShortString();
+        return !stack.isEmpty()? stack.peek().toString() : "Empty Stack";
     }
+
+    public String getStack() {
+        Stack temp = (Stack) stack.clone();
+        String stringStack = "[";
+        for(int i = temp.size(); i >0; i--){
+            stringStack += ((Command) temp.peek()).toShortString();
+            temp.pop();
+        }
+        stringStack += "]";
+        return stringStack;
+    }
+
     public String toString(){
         return stack.toString();
     }
-//    public String toShortString(){
-//        return stack.toShortString();
-//    }
 }

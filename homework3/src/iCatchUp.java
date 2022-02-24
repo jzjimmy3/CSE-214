@@ -7,14 +7,16 @@ public class iCatchUp {
 
     public static void main(String[] args) {
 //        System.out.println("Stack debug.toString1: " + stackDebug.getScreenCommand());
-        System.out.println("Current Screen: ");
 
         while(quitValue){
             homeOptions();
-            System.out.println("Stack debug.toString2: " + stackDebug.getScreenCommand());
+//            for(int i = 0; i<stackDebug..length;i++){
+//
+//            }
+            System.out.println("Stack Debug: " + stackDebug.getStack());
+            System.out.println("Current Screen: " + stackDebug.getScreenCommand());
 
         }
-        System.out.println("Stack debug.toString3: " + stackDebug.getScreenCommand());
     }
 
     public static void homeOptions(){
@@ -48,7 +50,7 @@ public class iCatchUp {
         switch (input.next().toUpperCase()){
             case "F": findPlace();
                 break;
-            case "P": ;
+            case "P": planRoute();
                 break;
             case "N": ;
                 break;
@@ -92,5 +94,8 @@ public class iCatchUp {
         System.out.print("Please enter a place: ");
         FindPlace findPlace = new FindPlace(new Scanner(System.in));
         stackDebug.push(findPlace);
+    }
+    public static void planRoute(){
+
     }
 }
