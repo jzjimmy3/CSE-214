@@ -35,7 +35,8 @@ public class iCatchUp {
                 return "Home";
             }
         };
-
+        System.out.println("Welcome to the iPhony pocket telegraph simulator. You are on the home screen.");
+        System.out.println();
         System.out.println("Home Options: \n" +
                 "   S) Safari\n" +
                 "   M) Maps\n" +
@@ -65,6 +66,7 @@ public class iCatchUp {
                 printStack();
                 break;
             case "Q": quitValue = false;
+                System.out.println("Sorry to see you go, tell the iPod I said hi!");
                     break;
             default:break;
         }
@@ -144,15 +146,15 @@ public class iCatchUp {
         switch (input.next().toUpperCase()){
             case "G": googleSomething();
                 break;
-            case "F": ;
+            case "F": goToBookmark();
                 break;
-            case "L": ;
+            case "L": followLink();
                 break;
-            case "H": ;
+            case "H": homeScreen();
                 break;
-            case "S": ;
+            case "S": switchView();
                 break;
-            case "B": ;
+            case "B": back();
                 break;
             default:break;
         }
@@ -204,6 +206,15 @@ public class iCatchUp {
     public static void googleSomething(){
         Command.GoogleSomething googleSomething = new Command.GoogleSomething(new Scanner(System.in));
         currentStack.push(googleSomething);
+    }
+
+    public static void goToBookmark(){
+        Command.GoToBookmark goToBookmark = new Command.GoToBookmark(new Scanner(System.in));
+        currentStack.push(goToBookmark);
+    }
+    public static void followLink(){
+        Command.FollowLink followLink = new Command.FollowLink(new Scanner(System.in));
+        currentStack.push(followLink);
     }
 
     public static void printStack(){

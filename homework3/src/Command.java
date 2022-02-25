@@ -19,14 +19,12 @@ public interface Command {
 
         @Override
         public String toString() {
-            // toString is supposed to be for Current Screen
-            return "Showing Results for " + destination;//Showing results for Microsoft Store
+            return "Showing Results for " + destination;
         }
 
         @Override
         public String toShortString() {
-            //toShortString is supposed to be for Stack
-            return "-> F:" + destination;//Microsoft Store
+            return "-> F:" + destination;
         }
     }
     class PlanRoute implements Command{
@@ -66,7 +64,6 @@ public interface Command {
         }
     }
     class StartNavigation implements Command {
-        private PlanRoute planRoute;
         private String source;
         private String destination;
 
@@ -118,4 +115,49 @@ public interface Command {
             return "-> G:" + query;
         }
     }
+    class GoToBookmark implements Command{
+        private String bookmark;
+        public GoToBookmark(Scanner scanner){
+            System.out.print("Please enter a bookmark: ");
+            String input = scanner.nextLine();
+            this.bookmark = input;
+        }
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Showing Results for " + bookmark;
+        }
+
+        @Override
+        public String toShortString() {
+            return "-> F:" + bookmark;
+        }
+    }
+    class FollowLink implements Command{
+        private String link;
+        public FollowLink(Scanner scanner){
+            System.out.print("Please enter a link: ");
+            String input = scanner.nextLine();
+            this.link = input;
+        }
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Showing Results for " + link;
+        }
+
+        @Override
+        public String toShortString() {
+            return "-> F:" + link;
+        }
+    }
+
 }

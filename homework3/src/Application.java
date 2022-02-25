@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class Application {
     private CommandStack stack;
     public void readCommand(Scanner scanner){
-        String input = scanner.next();
     }
 
     public void goBack() {
