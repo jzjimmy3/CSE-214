@@ -160,4 +160,20 @@ public interface Command {
         }
     }
 
+    class Home implements Command{
+        Home(){}
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return false;
+        }
+        @Override
+        public String toString(){
+            return "Home" ;
+        }
+
+        @Override
+        public String toShortString() {
+            return "Home";
+        }
+    }
 }

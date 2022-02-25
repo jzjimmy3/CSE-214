@@ -3,14 +3,10 @@ import java.util.Scanner;
 public class iCatchUp {
     public static boolean quitValue = true;
     public static Scanner input = new Scanner(System.in);
-    public static CommandStack mapStack = new CommandStack();
-    public static CommandStack safariStack = new CommandStack();
-    public static CommandStack currentStack;
-    public static String currentScreen = "H";
     public static int countHome = 0;
     public static int countSafari = 0;
     public static int countMap = 0;
-
+    public static Application apps = new Application();
 
     public static void main(String[] args) {
         while(quitValue){
@@ -19,24 +15,8 @@ public class iCatchUp {
     }
 
     public static void homeOptions(){
-
-        Command home = new Command() {
-            @Override
-            public boolean validCommand(CommandStack stack) {
-                return false;
-            }
-            @Override
-            public String toString(){
-                return "Home" ;
-            }
-
-            @Override
-            public String toShortString() {
-                return "Home";
-            }
-        };
-        System.out.println("Welcome to the iPhony pocket telegraph simulator. You are on the home screen.");
-        System.out.println();
+        Command home = new Command.Home();
+        System.out.println("\nWelcome to the iPhony pocket telegraph simulator. You are on the home screen.\n");
         System.out.println("Home Options: \n" +
                 "   S) Safari\n" +
                 "   M) Maps\n" +
@@ -46,24 +26,23 @@ public class iCatchUp {
         String inputs = input.next().toUpperCase();
         switch (inputs){
             case "S":
-                currentScreen = "S";
-                currentStack = safariStack;
+                Application.setCurrentScreen("S");
+                Application.setStack(Application.getSafariStack());
                 if(countHome == 0){
-                    currentStack.push(home);
+                    apps.getStack().push(home);
                     countHome++;
                 }
-                safariOptions();
                 printStack();
+                safariOptions();
                     break;
             case "M":
-                currentScreen = "M";
-                currentStack = mapStack;
+                Application.setCurrentScreen("M");
+                Application.setStack(Application.getMapStack());
                 if(countHome == 0){
-                    currentStack.push(home);
+                    CommandStack.push(home);
                     countHome++;
                 }
                 mapOptions();
-                printStack();
                 break;
             case "Q": quitValue = false;
                 System.out.println("Sorry to see you go, tell the iPod I said hi!");
@@ -71,15 +50,17 @@ public class iCatchUp {
             default:break;
         }
     }
-    public static void mapOptions(){
+    public static void mapOptions() {
+        Application.setCurrentScreen("M");
         Command mapHome = new Command() {
             @Override
             public boolean validCommand(CommandStack stack) {
                 return false;
             }
+
             @Override
-            public String toString(){
-                return "MapHome: " ;//Showing results for Microsoft Store
+            public String toString() {
+                return "MapHome: ";//Showing results for Microsoft Store
             }
 
             @Override
@@ -87,6 +68,11 @@ public class iCatchUp {
                 return "-> MapsHome";
             }
         };
+        if (countMap == 0) {
+            Application.getStack().push(mapHome);
+            countMap++;
+        }
+        printStack();
         System.out.println("Map Options: \n" +
                 "   F) Find a place\n" +
                 "   P) Plan a route\n" +
@@ -95,29 +81,12 @@ public class iCatchUp {
                 "   S) Switch to Safari\n" +
                 "   B) Back\n"
         );
-        if(countMap == 0){
-            currentStack.push(mapHome);
-            countMap++;
-        }
-        printStack();
         System.out.print("Please select an option: ");
-        switch (input.next().toUpperCase()){
-            case "F": findPlaces();
-                break;
-            case "P": planRoute();
-                break;
-            case "N": startNavigation();
-                break;
-            case "H": homeScreen();
-                break;
-            case "S": switchView();
-                break;
-            case "B": back();
-                break;
-            default:break;
-        }
+        apps.readCommand(new Scanner(System.in));
+        printStack();
     }
     public static void safariOptions(){
+        Application.setCurrentScreen("S");
         Command safariHome = new Command() {
             @Override
             public boolean validCommand(CommandStack stack) {
@@ -125,7 +94,7 @@ public class iCatchUp {
             }
             @Override
             public String toString(){
-                return "SafariHome: " ;//Showing results for Microsoft Store
+                return "SafariHome: " ;
             }
 
             @Override
@@ -142,32 +111,18 @@ public class iCatchUp {
                 "   S) Switch to Maps\n" +
                 "   B) Back\n"
         );
-        System.out.print("Please select an option: ");
-        switch (input.next().toUpperCase()){
-            case "G": googleSomething();
-                break;
-            case "F": goToBookmark();
-                break;
-            case "L": followLink();
-                break;
-            case "H": homeScreen();
-                break;
-            case "S": switchView();
-                break;
-            case "B": back();
-                break;
-            default:break;
-        }
         if(countSafari == 0){
-            currentStack.push(safariHome);
+            apps.getStack().push(safariHome);
             countSafari++;
         }
+        System.out.print("Please select an option: ");
+        apps.readCommand(new Scanner(System.in));
         printStack();
-
     }
 
     public static void currentScreen(){
-        switch(currentScreen){
+        System.out.println("The value of current screen is: " + apps.getCurrentScreen());
+        switch(Application.getCurrentScreen()){
             case "H": homeOptions();
                 break;
             case "S": safariOptions();
@@ -178,49 +133,15 @@ public class iCatchUp {
         }
     }
 
-    public static void findPlaces(){
-        Command.FindPlace findPlace = new Command.FindPlace(new Scanner(System.in));
-        currentStack.push(findPlace);
-    }
-    public static void planRoute(){
-        Command.PlanRoute planRoute = new Command.PlanRoute(new Scanner(System.in));
-        currentStack.push(planRoute);
-    }
-    public static void startNavigation(){
-        Command.StartNavigation startNavigation= new Command.StartNavigation(currentStack);
-        currentStack.push(startNavigation);
-    }
-    public static void homeScreen(){
-        currentStack.pop();
-        currentScreen = "H";
-    }
-    public static void switchView(){
-        currentStack = currentStack == safariStack? mapStack:safariStack;
-        currentScreen = currentScreen == "H"? "S": "H";
-    }
     public static void back(){
         System.out.println("Backup");
 //        stackDebug.pop();
     }
 
-    public static void googleSomething(){
-        Command.GoogleSomething googleSomething = new Command.GoogleSomething(new Scanner(System.in));
-        currentStack.push(googleSomething);
-    }
-
-    public static void goToBookmark(){
-        Command.GoToBookmark goToBookmark = new Command.GoToBookmark(new Scanner(System.in));
-        currentStack.push(goToBookmark);
-    }
-    public static void followLink(){
-        Command.FollowLink followLink = new Command.FollowLink(new Scanner(System.in));
-        currentStack.push(followLink);
-    }
-
     public static void printStack(){
         System.out.print("Stack Debug: [");
-        System.out.println(currentStack.printStack(currentStack));
-        System.out.println("Current Screen: " + currentStack.getScreenCommand());
+        System.out.println(apps.getStack().printStack(apps.getStack()));
+        System.out.println("Current Screen: " + apps.getStack().getScreenCommand());
     }
 
 }
