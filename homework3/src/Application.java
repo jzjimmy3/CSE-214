@@ -10,4 +10,3 @@ public class Application {
         //return the application to state it was before most recent command
     }
 }
-
