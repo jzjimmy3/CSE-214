@@ -93,7 +93,29 @@ public interface Command {
             return "-> N: " + source + "-" + destination;
         }
     }
-    class GoogleSomething implements Command{
+//    class GoogleSomething implements Command{
+//        private String query;
+//        public GoogleSomething(Scanner scanner){
+//            System.out.print("Please enter a query: ");
+//            String input = scanner.nextLine();
+//            this.query = input;
+//        }
+//        @Override
+//        public boolean validCommand(CommandStack stack) {
+//            return false;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return "Showing Results for " + query;
+//        }
+//
+//        @Override
+//        public String toShortString() {
+//            return "-> G:" + query;
+//        }
+//    }
+    class GoogleSomething implements Command {
         private String query;
         public GoogleSomething(Scanner scanner){
             System.out.print("Please enter a query: ");
@@ -176,4 +198,37 @@ public interface Command {
             return "Home";
         }
     }
+    class safariHome implements Command{
+        safariHome(){}
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return false;
+        }
+        @Override
+        public String toString(){
+            return "Safari Home " ;
+        }
+
+        @Override
+        public String toShortString() {
+            return "-> SafariHome";
+        }
+    }
+    class mapHome implements Command {
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "MapHome: ";//Showing results for Microsoft Store
+        }
+
+        @Override
+        public String toShortString() {
+            return "-> MapsHome";
+        }
+    };
+
 }

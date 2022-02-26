@@ -2,9 +2,9 @@ import java.util.Stack;
 import java.util.Vector;
 
 public class CommandStack extends Vector {
-    private static Stack<Command> stack = new Stack<>();
+    private Stack<Command> stack = new Stack<>();
 
-    public static void push(Command command){
+    public void push(Command command){
         stack.push(command);
     }
     public Command pop(){
@@ -35,14 +35,6 @@ public class CommandStack extends Vector {
 //        stringStack += "]";
 //        return stringStack;
         return "";
-    }
-
-    public static Stack<Command> getStack() {
-        return stack;
-    }
-
-    public static void setStack(Stack<Command> stack) {
-        CommandStack.stack = stack;
     }
 
     public String toString(){
