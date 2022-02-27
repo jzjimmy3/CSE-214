@@ -4,21 +4,11 @@ import java.util.Vector;
 public class CommandStack extends Vector {
     private Stack<Command> stack = new Stack<>();
 
-    public void push(Command command){
-        stack.push(command);
-    }
-    public Command pop(){
-        return stack.pop();
-    }
-    public Command peek(){
-        return stack.peek();
-    }
-    public boolean isEmpty(){
-        return stack.isEmpty();
-    }
-    public String getScreenCommand(){
-        return !stack.isEmpty()? stack.peek().toString() : "Empty Stack";
-    }
+    public void push(Command command){ stack.push(command); }
+    public Command pop(){ return stack.pop(); }
+    public Command peek(){ return stack.peek(); }
+    public boolean isEmpty(){ return stack.isEmpty(); }
+    public String getScreenCommand(){ return !stack.isEmpty()? stack.peek().toString() : "Empty Stack"; }
 
     public String printStack(CommandStack stacks) {
         if (stacks.isEmpty()) return "Empty Stack";
@@ -29,7 +19,5 @@ public class CommandStack extends Vector {
         stacks.push(commands);
         return "";
     }
-    public String toString(){
-        return stack.toString();
-    }
+    public String toString(){ return stack.toString(); }
 }

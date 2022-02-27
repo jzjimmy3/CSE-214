@@ -5,8 +5,15 @@ public class Application {
     private static CommandStack safariStack = new CommandStack();
     private static CommandStack currentStack;
     private static String currentScreen = "H";
-    public static Command.StartNavigation startNav = new Command.StartNavigation();
+    public static int countSafari = 0;
+    public static int countMap = 0;
+    public static Command startNav = new Command.StartNavigation();
+    public static Command home = new Command.Home();
+    public static Command followLink = new Command.FollowLink();
+
+
     Application(){};
+
     public void readCommand(Scanner scanner){
         currentStack = stackValue();
         if(getCurrentScreen() == "S"){
@@ -15,14 +22,15 @@ public class Application {
                     break;
                 case "F": getCurrentStack().push(new Command.GoToBookmark(new Scanner(System.in)));
                     break;
-                case "L": getCurrentStack().push(new Command.FollowLink(new Scanner(System.in)));
+                case "L":
+                    if(followLink.validCommand(getCurrentStack())){
+                        getCurrentStack().push(new Command.FollowLink(new Scanner(System.in)));
+                    }else{
+                        System.out.println("No Link to follow");
+                    }
                     break;
                 case "S":
-                    if(getCurrentScreen() == "S"){
-                        setCurrentScreen("M");
-                    }else{
-                        setCurrentScreen("S");
-                    }
+                    setCurrentScreen(getCurrentScreen() == "S" ? "M": "S");
                     break;
                 case "B": goBack();
                     break;
@@ -45,12 +53,7 @@ public class Application {
                     break;
                 case "H"  : goHome();
                     break;
-                case "S":
-                    if(getCurrentScreen() == "S"){
-                        setCurrentScreen("M");
-                    }else{
-                        setCurrentScreen("S");
-                    }
+                case "S": setCurrentScreen(getCurrentScreen() == "S" ? "M": "S");
                     break;
                 case "B": goBack();
                     break;
@@ -91,21 +94,52 @@ public class Application {
         Application.currentScreen = currentScreen;
     }
 
+    public static int getCountSafari() {
+        return countSafari;
+    }
+
+    public static void setCountSafari(int countSafari) {
+        Application.countSafari = countSafari;
+    }
+
+    public static int getCountMap() {
+        return countMap;
+    }
+
+    public static void setCountMap(int countMap) {
+        Application.countMap = countMap;
+    }
+
+    public static Command getStartNav() {
+        return startNav;
+    }
+
+    public static void setStartNav(Command startNav) {
+        Application.startNav = startNav;
+    }
+
+    public static Command getHome() {
+        return home;
+    }
+
+    public static void setHome(Command home) {
+        Application.home = home;
+    }
+
     public CommandStack stackValue(){
         Command safariHome = new Command.safariHome();
         Command mapHome = new Command.mapHome();
         switch (getCurrentScreen()){
             case "S":
-                if(iCatchUp.getCountSafari() == 0){
+                if(countSafari == 0){
                     getSafariStack().push(safariHome);
-                    iCatchUp.setCountSafari(iCatchUp.getCountSafari() + 1);
-
+                    countSafari++;
                 }
                 return getSafariStack();
             case "M":
-                if(iCatchUp.getCountMap() == 0){
+                if(countMap == 0){
                     getMapStack().push(mapHome);
-                    iCatchUp.setCountMap(iCatchUp.getCountMap() + 1);
+                    countMap++;
                 }
                 return getMapStack();
             default: break;
@@ -115,8 +149,13 @@ public class Application {
 
     public void goHome(){
         currentScreen = "H";
-        while (getCurrentStack().peek() != iCatchUp.home){
-            getCurrentStack().pop();
+        countSafari--;
+        countMap--;
+        while (getMapStack().peek() != home){
+            getMapStack().pop();
+        }
+        while (getSafariStack().peek() != home){
+            getSafariStack().pop();
         }
     }
     public void goBack() {

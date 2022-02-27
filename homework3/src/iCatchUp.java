@@ -1,42 +1,17 @@
+// Q: Should I do this.source, source or setSource() in Command Class, Plan Route Constructor
+// ValidCommand for Home, SafariHome, MapHome Class?
+
 import java.util.Scanner;
 
 public class iCatchUp {
     public static boolean quitValue = true;
     public static Scanner input = new Scanner(System.in);
-    public static int countHome = 0;
-    public static int countSafari = 0;
-    public static int countMap = 0;
     public static Application apps = new Application();
-    public static Command home = new Command.Home();
-
-    public static int getCountHome() {
-        return countHome;
-    }
-
-    public static void setCountHome(int countHome) {
-        iCatchUp.countHome = countHome;
-    }
-
-    public static int getCountSafari() {
-        return countSafari;
-    }
-
-    public static void setCountSafari(int countSafari) {
-        iCatchUp.countSafari = countSafari;
-    }
-
-    public static int getCountMap() {
-        return countMap;
-    }
-
-    public static void setCountMap(int countMap) {
-        iCatchUp.countMap = countMap;
-    }
 
     public static void main(String[] args) {
         System.out.println("\nWelcome to the iPhony pocket telegraph simulator.\nYou are on the home screen.\n");
-        Application.getMapStack().push(home);
-        Application.getSafariStack().push(home);
+        Application.getMapStack().push(Application.home);
+        Application.getSafariStack().push(Application.home);
         while(quitValue){
             currentScreen();
         }
@@ -69,7 +44,6 @@ public class iCatchUp {
         }
     }
     public static void mapOptions() {
-        Command mapHome = new Command.mapHome();
         Application.setCurrentScreen("M");
 
         System.out.println("Map Options: \n" +
@@ -85,7 +59,6 @@ public class iCatchUp {
         printStack();
     }
     public static void safariOptions(){
-        Command safariHome = new Command.safariHome();
         Application.setCurrentScreen("S");
         System.out.println(
                 "Safari Options: \n" +

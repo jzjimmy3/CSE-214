@@ -8,49 +8,41 @@ public interface Command {
     class FindPlace implements Command {
         private String destination;
 
-        public String getDestination() {
-            return destination;
-        }
-
+        public FindPlace(){}
         public FindPlace(Scanner scanner){
             System.out.print("\nPlease enter a location: ");
             this.destination = scanner.nextLine();
         }
+
+        public String getDestination() { return destination; }
+        public void setDestination(String destination) { this.destination = destination; }
+
         @Override
         public boolean validCommand(CommandStack stack) {
             return Application.getCurrentStack() == Application.getMapStack();
         }
-
         @Override
-        public String toString() {
-            return "Showing Results for " + destination;
-        }
-
+        public String toString() { return "Showing Results for " + destination; }
         @Override
-        public String toShortString() {
-            return "-> F:" + destination;
-        }
+        public String toShortString() { return "-> F:" + destination; }
     }
+
     class PlanRoute implements Command{
         private String source;
         private String destination;
 
+        public PlanRoute(){}
         public PlanRoute(Scanner scanner){
             System.out.print("Please enter a source: " );
-            String source = scanner.nextLine();
-            this.source = source;
+            this.source = scanner.nextLine();
             System.out.print("Please enter a destination: " );
-            String dest = scanner.nextLine();
-            this.destination = dest;
+            this.destination = scanner.nextLine();
         }
 
-        public String getSource() {
-            return source;
-        }
-
-        public String getDestination() {
-            return destination;
-        }
+        public String getSource() { return source; }
+        public void setSource(String source) { this.source = source; }
+        public String getDestination() { return destination; }
+        public void setDestination(String destination) { this.destination = destination; }
 
         @Override
         public boolean validCommand(CommandStack stack) {
@@ -58,12 +50,10 @@ public interface Command {
                 return false;
             }return true;
         }
-
         @Override
         public String toString() {
-            return "Planning route from " + source + " to " + destination;//Showing results for Microsoft Store
+            return "Planning route from " + source + " to " + destination;
         }
-
         @Override
         public String toShortString() {
             return "-> P: " + source + "-" + destination;
@@ -72,8 +62,8 @@ public interface Command {
     class StartNavigation implements Command {
         private String source;
         private String destination;
-        StartNavigation(){};
 
+        public StartNavigation(){};
         public StartNavigation(CommandStack commandStack) {
             if (!commandStack.isEmpty()) {
                 if (commandStack.peek() instanceof PlanRoute) {
@@ -85,25 +75,24 @@ public interface Command {
             }
         }
 
+        public String getSource() { return source; }
+        public void setSource(String source) { this.source = source; }
+        public String getDestination() { return destination; }
+        public void setDestination(String destination) { this.destination = destination; }
+
         @Override
         public boolean validCommand(CommandStack stack) {
-            System.out.println("Hello1");
             if(stack.isEmpty()){
-                System.out.println("Hello2");
                 return false;
             }else if(stack.peek() instanceof PlanRoute){
-                System.out.println("Hello3");
                 return true;
             }
             else if(stack.peek() instanceof FindPlace){
-                System.out.println("Hello4");
                 return true;
             }else{
-                System.out.println("Hello5");
                 return false;
             }
         }
-
         @Override
         public String toString() {
             if(Application.getCurrentStack().peek() instanceof PlanRoute){
@@ -112,7 +101,6 @@ public interface Command {
                 return "Navigating to " + destination;
             }
         }
-
         @Override
         public String toShortString() {
             if(Application.getCurrentStack().peek() instanceof PlanRoute) {
@@ -125,21 +113,25 @@ public interface Command {
 
     class GoogleSomething implements Command {
         private String query;
+
+        public GoogleSomething(){}
         public GoogleSomething(Scanner scanner){
             System.out.print("Please enter a query: ");
             String input = scanner.nextLine();
             this.query = input;
         }
+
+        public String getQuery() { return query; }
+        public void setQuery(String query) { this.query = query; }
+
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            return Application.getCurrentStack() == Application.getSafariStack();
         }
-
         @Override
         public String toString() {
             return "Showing Results for " + query;
         }
-
         @Override
         public String toShortString() {
             return "-> G:" + query;
@@ -147,21 +139,24 @@ public interface Command {
     }
     class GoToBookmark implements Command{
         private String bookmark;
+
+        public GoToBookmark(){}
         public GoToBookmark(Scanner scanner){
             System.out.print("Please enter a bookmark: ");
-            String input = scanner.nextLine();
-            this.bookmark = input;
-        }
-        @Override
-        public boolean validCommand(CommandStack stack) {
-            return false;
+            this.bookmark = scanner.nextLine();
         }
 
+        public String getBookmark() { return bookmark; }
+        public void setBookmark(String bookmark) { this.bookmark = bookmark; }
+
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            return Application.getCurrentStack() == Application.getMapStack();
+        }
         @Override
         public String toString() {
             return "Showing Results for " + bookmark;
         }
-
         @Override
         public String toShortString() {
             return "-> F:" + bookmark;
@@ -169,21 +164,33 @@ public interface Command {
     }
     class FollowLink implements Command{
         private String link;
+
+        public FollowLink(){}
         public FollowLink(Scanner scanner){
             System.out.print("Please enter a link: ");
-            String input = scanner.nextLine();
-            this.link = input;
-        }
-        @Override
-        public boolean validCommand(CommandStack stack) {
-            return false;
+            this.link = scanner.nextLine();
         }
 
+        public String getLink() { return link; }
+        public void setLink(String link) { this.link = link; }
+
+        @Override
+        public boolean validCommand(CommandStack stack) {
+            if(stack.isEmpty()){
+                return false;
+            }else if(stack.peek() instanceof GoogleSomething){
+                return true;
+            }
+            else if(stack.peek() instanceof GoToBookmark){
+                return true;
+            }else{
+                return false;
+            }
+        }
         @Override
         public String toString() {
             return "Showing Results for " + link;
         }
-
         @Override
         public String toShortString() {
             return "-> L:" + link;
@@ -191,7 +198,7 @@ public interface Command {
     }
 
     class Home implements Command{
-        Home(){}
+        public Home(){}
         @Override
         public boolean validCommand(CommandStack stack) {
             return false;
@@ -200,7 +207,6 @@ public interface Command {
         public String toString(){
             return "Home" ;
         }
-
         @Override
         public String toShortString() {
             return "Home";
