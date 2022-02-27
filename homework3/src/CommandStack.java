@@ -27,16 +27,8 @@ public class CommandStack extends Vector {
         printStack(stacks);
         System.out.print(commands.toShortString() + " ");
         stacks.push(commands);
-
-//        for(int i = 0; i <= temp.size(); i++){
-//            stringStack += ((Command) temp.peek()).toShortString();
-//            temp.pop();
-//        }
-//        stringStack += "]";
-//        return stringStack;
         return "";
     }
-
     public String toString(){
         return stack.toString();
     }

@@ -7,6 +7,7 @@ public class iCatchUp {
     public static int countSafari = 0;
     public static int countMap = 0;
     public static Application apps = new Application();
+    public static Command home = new Command.Home();
 
     public static int getCountHome() {
         return countHome;
@@ -33,7 +34,7 @@ public class iCatchUp {
     }
 
     public static void main(String[] args) {
-        Command home = new Command.Home();
+        System.out.println("\nWelcome to the iPhony pocket telegraph simulator.\nYou are on the home screen.\n");
         Application.getMapStack().push(home);
         Application.getSafariStack().push(home);
         while(quitValue){
@@ -42,7 +43,6 @@ public class iCatchUp {
     }
 
     public static void homeOptions(){
-        System.out.println("\nWelcome to the iPhony pocket telegraph simulator. You are on the home screen.\n");
         System.out.println("Home Options: \n" +
                 "   S) Safari\n" +
                 "   M) Maps\n" +
@@ -113,13 +113,9 @@ public class iCatchUp {
         }
     }
 
-//    public static void back(){
-//        System.out.println("Backup");
-////        stackDebug.pop();
-//    }
-
     public static void printStack(){
-        System.out.print("Stack Debug: [");
+        System.out.println("\nStack Debug: ");
+        System.out.print("[");
         System.out.println(Application.getCurrentStack().printStack(Application.getCurrentStack()));
         System.out.println("Current Screen: " + Application.getCurrentStack().getScreenCommand());
     }

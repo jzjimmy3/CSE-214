@@ -7,14 +7,18 @@ public interface Command {
 
     class FindPlace implements Command {
         private String destination;
+
+        public String getDestination() {
+            return destination;
+        }
+
         public FindPlace(Scanner scanner){
-            System.out.print("Please enter a place: ");
-            String input = scanner.nextLine();
-            this.destination = input;
+            System.out.print("\nPlease enter a location: ");
+            this.destination = scanner.nextLine();
         }
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            return Application.getCurrentStack() == Application.getMapStack();
         }
 
         @Override
@@ -50,7 +54,9 @@ public interface Command {
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            if(stack.peek() instanceof StartNavigation ){
+                return false;
+            }return true;
         }
 
         @Override
@@ -66,55 +72,57 @@ public interface Command {
     class StartNavigation implements Command {
         private String source;
         private String destination;
+        StartNavigation(){};
 
         public StartNavigation(CommandStack commandStack) {
             if (!commandStack.isEmpty()) {
                 if (commandStack.peek() instanceof PlanRoute) {
                     source = ((PlanRoute) commandStack.peek()).getSource();
                     destination = ((PlanRoute) commandStack.peek()).getDestination();
+                }else if ( commandStack.peek() instanceof FindPlace){
+                    destination = ((FindPlace) commandStack.peek()).getDestination();
                 }
             }
         }
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            System.out.println("Hello1");
+            if(stack.isEmpty()){
+                System.out.println("Hello2");
+                return false;
+            }else if(stack.peek() instanceof PlanRoute){
+                System.out.println("Hello3");
+                return true;
+            }
+            else if(stack.peek() instanceof FindPlace){
+                System.out.println("Hello4");
+                return true;
+            }else{
+                System.out.println("Hello5");
+                return false;
+            }
         }
 
         @Override
         public String toString() {
-            // toString is supposed to be for Current Screen
-            return "Navigating from " + source + " to " + destination;//Showing results for Microsoft Store
+            if(Application.getCurrentStack().peek() instanceof PlanRoute){
+                return "Navigating from " + source + " to " + destination;
+            }else{
+                return "Navigating to " + destination;
+            }
         }
 
         @Override
         public String toShortString() {
-            //toShortString is supposed to be for Stack
-            return "-> N: " + source + "-" + destination;
+            if(Application.getCurrentStack().peek() instanceof PlanRoute) {
+                return "-> N: " + source + "-" + destination;
+            }else{
+                return "-> N: " + destination;
+            }
         }
     }
-//    class GoogleSomething implements Command{
-//        private String query;
-//        public GoogleSomething(Scanner scanner){
-//            System.out.print("Please enter a query: ");
-//            String input = scanner.nextLine();
-//            this.query = input;
-//        }
-//        @Override
-//        public boolean validCommand(CommandStack stack) {
-//            return false;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return "Showing Results for " + query;
-//        }
-//
-//        @Override
-//        public String toShortString() {
-//            return "-> G:" + query;
-//        }
-//    }
+
     class GoogleSomething implements Command {
         private String query;
         public GoogleSomething(Scanner scanner){
@@ -178,7 +186,7 @@ public interface Command {
 
         @Override
         public String toShortString() {
-            return "-> F:" + link;
+            return "-> L:" + link;
         }
     }
 
@@ -222,7 +230,7 @@ public interface Command {
 
         @Override
         public String toString() {
-            return "MapHome: ";//Showing results for Microsoft Store
+            return "Maps Home";//Showing results for Microsoft Store
         }
 
         @Override

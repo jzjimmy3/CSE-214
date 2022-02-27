@@ -4,8 +4,8 @@ public class Application {
     private static CommandStack mapStack = new CommandStack();
     private static CommandStack safariStack = new CommandStack();
     private static CommandStack currentStack;
-
     private static String currentScreen = "H";
+    public static Command.StartNavigation startNav = new Command.StartNavigation();
     Application(){};
     public void readCommand(Scanner scanner){
         currentStack = stackValue();
@@ -24,6 +24,10 @@ public class Application {
                         setCurrentScreen("S");
                     }
                     break;
+                case "B": goBack();
+                    break;
+                case "H"  : goHome();
+                    break;
                 default:break;
             }
         }else{
@@ -32,9 +36,14 @@ public class Application {
                     break;
                 case "P": getCurrentStack().push(new Command.PlanRoute(new Scanner(System.in)));
                     break;
-                case "N": getCurrentStack().push(new Command.StartNavigation(getMapStack()));
+                case "N":
+                    if(startNav.validCommand(getCurrentStack())){
+                        getCurrentStack().push(new Command.StartNavigation(getMapStack()));
+                    }else{
+                        System.out.println("No route or destination!");
+                    }
                     break;
-                case "H"  : getCurrentStack().pop();
+                case "H"  : goHome();
                     break;
                 case "S":
                     if(getCurrentScreen() == "S"){
@@ -43,7 +52,7 @@ public class Application {
                         setCurrentScreen("S");
                     }
                     break;
-                case "B": getMapStack().pop();
+                case "B": goBack();
                     break;
                 default:break;
             }
@@ -82,8 +91,6 @@ public class Application {
         Application.currentScreen = currentScreen;
     }
 
-    public void goBack() {//return the application to state it was before most recent command
-        }
     public CommandStack stackValue(){
         Command safariHome = new Command.safariHome();
         Command mapHome = new Command.mapHome();
@@ -104,5 +111,15 @@ public class Application {
             default: break;
         }
         return null;
+    }
+
+    public void goHome(){
+        currentScreen = "H";
+        while (getCurrentStack().peek() != iCatchUp.home){
+            getCurrentStack().pop();
+        }
+    }
+    public void goBack() {
+        getCurrentStack().pop();
     }
 }
