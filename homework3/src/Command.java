@@ -19,7 +19,7 @@ public interface Command {
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            return Application.getCurrentStack() == Application.getMapStack();
+            return stack == Application.getMapStack();
         }
         @Override
         public String toString() { return "Showing Results for " + destination; }
@@ -46,9 +46,7 @@ public interface Command {
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            if(stack.peek() instanceof StartNavigation ){
-                return false;
-            }return true;
+            return stack == Application.getMapStack();
         }
         @Override
         public String toString() {
@@ -126,7 +124,7 @@ public interface Command {
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            return Application.getCurrentStack() == Application.getSafariStack();
+            return stack == Application.getSafariStack();
         }
         @Override
         public String toString() {
@@ -151,7 +149,7 @@ public interface Command {
 
         @Override
         public boolean validCommand(CommandStack stack) {
-            return Application.getCurrentStack() == Application.getMapStack();
+            return stack == Application.getSafariStack();
         }
         @Override
         public String toString() {
@@ -236,7 +234,7 @@ public interface Command {
 
         @Override
         public String toString() {
-            return "Maps Home";//Showing results for Microsoft Store
+            return "Maps Home";
         }
 
         @Override

@@ -1,5 +1,8 @@
 // Q: Should I do this.source, source or setSource() in Command Class, Plan Route Constructor
-// ValidCommand for Home, SafariHome, MapHome Class?
+// Q: ValidCommand for Home, SafariHome, MapHome Class?
+// W: JavaDocs
+// W: Try Catch Exceptions
+// W: goBack Method
 
 import java.util.Scanner;
 

@@ -7,58 +7,53 @@ public class Application {
     private static String currentScreen = "H";
     public static int countSafari = 0;
     public static int countMap = 0;
-    public static Command startNav = new Command.StartNavigation();
     public static Command home = new Command.Home();
-    public static Command followLink = new Command.FollowLink();
-
 
     Application(){};
 
     public void readCommand(Scanner scanner){
         currentStack = stackValue();
-        if(getCurrentScreen() == "S"){
-            switch(scanner.next()){
-                case "G": getCurrentStack().push(new Command.GoogleSomething(new Scanner(System.in)));
-                    break;
-                case "F": getCurrentStack().push(new Command.GoToBookmark(new Scanner(System.in)));
-                    break;
-                case "L":
-                    if(followLink.validCommand(getCurrentStack())){
-                        getCurrentStack().push(new Command.FollowLink(new Scanner(System.in)));
-                    }else{
-                        System.out.println("No Link to follow");
-                    }
-                    break;
-                case "S":
-                    setCurrentScreen(getCurrentScreen() == "S" ? "M": "S");
-                    break;
-                case "B": goBack();
-                    break;
-                case "H"  : goHome();
-                    break;
-                default:break;
-            }
-        }else{
-            switch(scanner.next()){
-                case "F": getCurrentStack().push(new Command.FindPlace(new Scanner(System.in)));
-                    break;
-                case "P": getCurrentStack().push(new Command.PlanRoute(new Scanner(System.in)));
-                    break;
-                case "N":
-                    if(startNav.validCommand(getCurrentStack())){
-                        getCurrentStack().push(new Command.StartNavigation(getMapStack()));
-                    }else{
-                        System.out.println("No route or destination!");
-                    }
-                    break;
-                case "H"  : goHome();
-                    break;
-                case "S": setCurrentScreen(getCurrentScreen() == "S" ? "M": "S");
-                    break;
-                case "B": goBack();
-                    break;
-                default:break;
-            }
+        switch(scanner.next()){
+            case "G":
+                if(new Command.GoogleSomething().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.GoogleSomething(new Scanner(System.in)));
+                }
+                break;
+            case "F":
+                if(new Command.GoToBookmark().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.GoToBookmark(new Scanner(System.in)));
+                }
+                if(new Command.FindPlace().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.FindPlace(new Scanner(System.in)));
+                }
+                break;
+            case "L":
+                if(new Command.FollowLink().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.FollowLink(new Scanner(System.in)));
+                }else{
+                    System.out.println("No Link to follow");
+                }
+                break;
+            case "S":
+                setCurrentScreen(getCurrentScreen() == "S" ? "M": "S");
+                break;
+            case "B": goBack();
+                break;
+            case "H"  : goHome();
+                break;
+            case "N":
+                if(new Command.StartNavigation().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.StartNavigation(getMapStack()));
+                }else{
+                    System.out.println("No route or destination!");
+                }
+                break;
+            case "P":
+                if(new Command.PlanRoute().validCommand(getCurrentStack())){
+                    getCurrentStack().push(new Command.PlanRoute(new Scanner(System.in)));
+                }
+                break;
+            default:break;
         }
     }
 
@@ -110,14 +105,6 @@ public class Application {
         Application.countMap = countMap;
     }
 
-    public static Command getStartNav() {
-        return startNav;
-    }
-
-    public static void setStartNav(Command startNav) {
-        Application.startNav = startNav;
-    }
-
     public static Command getHome() {
         return home;
     }
@@ -149,8 +136,12 @@ public class Application {
 
     public void goHome(){
         currentScreen = "H";
-        countSafari--;
-        countMap--;
+        if (getCurrentStack() == safariStack) {
+            countSafari--;
+        } else {
+            countMap--;
+        }
+
         while (getMapStack().peek() != home){
             getMapStack().pop();
         }
@@ -159,6 +150,18 @@ public class Application {
         }
     }
     public void goBack() {
-        getCurrentStack().pop();
+        if(getCurrentStack().peek() instanceof Command.Home){
+            System.out.println("Hello1");
+            iCatchUp.homeOptions();
+        }else{
+            System.out.println("Hello2");
+            getCurrentStack().pop();
+            if (getCurrentStack() == safariStack) {
+                countSafari--;
+
+            } else {
+                countMap--;
+            }
+        }
     }
 }
