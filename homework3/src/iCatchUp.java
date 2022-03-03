@@ -1,5 +1,10 @@
+//Jimmy Zhang ID: 112844431 CSE 214 R02
+
 import java.util.Scanner;
 
+/**
+ * This class is the driver class for Command, CommandStack, and Application
+ */
 public class iCatchUp {
     public static boolean quitValue = true;
     public static Scanner input = new Scanner(System.in);
@@ -7,13 +12,17 @@ public class iCatchUp {
 
     public static void main(String[] args) throws Exception {
         System.out.println("\nWelcome to the iPhony pocket telegraph simulator.\nYou are on the home screen.\n");
-        Application.getMapStack().push(Application.home);
-        Application.getSafariStack().push(Application.home);
+        Application.getMapStack().push(new Command.Home());
+        Application.getSafariStack().push(new Command.Home());
         while(quitValue){
             currentScreen();
         }
     }
 
+    /**
+     * This method prints the home option and accurately selects the next page
+     * @throws Exception
+     */
     public static void homeOptions() throws Exception {
         System.out.println("Home Options: \n" +
                 "   S) Safari\n" +
@@ -24,6 +33,7 @@ public class iCatchUp {
         String inputVal = input.next().toUpperCase();
         try{
             if(inputVal.matches("[^SMQ]")){
+                Application.setCurrentScreen("H");
                 throw new Command.InvalidCommandException("\nInvalid Command for Home Options\n");
             }
         }catch (Command.InvalidCommandException e){
@@ -33,13 +43,13 @@ public class iCatchUp {
             case "S":
                 Application.setCurrentScreen("S");
                 Application.setCurrentStack(apps.stackValue());
-                printStack();
+                Application.printStack();
                 safariOptions();
                 break;
             case "M":
                 Application.setCurrentScreen("M");
                 Application.setCurrentStack(apps.stackValue());
-                printStack();
+                Application.printStack();
                 mapOptions();
                 break;
             case "Q":
@@ -48,9 +58,13 @@ public class iCatchUp {
                 break;
         }
     }
+
+    /**
+     * This option is the mapOptions and accurately selects the Commands associated with it.
+     * @throws Exception
+     */
     public static void mapOptions() throws Exception {
         Application.setCurrentScreen("M");
-
         System.out.println("Map Options: \n" +
                 "   F) Find a place\n" +
                 "   P) Plan a route\n" +
@@ -61,8 +75,11 @@ public class iCatchUp {
         );
         System.out.print("Please select an option: ");
         apps.readCommand(new Scanner(System.in));
-        printStack();
     }
+    /**
+     * This option is the safariOptions and accurately selects the Commands associated with it.
+     * @throws Exception
+     */
     public static void safariOptions() throws Exception {
         Application.setCurrentScreen("S");
         System.out.println(
@@ -76,9 +93,12 @@ public class iCatchUp {
         );
         System.out.print("Please select an option: ");
         apps.readCommand(new Scanner(System.in));
-        printStack();
     }
 
+    /**
+     * This method associates the current screen with a variable
+     * @throws Exception
+     */
     public static void currentScreen() throws Exception {
         switch(Application.getCurrentScreen()){
             case "H": homeOptions();
@@ -89,12 +109,5 @@ public class iCatchUp {
                 break;
             default:break;
         }
-    }
-
-    public static void printStack(){
-        System.out.println("\nStack Debug: ");
-        System.out.print("[");
-        System.out.println(Application.getCurrentStack().printStack(Application.getCurrentStack()));
-        System.out.println("Current Screen: " + Application.getCurrentStack().getScreenCommand());
     }
 }

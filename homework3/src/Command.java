@@ -1,10 +1,22 @@
+//Jimmy Zhang ID: 112844431 CSE 214 R02
+
 import java.util.Scanner;
 
+/**
+ * The Interface represents the Command Options.
+ * It has classes of Commands for FindPlace, PlanRoute, StartNavigation, GoogleSomething, GotoBookMark,
+ * FollowLink, Home, SafariHome, and MapHome
+ * The interface has abstractions functions such as validCommand,toString(), toShortString();
+ * @author Jimmy Zhang
+ */
 public interface Command {
     boolean validCommand(CommandStack stack) throws Exception;
     String toString();
     String toShortString();
 
+    /**
+     * This class implements the Command Interface and has a constructor that asks for user destination input.
+     */
     class FindPlace implements Command {
         private String destination;
 
@@ -26,7 +38,9 @@ public interface Command {
         @Override
         public String toShortString() { return "-> F:" + destination; }
     }
-
+    /**
+     * This class implements the Command Interface and has a constructor that asks for user source and destination input.
+     */
     class PlanRoute implements Command{
         private String source;
         private String destination;
@@ -60,13 +74,16 @@ public interface Command {
             return "-> P: " + source + "-" + destination;
         }
     }
+    /**
+     * This class implements the Command Interface and has a constructor starts the navigation route.
+     */
     class StartNavigation implements Command {
         private String source;
         private String destination;
 
         public StartNavigation(){};
         public StartNavigation(CommandStack commandStack) throws Exception {
-            if (commandStack == Application.getMapStack()){
+            if (commandStack == Application.getSafariStack()){
                 throw new InvalidCommandException("\nInvalid Command");
             }
             if(commandStack.isEmpty()) {
@@ -117,7 +134,9 @@ public interface Command {
             }
         }
     }
-
+    /**
+     * This class implements the Command Interface and has a constructor that asks for user query input.
+     */
     class GoogleSomething implements Command {
         private String query;
 
@@ -147,6 +166,11 @@ public interface Command {
             return "-> G:" + query;
         }
     }
+
+    /**
+     * This class implements the Command Interface and has a constructor that asks for user favorite bookmark input.
+     */
+
     class GoToBookmark implements Command{
         private String bookmark;
 
@@ -172,6 +196,10 @@ public interface Command {
             return "-> F:" + bookmark;
         }
     }
+
+    /**
+     * This class implements the Command Interface and has a constructor that asks for user link input.
+     */
     class FollowLink implements Command{
         private String link;
 
@@ -210,11 +238,15 @@ public interface Command {
         }
     }
 
+    /**
+     * This class implements the Command Interface and has a constructor that creates the Home Window .
+     */
+
     class Home implements Command{
         public Home(){}
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            return true;
         }
         @Override
         public String toString(){
@@ -225,11 +257,14 @@ public interface Command {
             return "Home";
         }
     }
+    /**
+     * This class implements the Command Interface and has a constructor that creates the safariHome Window.
+     */
     class safariHome implements Command{
         safariHome(){}
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            return true;
         }
         @Override
         public String toString(){
@@ -241,10 +276,13 @@ public interface Command {
             return "-> SafariHome";
         }
     }
+    /**
+     * This class implements the Command Interface and has a constructor that creates the mapHome Window.
+     */
     class mapHome implements Command {
         @Override
         public boolean validCommand(CommandStack stack) {
-            return false;
+            return true;
         }
 
         @Override
@@ -256,7 +294,10 @@ public interface Command {
         public String toShortString() {
             return "-> MapsHome";
         }
-    };
+    }
+    /**
+     * This class extends the Exception class and is thrown when the Command is called at the wrong instance.
+     */
     class InvalidCommandException extends Exception{
         public InvalidCommandException(String errorMessage){
             super(errorMessage);
