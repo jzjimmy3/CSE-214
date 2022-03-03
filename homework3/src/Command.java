@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public interface Command {
-    boolean validCommand(CommandStack stack);
+    boolean validCommand(CommandStack stack) throws Exception;
     String toString();
     String toShortString();
 
@@ -18,7 +18,7 @@ public interface Command {
         public void setDestination(String destination) { this.destination = destination; }
 
         @Override
-        public boolean validCommand(CommandStack stack) {
+        public boolean validCommand(CommandStack stack) throws InvalidCommandException {
             return stack == Application.getMapStack();
         }
         @Override
@@ -45,7 +45,10 @@ public interface Command {
         public void setDestination(String destination) { this.destination = destination; }
 
         @Override
-        public boolean validCommand(CommandStack stack) {
+        public boolean validCommand(CommandStack stack) throws InvalidCommandException {
+            if (stack == Application.getSafariStack()){
+                throw new InvalidCommandException("Invalid Command");
+            }
             return stack == Application.getMapStack();
         }
         @Override
@@ -62,7 +65,13 @@ public interface Command {
         private String destination;
 
         public StartNavigation(){};
-        public StartNavigation(CommandStack commandStack) {
+        public StartNavigation(CommandStack commandStack) throws Exception {
+            if (commandStack == Application.getMapStack()){
+                throw new InvalidCommandException("\nInvalid Command");
+            }
+            if(commandStack.isEmpty()) {
+                throw new CommandStack.EmptyStackException("\nEmpty Stack!");
+            }
             if (!commandStack.isEmpty()) {
                 if (commandStack.peek() instanceof PlanRoute) {
                     source = ((PlanRoute) commandStack.peek()).getSource();
@@ -123,7 +132,10 @@ public interface Command {
         public void setQuery(String query) { this.query = query; }
 
         @Override
-        public boolean validCommand(CommandStack stack) {
+        public boolean validCommand(CommandStack stack) throws InvalidCommandException {
+            if (stack == Application.getMapStack()){
+                throw new InvalidCommandException("Invalid Command");
+            }
             return stack == Application.getSafariStack();
         }
         @Override
@@ -148,7 +160,7 @@ public interface Command {
         public void setBookmark(String bookmark) { this.bookmark = bookmark; }
 
         @Override
-        public boolean validCommand(CommandStack stack) {
+        public boolean validCommand(CommandStack stack) throws InvalidCommandException {
             return stack == Application.getSafariStack();
         }
         @Override
@@ -173,9 +185,12 @@ public interface Command {
         public void setLink(String link) { this.link = link; }
 
         @Override
-        public boolean validCommand(CommandStack stack) {
+        public boolean validCommand(CommandStack stack) throws InvalidCommandException, CommandStack.EmptyStackException {
+            if (stack == Application.getMapStack()){
+                throw new InvalidCommandException("\nInvalid Command");
+            }
             if(stack.isEmpty()){
-                return false;
+                throw new CommandStack.EmptyStackException("\nEmpty Stack!");
             }else if(stack.peek() instanceof GoogleSomething){
                 return true;
             }
@@ -242,5 +257,9 @@ public interface Command {
             return "-> MapsHome";
         }
     };
-
+    class InvalidCommandException extends Exception{
+        public InvalidCommandException(String errorMessage){
+            super(errorMessage);
+        }
+    }
 }

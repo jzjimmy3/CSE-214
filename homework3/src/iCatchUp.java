@@ -1,9 +1,3 @@
-// Q: Should I do this.source, source or setSource() in Command Class, Plan Route Constructor
-// Q: ValidCommand for Home, SafariHome, MapHome Class?
-// W: JavaDocs
-// W: Try Catch Exceptions
-// W: goBack Method
-
 import java.util.Scanner;
 
 public class iCatchUp {
@@ -11,7 +5,7 @@ public class iCatchUp {
     public static Scanner input = new Scanner(System.in);
     public static Application apps = new Application();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("\nWelcome to the iPhony pocket telegraph simulator.\nYou are on the home screen.\n");
         Application.getMapStack().push(Application.home);
         Application.getSafariStack().push(Application.home);
@@ -20,33 +14,41 @@ public class iCatchUp {
         }
     }
 
-    public static void homeOptions(){
+    public static void homeOptions() throws Exception {
         System.out.println("Home Options: \n" +
                 "   S) Safari\n" +
                 "   M) Maps\n" +
                 "   Q) Quit\n"
         );
         System.out.print("Please select an option: ");
-        switch (input.next().toUpperCase()){
+        String inputVal = input.next().toUpperCase();
+        try{
+            if(inputVal.matches("[^SMQ]")){
+                throw new Command.InvalidCommandException("\nInvalid Command for Home Options\n");
+            }
+        }catch (Command.InvalidCommandException e){
+            System.out.println(e.getMessage());
+        }
+        switch (inputVal) {
             case "S":
                 Application.setCurrentScreen("S");
                 Application.setCurrentStack(apps.stackValue());
                 printStack();
                 safariOptions();
-                    break;
+                break;
             case "M":
                 Application.setCurrentScreen("M");
                 Application.setCurrentStack(apps.stackValue());
                 printStack();
                 mapOptions();
                 break;
-            case "Q": quitValue = false;
+            case "Q":
+                quitValue = false;
                 System.out.println("Sorry to see you go, tell the iPod I said hi!");
-                    break;
-            default:break;
+                break;
         }
     }
-    public static void mapOptions() {
+    public static void mapOptions() throws Exception {
         Application.setCurrentScreen("M");
 
         System.out.println("Map Options: \n" +
@@ -61,7 +63,7 @@ public class iCatchUp {
         apps.readCommand(new Scanner(System.in));
         printStack();
     }
-    public static void safariOptions(){
+    public static void safariOptions() throws Exception {
         Application.setCurrentScreen("S");
         System.out.println(
                 "Safari Options: \n" +
@@ -77,7 +79,7 @@ public class iCatchUp {
         printStack();
     }
 
-    public static void currentScreen(){
+    public static void currentScreen() throws Exception {
         switch(Application.getCurrentScreen()){
             case "H": homeOptions();
                 break;

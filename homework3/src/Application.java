@@ -11,12 +11,24 @@ public class Application {
 
     Application(){};
 
-    public void readCommand(Scanner scanner){
+    public void readCommand(Scanner scanner) throws Exception {
         currentStack = stackValue();
-        switch(scanner.next()){
+        String inputVal = scanner.next().toUpperCase();
+        try{
+            if(inputVal.matches("[^GFLSBHNP]")){
+                throw new Command.InvalidCommandException("\nInvalid Command For This Option Screen\n");
+            }
+        }catch (Command.InvalidCommandException e){
+            System.out.println(e.getMessage());
+        }
+        switch(inputVal){
             case "G":
-                if(new Command.GoogleSomething().validCommand(getCurrentStack())){
-                    getCurrentStack().push(new Command.GoogleSomething(new Scanner(System.in)));
+                try{
+                    if(new Command.GoogleSomething().validCommand(getCurrentStack())){
+                        getCurrentStack().push(new Command.GoogleSomething(new Scanner(System.in)));
+                    }
+                }catch (Command.InvalidCommandException e){
+                    System.out.println(e.getMessage());
                 }
                 break;
             case "F":
@@ -149,19 +161,27 @@ public class Application {
             getSafariStack().pop();
         }
     }
-    public void goBack() {
-        if(getCurrentStack().peek() instanceof Command.Home){
-            System.out.println("Hello1");
+    public void goBack() throws Exception {
+        try{
+            if(getCurrentStack().isEmpty()){
+                throw new CommandStack.EmptyStackException("Empty Stack!");
+            }
+        }catch(CommandStack.EmptyStackException e){
+            System.out.println(e.getMessage());
+        }
+        Command peekVal = getCurrentStack().peek();
+        getCurrentStack().pop();
+        if(peekVal instanceof Command.mapHome){
+            countMap--;
+            iCatchUp.printStack();
+            iCatchUp.homeOptions();
+        }else if (peekVal instanceof Command.safariHome){
+            countSafari--;
+            iCatchUp.printStack();
             iCatchUp.homeOptions();
         }else{
-            System.out.println("Hello2");
-            getCurrentStack().pop();
-            if (getCurrentStack() == safariStack) {
-                countSafari--;
-
-            } else {
-                countMap--;
-            }
+            //Empty Command Stack Error
+            iCatchUp.printStack();
         }
     }
 }

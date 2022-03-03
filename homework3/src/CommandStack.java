@@ -20,4 +20,9 @@ public class CommandStack extends Vector {
         return "";
     }
     public String toString(){ return stack.toString(); }
+    public static class EmptyStackException extends Exception{
+        public EmptyStackException(String errorMessage){
+            super(errorMessage);
+        }
+    }
 }
