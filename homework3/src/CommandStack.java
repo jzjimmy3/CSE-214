@@ -35,11 +35,10 @@ public class CommandStack extends Vector {
      * @return gets the value of Screen Command
      */
     public String getScreenCommand(){ return !stack.isEmpty()? stack.peek().toString() : "Empty Stack"; }
-
-    /**
-     * @param stacks Prints out the CommandStack
-     * @return
-     */
+        /**
+         * @param stacks Prints out the CommandStack
+         * @return
+         */
     public String printStack(CommandStack stacks) {
         if (stacks.isEmpty()) return "Empty Stack";
         Command commands = stacks.peek();
@@ -49,7 +48,7 @@ public class CommandStack extends Vector {
         stacks.push(commands);
         return "";
     }
-    public String toString(){ return stack.toString(); }
+    public String toString(){ return stack.peek().toString(); }
 
     /**
      * A class that extends exception and is thrown whenever there is an empty stack in CommandStack.

@@ -119,9 +119,9 @@ public interface Command {
         }
         @Override
         public String toString() {
-            if(Application.getCurrentStack().peek() instanceof PlanRoute){
+            if(source != null){
                 return "Navigating from " + source + " to " + destination;
-            }else{
+            } else{
                 return "Navigating to " + destination;
             }
         }
@@ -159,7 +159,7 @@ public interface Command {
         }
         @Override
         public String toString() {
-            return "Showing Results for " + query;
+            return "Google: " + query;
         }
         @Override
         public String toShortString() {
@@ -230,7 +230,7 @@ public interface Command {
         }
         @Override
         public String toString() {
-            return "Showing Results for " + link;
+            return link;
         }
         @Override
         public String toShortString() {
