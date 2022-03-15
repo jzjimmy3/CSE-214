@@ -14,6 +14,8 @@ public class iCatchUp {
         System.out.println("\nWelcome to the iPhony pocket telegraph simulator.\nYou are on the home screen.\n");
         Application.getMapStack().push(new Command.Home());
         Application.getSafariStack().push(new Command.Home());
+        int A = 1;
+        System.out.println(++A + A++ + ++ A*2);
         while(quitValue){
             currentScreen();
         }
