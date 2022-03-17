@@ -14,12 +14,12 @@ public class PassengerQueue extends AbstractSequentialList {
         return list.toString();
     }
     public Passenger peek(){
-        return (Passenger) list.get(4);
+        return (Passenger) list.get(0);
     }
 
     @Override
     public int size() {
-        return 0;
+        return list.size();
     }
 
     public boolean isEmpty(){
