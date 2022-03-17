@@ -7,6 +7,7 @@ public class Passenger {
         this.isFirstClass = isFirstClass;
     }
 
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -15,4 +16,13 @@ public class Passenger {
 
     public boolean isFirstClass() { return isFirstClass; }
     public void setFirstClass(boolean firstClass) { isFirstClass = firstClass; }
+
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                " id: " + id +
+                " arrivalTime: " + arrivalTime +
+                " isFirstClass: " + isFirstClass +
+                '}';
+    }
 }
