@@ -3,7 +3,16 @@ public class Train {
     private int secondCapacity;
     private int nextArrival;
     private int trainId = 0;
-    private int numTrains;
+    private static int numTrains = 4;
+    private static Train[] trainArray = new Train[numTrains];
+
+    public static Train[] getTrainArray() {
+        return trainArray;
+    }
+
+    public void setTrainArray(Train[] trainArray) {
+        this.trainArray = trainArray;
+    }
 
     public Train(int trainId) {
         this.trainId = trainId;
@@ -18,12 +27,11 @@ public class Train {
     public int getNextArrival() { return nextArrival; }
     public void setNextArrival(int nextArrival) { this.nextArrival = nextArrival; }
 
-    public Train createTrain(){
-        return new Train(++trainId);
+    public void createTrainInstance(){
+        for(int i = 0; i < numTrains; i++){
+            trainArray[i] = new Train(i);
+        }
     }
-
-
-
 
     public void simulateTimeStep(){
 
