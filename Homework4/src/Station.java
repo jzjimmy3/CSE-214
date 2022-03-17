@@ -57,19 +57,18 @@ public class Station {
         return input.nextFloat();
     }
 
-    public void ifOccurs(){
-            BooleanSource[] arrivalArray = new BooleanSource[]{firstArrivalMineola, secondArrivalMineola, firstArrivalHicksville, secondArrivalHicksville
-                    , firstArrivalSyosset, secondArrivalSyosset, firstArrivalHuntington, secondArrivalHuntington};
-            for(int i = 0; i < 2; i = i + 2){
+    public void stationOverview(){
+        BooleanSource[] arrivalArray = new BooleanSource[]{firstArrivalMineola, secondArrivalMineola, firstArrivalHicksville, secondArrivalHicksville
+                , firstArrivalSyosset, secondArrivalSyosset, firstArrivalHuntington, secondArrivalHuntington};
+        for(int i = 0; i < arrivalArray.length-1; i = i + 2){
             int j = i + 1;
-            System.out.println(arrivalArray[i]);
             if(arrivalArray[i].occurs()){
                 PassengerID++;
                 System.out.println("First Class Passenger ID " + PassengerID + " arrives");
                 Passenger p = new Passenger(PassengerID, currentMin,true);
                 queueArray[i].enqueue(p);
             }
-            if(j < 8){
+            if(j <= arrivalArray.length-1){
                 if(arrivalArray[j].occurs()){
                     PassengerID++;
                     System.out.println("Second Class Passenger ID " + PassengerID + " arrives");
@@ -84,115 +83,85 @@ public class Station {
         }
     }
 
-    public void simulateTimeStep(){
-        for  ( currentMin = 0; currentMin < 3; currentMin++){
-            System.out.println("Time: " + currentMin);
-            System.out.println("Station Overview");
-
-            System.out.println("Mineola: ");
-            ifOccurs();
-//            if(firstArrivalMineola.occurs()){
-//                PassengerID++;
-//                System.out.println("First Class Passenger ID " + PassengerID + " arrives");
-//                Passenger p = new Passenger(PassengerID, currentMin,true);
-//                firstClassMineola.enqueue(p);
-//            }
-//            if(secondArrivalMineola.occurs()){
-//                PassengerID++;
-//                System.out.println("Second Class Passenger ID " + PassengerID + " arrives");
-//                Passenger p = new Passenger(PassengerID, currentMin,false);
-//                secondClassMineola.enqueue(p);
-//
-//            }
-//            System.out.println("Queues:");
-//            System.out.println("First: " + firstClassMineola);
-//            System.out.println("Second " + secondClassMineola);
-//            System.out.println();
-
-            System.out.println("Hicksville: ");
-            if(firstArrivalHicksville.occurs()){
-                PassengerID++;
-                System.out.println("First Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,true);
-                firstClassHicksville.enqueue(p);
+    public void trainOverview(){
+        PassengerQueue[] queueArray = new PassengerQueue[]{firstClassMineola, secondClassMineola,firstClassHicksville,secondClassHicksville
+                ,firstClassSyosset,secondClassSyosset, firstClassHuntington,secondClassHuntington
+        };
+        for(int i = 0; i < 8; i = i + 2){ //numStations
+            int j = i + 1;
+            if(i<=1){
+                System.out.println("Station 1");
+                passengerEmbarking(i,j);
             }
-            if(secondArrivalHicksville.occurs()){
-                PassengerID++;
-                System.out.println("Second Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,false);
-                secondClassHicksville.enqueue(p);
-
+            if(i>1 && i <= 3){
+                System.out.println("Station 2");
+                passengerEmbarking(i,j);
             }
-            System.out.println("Queues:");
-            System.out.println("First: " + firstClassHicksville);
-            System.out.println("Second " + secondClassHicksville);
-            System.out.println();
-
-            System.out.println("Syosset: ");
-            if(firstArrivalSyosset.occurs()){
-                PassengerID++;
-                System.out.println("First Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,true);
-                firstClassSyosset.enqueue(p);
+            if(i>3 && i <= 5){
+                System.out.println("Station 3");
+                passengerEmbarking(i,j);
             }
-            if(secondArrivalSyosset.occurs()){
-                PassengerID++;
-                System.out.println("Second Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,false);
-                secondClassSyosset.enqueue(p);
-            }
-            System.out.println("Queues:");
-            System.out.println("First: " + firstClassSyosset);
-            System.out.println("Second " + secondClassSyosset);
-            System.out.println();
-
-            System.out.println("Huntington: ");
-            if(firstArrivalHuntington.occurs()){
-                PassengerID++;
-                System.out.println("First Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,true);
-                firstClassHuntington.enqueue(p);
-            }
-            if(secondArrivalHuntington.occurs()){
-                PassengerID++;
-                System.out.println("Second Class Passenger ID " + PassengerID + " arrives");
-                Passenger p = new Passenger(PassengerID, currentMin,false);
-                secondClassHuntington.enqueue(p);
-            }
-            System.out.println("Queues:");
-            System.out.println("First: " + firstClassHuntington);
-            System.out.println("Second " + secondClassHuntington);
-            System.out.println();
-
-            int numOfStation = 1;
-            if(currentMin % 5 == 0 && numOfStation == 1){
-                System.out.println("HELLO");
-                System.out.println(Train.getTrainArray()[0].getFirstCapacity());
-                System.out.println(firstClassMineola.size());
-                for(int i = 0; i < firstClassMineola.size(); i++){
-                    if(i < Train.getTrainArray()[0].getFirstCapacity()){
-                        Passenger p = firstClassMineola.peek();
-                        firstClassMineola.dequeue();
-                        System.out.println("Passengers embarking in first class: " + p);
-                    }
-                }
-                for(int i = 0; i < secondClassMineola.size(); i++){
-                    if(i < Train.getTrainArray()[0].getFirstCapacity()){
-                        Passenger p = secondClassMineola.peek();
-                        secondClassMineola.dequeue();
-                        System.out.println("Passengers embarking in second class: " + p);
-                    }
-                }
-                numOfStation++;
+            if(i>5 && i <= 7){
+                System.out.println("Station 4");
+                passengerEmbarking(i,j);
             }
         }
     }
 
-    public void stationOverview(){
+    public void passengerEmbarking(int i,int j) {
+        if (currentMin % 5 == 0 ) {
+            for (int k = 0; k < queueArray[i].size(); k++) {
+                if (k <= Train.getFirstCapacity()) {
+                    Passenger p = queueArray[i].peek();
+                    queueArray[i].dequeue();
+                    System.out.println("Passengers embarking in first class: " + p);
 
+                }
+            }
+            if (j < 8) {
+                for (int k = 0; k < queueArray[j].size(); k++) {
+                    if (k <= Train.getSecondCapacity()) {
+                        Passenger p = queueArray[j].peek();
+                        queueArray[j].dequeue();
+                        System.out.println("Passengers embarking in second class: " + p);
+                    }
+                }
+            }
+        }
     }
 
+    public void simulateTimeStep(){
+        for  ( currentMin = 0; currentMin < 6; currentMin++){
+            System.out.println("Time: " + currentMin);
+            System.out.println("Station Overview");
 
+            System.out.println("Mineola: ");
+            stationOverview();
+            trainOverview();
+
+//            int numOfStation = 1;
+//            if(currentMin % 5 == 0 && numOfStation == 1){
+//                System.out.println("HELLO");
+//                System.out.println(Train.getTrainArray()[0].getFirstCapacity());
+//                System.out.println(firstClassMineola.size());
+//                for(int i = 0; i < firstClassMineola.size(); i++){
+//                    if(i < Train.getTrainArray()[0].getFirstCapacity()){
+//                        Passenger p = firstClassMineola.peek();
+//                        firstClassMineola.dequeue();
+//                        System.out.println("Passengers embarking in first class: " + p);
+//                    }
+//                }
+//                for(int i = 0; i < secondClassMineola.size(); i++){
+//                    if(i < Train.getTrainArray()[0].getFirstCapacity()){
+//                        Passenger p = secondClassMineola.peek();
+//                        secondClassMineola.dequeue();
+//                        System.out.println("Passengers embarking in second class: " + p);
+//                    }
+//                }
+//                numOfStation++;
+//            }
+        }
+    }
 
     @Override
     public String toString() {
