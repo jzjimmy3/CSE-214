@@ -2,7 +2,8 @@ public class Train {
     private static int firstCapacity;
     private static int secondCapacity;
     private int nextArrival;
-    private int trainId = 0;
+    private int trainId;
+    private int stationId;
     private static int numTrains = 4;
     private static Train[] trainArray = new Train[numTrains];
 
@@ -14,7 +15,16 @@ public class Train {
         this.trainArray = trainArray;
     }
 
-    public Train(int trainId) {
+    public Train(int trainId, int stationId) {
+        this.trainId = trainId;
+        this.stationId = stationId;
+    }
+
+    public int getTrainId() {
+        return trainId;
+    }
+
+    public void setTrainId(int trainId) {
         this.trainId = trainId;
     }
 
@@ -27,9 +37,17 @@ public class Train {
     public int getNextArrival() { return nextArrival; }
     public void setNextArrival(int nextArrival) { this.nextArrival = nextArrival; }
 
-    public void createTrainInstance(){
+    public int getStationId() {
+        return stationId;
+    }
+
+    public void setStationId(int stationId) {
+        this.stationId = stationId;
+    }
+
+    public static void createTrainInstance(){
         for(int i = 0; i < numTrains; i++){
-            trainArray[i] = new Train(i);
+            trainArray[i] = new Train(i,0);
         }
     }
 
@@ -47,9 +65,7 @@ public class Train {
 
         if(station.getCurrentMin() % 5 == 0){
             trainStation++;
-            int j = Train.getTrainArray().length;
             for(int i = 0; i<Train.getTrainArray().length; i++){
-                j--;
                 Train.getTrainArray()[i].getFirstCapacity();
             }
         }

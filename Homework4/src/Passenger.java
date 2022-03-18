@@ -19,10 +19,6 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return "Passenger{" +
-                " id: " + id +
-                " arrivalTime: " + arrivalTime +
-                " isFirstClass: " + isFirstClass +
-                '}';
+        return "P" + id;
     }
 }
