@@ -4,8 +4,10 @@ public class Train {
     private int nextArrival;
     private int trainId;
     private int stationId;
+    private int arrivalToFirstStation;
     private static int numTrains = 4;
     private static Train[] trainArray = new Train[numTrains];
+    private int availableRoom;
 
     public static Train[] getTrainArray() {
         return trainArray;
@@ -15,9 +17,19 @@ public class Train {
         this.trainArray = trainArray;
     }
 
-    public Train(int trainId, int stationId) {
+    public Train(int trainId, int stationId, int arrivalToFirstStation, int availableRoom) {
         this.trainId = trainId;
         this.stationId = stationId;
+        this.arrivalToFirstStation = arrivalToFirstStation;
+        this.availableRoom = availableRoom;
+    }
+
+    public int getAvailableRoom() {
+        return availableRoom;
+    }
+
+    public void setAvailableRoom(int availableRoom) {
+        this.availableRoom = availableRoom;
     }
 
     public int getTrainId() {
@@ -26,6 +38,14 @@ public class Train {
 
     public void setTrainId(int trainId) {
         this.trainId = trainId;
+    }
+
+    public int getArrivalToFirstStation() {
+        return arrivalToFirstStation;
+    }
+
+    public void setArrivalToFirstStation(int arrivalToFirstStation) {
+        this.arrivalToFirstStation = arrivalToFirstStation;
     }
 
     public static int getFirstCapacity() { return firstCapacity; }
@@ -47,27 +67,11 @@ public class Train {
 
     public static void createTrainInstance(){
         for(int i = 0; i < numTrains; i++){
-            trainArray[i] = new Train(i,0);
+            trainArray[i] = new Train(i,0, i*5, firstCapacity);
         }
     }
 
     public void simulateTimeStep(){
-        Station station = new Station();
-//      Number of Stops: the last train is going to take (number of stations + number of trains - 1) stops to reach the end
-//      AKA for Time:  it's Number of Stops * 5 min
-//        int timeForLastTrainToReachEnd = 4 + numTrains -1;
-//
-//        if(station.getCurrentMin() % 5  == 0){
-//
-//        }
 
-        int trainStation = 0; // 1 means train is at mineola, 2 means hick's, 3 means syosset, 4 means huntington
-
-        if(station.getCurrentMin() % 5 == 0){
-            trainStation++;
-            for(int i = 0; i<Train.getTrainArray().length; i++){
-                Train.getTrainArray()[i].getFirstCapacity();
-            }
-        }
     }
 }
