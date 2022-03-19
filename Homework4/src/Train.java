@@ -65,6 +65,14 @@ public class Train {
         this.stationId = stationId;
     }
 
+    public static int getNumTrains() {
+        return numTrains;
+    }
+
+    public static void setNumTrains(int numTrains) {
+        Train.numTrains = numTrains;
+    }
+
     public static void createTrainInstance(){
         for(int i = 0; i < numTrains; i++){
             trainArray[i] = new Train(i,0, i*5, firstCapacity);
