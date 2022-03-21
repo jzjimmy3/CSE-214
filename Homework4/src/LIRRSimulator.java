@@ -22,5 +22,6 @@ public class LIRRSimulator {
     public static void lirrSimulator() throws Exception {
         Station.setArrivalStatus();
         mineola.simulateTimeStep();
+        mineola.endSimulation();
     }
 }
