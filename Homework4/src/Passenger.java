@@ -1,3 +1,9 @@
+//Jimmy Zhang ID: 112844431 CSE 214 RO2
+
+/**
+ * This class is the Passenger Class, there is a constructor that takes in an int id, arrivalTime, and boolean isFirstClass
+ * @author Jimmy Zhang
+ */
 public class Passenger {
     private int id, arrivalTime;
     private boolean isFirstClass;
@@ -6,7 +12,10 @@ public class Passenger {
         this.arrivalTime = arrivalTime;
         this.isFirstClass = isFirstClass;
     }
-
+    /**
+     * The code below represents the getters and setter methods for this class.
+     * @author Jimmy Zhang
+     */
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
