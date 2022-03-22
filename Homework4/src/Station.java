@@ -81,11 +81,14 @@ public class Station {
                 System.out.print("Please enter second class capacity: ");
                 Train.setSecondCapacity(input.nextInt());
 
-                System.out.print("Please enter last arrival time of passengers: ");
-                lastArrival = input.nextInt();
-
                 System.out.print("Please enter number of trains: ");
                 Train.setNumTrains(input.nextInt());
+                if(Train.getNumTrains() < 4){
+                    Train.setNumTrains(4);
+                    System.out.println("You must enter at least 4 trains! Number of trains has been set to 4");
+                }
+                System.out.print("Please enter last arrival time of passengers: ");
+                lastArrival = input.nextInt();
                 retry = false;
             }catch (Exception e){
                 System.out.println("\nInvalid Input! Please Try Again!\n");
@@ -133,6 +136,8 @@ public class Station {
                     System.out.println("First Class Passenger ID " + PassengerID + " arrives");
                     Passenger p = new Passenger(PassengerID, tempMin,true);
                     queueArray[i].enqueue(p);
+                }else{
+                    System.out.println("No first class passenger arrives");
                 }
                 if(j <= arrivalArray.length-1){
                     if(arrivalArray[j].occurs()){
@@ -141,6 +146,8 @@ public class Station {
                         Passenger p = new Passenger(PassengerID, tempMin,false);
                         queueArray[j].enqueue(p);
                     }
+                }else{
+                    System.out.println("No second class passenger arrives");
                 }
             }
             System.out.println("Queues:");
@@ -162,16 +169,34 @@ public class Station {
 
             int size = queueArray[i].size();
             for (int k = 0; k < size; k++) {
-                firstList.add(queueArray[i+1].peek());
-                secondList.add(queueArray[i].peek());
-                queueArray[i+1].dequeue();
-                queueArray[i].dequeue();
-                queueTotal[i+1]++;
-                queueTotal[i]++;
-
+                int l = i;
+                // 1 2 3 4 5 6 7 8
+                // 0 1 2 3 4 5 6 7
+                if(!queueArray[i].isEmpty()){
+                    secondList.add(queueArray[i].peek());
+                    queueArray[i].dequeue();
+                    queueTotal[i]++;
+                }else{
+                    System.out.println("No first class Array");
+                }
+                if(!queueArray[i+1].isEmpty()){
+                    firstList.add(queueArray[i+1].peek());
+                    queueArray[i+1].dequeue();
+                    queueTotal[i+1]++;
+                }else{
+                    System.out.println("No second class Array");
+                }
             }
-            System.out.println("Passengers embarking in first class: " + firstList);
-            System.out.println("Passengers embarking in second class: " + secondList);
+            if(!firstList.isEmpty()){
+                System.out.println("Passengers embarking in first class: " + firstList);
+            }else{
+                System.out.println("Passengers embarking in first class: [empty]");
+            }
+            if(!secondList.isEmpty()){
+                System.out.println("Passengers embarking in second class: " + secondList);
+            }else{
+                System.out.println("Passengers embarking in second class: [empty]");
+            }
 
         }
     }
@@ -185,14 +210,14 @@ public class Station {
                 System.out.println("Trains:");
                 int temp =  2 * countNumStops - 2; // Indexing for queueArray
                 for(int i = 0 ; i < countNumStops; i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
+                    System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
                             + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
                     passengerEmbarking(temp);
                     temp = temp -2 ;
                 }
                 int j = 5;
                 for(int i = countNumStops; i < Train.getNumTrains(); i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
+                    System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
                     j = j + 5;
                 }
             }
@@ -201,12 +226,12 @@ public class Station {
             if(currentMin %5 == 0 && currentMin >= 15){
                 System.out.println("Trains:");
                 for(int i = 0 ; i < countNumStops-3; i++){ // 4 represents number of stations\
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
+                    System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
                 }
                 int temp =  2 * 4 - 2; // Indexing for queueArray
                 for(int i = countNumStops-3; i <= Train.getNumTrains() + 1; i++){ // 4 represents number of stations
                     if(temp>=0){
-                        System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                        System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
                                 + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
                         passengerEmbarking(temp);
                         temp = temp -2 ;
@@ -217,15 +242,14 @@ public class Station {
         if(countNumStops >= Train.getNumTrains()){
             if(currentMin %5 == 0){
                 System.out.println("Trains:");
-                System.out.println(countNumStops);
                 for(int i = 0; i < countNumStops-4; i++){ // 4 represents number of stations\
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
+                    System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
                 }
                 //
                 int temp =  2 * 4 - 2; // Indexing for queueArray
                 for(int i = countNumStops-4; i <= numStops; i++){ // 4 represents number of stations
                     if(temp>=0  && i < Train.getNumTrains()){
-                        System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                        System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
                                 + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
                         passengerEmbarking(temp);
                         temp = temp -2 ;
@@ -249,13 +273,12 @@ public class Station {
                         }
                         System.out.println("Trains:");
                         int temp = countNumStops + 1;
-                        System.out.println("The value of j " + j);
                         for(int i = 0 ; i < countNumStops; i++){
-                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
                             temp--;
                         }
                         for(int i = countNumStops; i < Train.getNumTrains(); i++){
-                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
                             j = j + 5;
                         }
                     }
@@ -271,11 +294,11 @@ public class Station {
                         System.out.println("Trains:");
                         int temp = 4 + 1; // 4 represents number of Stations
                         for(int i = 0 ; i < 4; i++){ // 4 represents number of Stations
-                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
                             temp--;
                         }
                         for(int i = 4; i < Train.getNumTrains(); i++){
-                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
                             j = j + 5;
                         }
                     }
@@ -291,11 +314,11 @@ public class Station {
                         System.out.println("Trains:");
                         System.out.println("CountNum Stops:" + countNumStops);
                         for(int i = 4; i < countNumStops; i++){
-                            System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " has stopped picking up passengers.");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " has stopped picking up passengers.");
                         }
                         int temp = 5; // count 5
                         for(int i = countNumStops; i <= numStops; i++){
-                            System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            System.out.println("\nTrain " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
                             temp--;
                         }
                     }
