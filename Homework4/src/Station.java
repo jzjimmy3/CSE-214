@@ -42,7 +42,7 @@ public class Station {
     public int currentMin;
     private static int lastArrival;
     public static int numStops = 4+Train.getNumTrains()-1;
-    public int countNumStops = 0;
+    public int countNumStops = 1;
     public int timeInterval = 5;
 
     public int getCurrentMin() { return currentMin; }
@@ -67,6 +67,7 @@ public class Station {
                     retry = false;
                 }catch (Exception e){
                     System.out.println("\nInvalid Input! Please Try Again!\n");
+                    input.next();
                 }
             }
         }
@@ -154,23 +155,24 @@ public class Station {
      * The function below represents Passenger Embarking the train for those in the first class
      * @param i
      */
-    public void passengerEmbarkingFirst(int i) {
+    public void passengerEmbarking(int i) {
         if (currentMin % 5 == 0) {
-            //Path of Train 1
             ArrayList firstList = new ArrayList() {};
+            ArrayList secondList = new ArrayList();
+
             int size = queueArray[i].size();
-            int availableRoom = Train.getTrainArray().get(0).getAvailableRoom();
-            int counter = 0;
-            for (int k = 0; k < Train.getFirstCapacity(); k++) {
-                if (k < size) {
-                    firstList.add(queueArray[i].peek());
-                    queueArray[i].dequeue();
-                    queueTotal[i]++;
-                    counter++;
-                }
+            for (int k = 0; k < size; k++) {
+                firstList.add(queueArray[i+1].peek());
+                secondList.add(queueArray[i].peek());
+                queueArray[i+1].dequeue();
+                queueArray[i].dequeue();
+                queueTotal[i+1]++;
+                queueTotal[i]++;
+
             }
-            Train.getTrainArray().get(0).setAvailableRoom(2);
             System.out.println("Passengers embarking in first class: " + firstList);
+            System.out.println("Passengers embarking in second class: " + secondList);
+
         }
     }
     /**
@@ -180,10 +182,10 @@ public class Station {
     public void passengerEmbarkingSecond(int j){
         if (currentMin % 5 == 0) {
             ArrayList secondList = new ArrayList();
-            int size = queueArray[j].size();
+            int size2 = queueArray[j].size();
             if (j < 8) {
-                for (int k = 0; k < queueArray[j].size(); k++) {
-                    if (k <= size) {
+                for (int k = 0; k < size2; k++) {
+                    if (k <= size2) {
                         secondList.add(queueArray[j].peek());
                         queueArray[j].dequeue();
                         queueTotal[j]++;
@@ -219,96 +221,77 @@ public class Station {
      * The function below represents the train arriving in phase 1 in which not all trains occupy each station
      */
     public void trainArrivingPhase1(){
-        for(int k = 1; k <= countNumStops; k++){
-            if(k == countNumStops){
-                int j = 0;
-                for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) j = countNumStops * timeInterval-i;
-                }
-                System.out.println("Trains:");
-                int temp = countNumStops + 1;
-                for(int i = 0 ; i < countNumStops; i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(temp) + arrives(1));
-                    temp--;
-                }
-                for(int i = countNumStops; i < Train.getNumTrains(); i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
-                    j = j + 5;
-                }
+        if(currentMin %5 == 0 && currentMin <=15){
+            int j = 0;
+            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                if(currentMin == i) j = countNumStops * timeInterval-i;
             }
+            System.out.println("Trains:");
+            System.out.println(countNumStops);
+            int temp =  2 * countNumStops - 2; // Indexing for queueArray
+            int temp2 = 2 * countNumStops -2 ;
+            for(int i = 0 ; i < countNumStops; i++){
+                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
+                + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                passengerEmbarking(temp);
+                temp = temp -2 ;
+            }
+            j = 5;
+            for(int i = countNumStops; i < Train.getNumTrains(); i++){
+                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
+                j = j + 5;
+            }
+            countNumStops++;
         }
     }
+
     /**
      * The function below represents the train arriving and the executions of passengers embarking
      */
     public void trainArriving(){
-//        if(currentMin %5 <= 15){ //15 is from 3(numStation-1);
-//            trainArrivingPhase1();
-//        }
-        if(currentMin %5 == 0){
-            countNumStops++;
+        if(currentMin %5 <= 15){ //15 is from 3(numStation-1);
+            trainArrivingPhase1();
         }
 
         if(currentMin == 0){
             System.out.println("Trains:");
             System.out.println("Train 1 arrives at Huntington,"  + arrives(1));
-            passengerEmbarkingFirst(1);
-            passengerEmbarkingSecond(0);
+            passengerEmbarking(0);
             System.out.println("Train 2 will arrive at Huntington in 5 minutes.");
-//            passengerEmbarkingFirst(7);
-//            passengerEmbarkingSecond(6);
             System.out.println("Train 3 will arrive at Huntington in 10 minutes");
-//            passengerEmbarkingFirst(5);
-//            passengerEmbarkingSecond(4);
             System.out.println("Train 4 will arrive at Huntington in 15 minutes");
-//            passengerEmbarkingFirst(3);
-//            passengerEmbarkingSecond(2);
         }
         if(currentMin == 5){
 
             System.out.println("Trains:");
             System.out.println("Train 1 arrives at Syosset," + arrives(3));
-            passengerEmbarkingFirst(3); // dequeue from syosset first class
-            passengerEmbarkingSecond(2);
+            passengerEmbarking(2); // dequeue from syosset first class
             System.out.println("Train 2 arrives at Huntington," + arrives(1));
-            passengerEmbarkingFirst(1); // deque from huntington
-            passengerEmbarkingSecond(0);
+            passengerEmbarking(0); // deque from huntington
             System.out.println("Train 3 will arrive at Huntington in 5 minutes");
-//            passengerEmbarkingFirst(7);
-//            passengerEmbarkingSecond(6);
             System.out.println("Train 4 will arrive at Huntington in 10 minutes");
-//            passengerEmbarkingFirst(5);
-//            passengerEmbarkingSecond(4);
         }
         if(currentMin == 10){
             System.out.println("Trains:\n");
             System.out.println("Train 1 arrives at Hicksville, " + arrives(5));
-            passengerEmbarkingFirst(5);
-            passengerEmbarkingSecond(4);
+            passengerEmbarking(4);
             System.out.println("Train 2 arrives at Syosset," + arrives(3));
-            passengerEmbarkingFirst(3);
+            passengerEmbarking(2);
             passengerEmbarkingSecond(2);
             System.out.println("Train 3 arrives at Huntington," + arrives(1));
-            passengerEmbarkingFirst(1);
-            passengerEmbarkingSecond(0);
+            passengerEmbarking(0);
             System.out.println("Train 4 will arrive at Huntington in 5 minutes");
-
         }
         if(currentMin == 15){
             System.out.println("Trains:\n");
             System.out.println("Train 1 arrives at Mineola," + arrives(7));
-            passengerEmbarkingFirst(7);
-            passengerEmbarkingSecond(6);
+            passengerEmbarking(6);
             System.out.println("Train 2 arrives at Hicksville," + arrives(5));
-            passengerEmbarkingFirst(5);
-            passengerEmbarkingSecond(4);
+            passengerEmbarking(4);
             System.out.println("Train 3 arrives at Syosset," + arrives(3));
-            passengerEmbarkingFirst(3);
-            passengerEmbarkingSecond(2);
+            passengerEmbarking(2);
             System.out.println("Train 4 arrives at Huntington, " + arrives(1));
-            passengerEmbarkingFirst(1);
-            passengerEmbarkingSecond(0);
-
+            passengerEmbarking(0);
         }
         if(currentMin == 20){
             System.out.println("Trains:\n");
@@ -316,63 +299,37 @@ public class Station {
 //            passengerEmbarkingFirst();
 //            passengerEmbarkingSecond();
             System.out.println("Train 2 arrives at Mineola, " + arrives(7));
-            passengerEmbarkingFirst(7);
-            passengerEmbarkingSecond(6);
+            passengerEmbarking(6);
             System.out.println("Train 3 arrives at Hicksville," + arrives(5));
-            passengerEmbarkingFirst(5);
-            passengerEmbarkingSecond(4);
+            passengerEmbarking(4);
             System.out.println("Train 4 arrives at Syosset." + arrives(3));
-            passengerEmbarkingFirst(3);
-            passengerEmbarkingSecond(2);
+            passengerEmbarking(2);
 
         }
         if(currentMin == 25){
             System.out.println("Trains:\n");
             System.out.println("Train 1 no longer running");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
             System.out.println("Train 2 no longer running");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
             System.out.println("Train 3 arrives at Mineola," + arrives(7));
-            passengerEmbarkingFirst(7);
-            passengerEmbarkingSecond(6);
+            passengerEmbarking(6);
             System.out.println("Train 4 arrives at Hicksville " + arrives(5));
-            passengerEmbarkingFirst(5);
-            passengerEmbarkingSecond(4);
-
+            passengerEmbarking(4);
         }
         if(currentMin == 30){
             System.out.println("Trains:\n");
             System.out.println("Train 1 no longer running");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
             System.out.println("Train 2 no longer running");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
             System.out.println("Train 3 no longer running");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
             System.out.println("Train 4 arrives at Mineola." + arrives(7));
-            passengerEmbarkingFirst(7);
-            passengerEmbarkingSecond(6);
-
+            passengerEmbarking(6);
         }
         if (currentMin == 35) {
 
             System.out.println("Trains:\n");
             System.out.println("Train 1 no longer running");
-//            passengerEmbarkingFirst(0);
-//            passengerEmbarkingSecond(1);
             System.out.println("Train 2 no longer running");
-//            passengerEmbarkingFirst(2);
-//            passengerEmbarkingSecond(3);
             System.out.println("Train 3 no longer running");
-//            passengerEmbarkingFirst(4);
-//            passengerEmbarkingSecond(5);
             System.out.println("Train 4 no longer running");
-//            passengerEmbarkingFirst(6);
-//            passengerEmbarkingSecond(7);
         }
     }
     /**
