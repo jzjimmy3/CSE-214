@@ -152,7 +152,7 @@ public class Station {
 
 
     /**
-     * The function below represents Passenger Embarking the train for those in the first class
+     * The function below represents Passenger Embarking the train for those in the first class and second class
      * @param i
      */
     public void passengerEmbarking(int i) {
@@ -175,237 +175,61 @@ public class Station {
 
         }
     }
-    /**
-     * The function below represents Passenger Embarking the train for those in the second class
-     * @param j
-     */
-    public void passengerEmbarkingSecond(int j){
-        if (currentMin % 5 == 0) {
-            ArrayList secondList = new ArrayList();
-            int size2 = queueArray[j].size();
-            if (j < 8) {
-                for (int k = 0; k < size2; k++) {
-                    if (k <= size2) {
-                        secondList.add(queueArray[j].peek());
-                        queueArray[j].dequeue();
-                        queueTotal[j]++;
-                    }
-                }
-            }
-            System.out.println("Passengers embarking in second class: " + secondList);
-        }
-    }
 
-    /**
-     * The function below is a helper function
-     * @param i
-     * @return
-     */
-    public String arrives(int i){
-        return "There are "  + queueArray[i].size() + " passengers in first class and " + queueArray[i-1].size()+ " in second class.";
-    }
-
-    /**
-     * The function below represents the train arriving in phase 1 in which not all trains occupy each station
-     */
-    public void trainArrivingPhase1(){
-        if(currentMin %5 == 0 && currentMin <=15){
-            int j = 0;
-            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                if(currentMin == i) j = countNumStops * timeInterval-i;
-            }
-            System.out.println("Trains:");
-            System.out.println(countNumStops);
-            int temp =  2 * countNumStops - 2; // Indexing for queueArray
-            for(int i = 0 ; i < countNumStops; i++){
-                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
-                + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
-                passengerEmbarking(temp);
-                temp = temp -2 ;
-            }
-            j = 5;
-            for(int i = countNumStops; i < Train.getNumTrains(); i++){
-                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
-                j = j + 5;
-            }
-        }
-    }
-    public void trainArrivingPhase2(){
-        if(currentMin %5 == 0 && currentMin >= 15){
-            int j = 0;
-            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                if(currentMin == i) j = countNumStops * timeInterval-i;
-            }
-            System.out.println("Trains:");
-            System.out.println(countNumStops);
-            for(int i = 0 ; i < countNumStops-3; i++){ // 4 represents number of stations\
-                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
-            }
-            int temp =  2 * 4 - 2; // Indexing for queueArray
-            for(int i = countNumStops-3; i <= Train.getNumTrains(); i++){ // 4 represents number of stations
-                if(temp>=0){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
-                        + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
-                    passengerEmbarking(temp);
-                        temp = temp -2 ;
-                }
-            }
-        }
-    }
-    public void trainArrivingPhase3(){
-        if(currentMin %5 == 0 && countNumStops >= Train.getNumTrains()){
-            System.out.println("HELOO");
-            int j = 0;
-            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                if(currentMin == i) j = countNumStops * timeInterval-i;
-            }
-            System.out.println("Trains:");
-            System.out.println(countNumStops);
-            for(int i = 0; i < countNumStops-4; i++){ // 4 represents number of stations\
-                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
-            }
-            //
-            int temp =  2 * 4 - 2; // Indexing for queueArray
-            for(int i = countNumStops-4; i <= numStops; i++){ // 4 represents number of stations
-                if(temp>=0  && i < Train.getNumTrains()){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
-                            + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
-                    passengerEmbarking(temp);
-                    temp = temp -2 ;
-                }
-            }
-        }
-    }
-
-    /**
-     * The function below represents the train arriving and the executions of passengers embarking
-     */
     public void trainArriving(){
         if(currentMin %5 == 0){
             countNumStops++;
         }
         if(currentMin %5 < 15){ //15 is from 3(numStation-1);
-            trainArrivingPhase1();
+            if(currentMin %5 == 0 && currentMin <=15 && countNumStops <= 3){
+                System.out.println("Trains:");
+                int temp =  2 * countNumStops - 2; // Indexing for queueArray
+                for(int i = 0 ; i < countNumStops; i++){
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
+                            + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                    passengerEmbarking(temp);
+                    temp = temp -2 ;
+                }
+                int j = 5;
+                for(int i = countNumStops; i < Train.getNumTrains(); i++){
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
+                    j = j + 5;
+                }
+            }
         }
         if (countNumStops > 3 && countNumStops < Train.getNumTrains()) {
-            trainArrivingPhase2();
+            if(currentMin %5 == 0 && currentMin >= 15){
+                System.out.println("Trains:");
+                for(int i = 0 ; i < countNumStops-3; i++){ // 4 represents number of stations\
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
+                }
+                int temp =  2 * 4 - 2; // Indexing for queueArray
+                for(int i = countNumStops-3; i <= Train.getNumTrains() + 1; i++){ // 4 represents number of stations
+                    if(temp>=0){
+                        System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                                + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                        passengerEmbarking(temp);
+                        temp = temp -2 ;
+                    }
+                }
+            }
         }
         if(countNumStops >= Train.getNumTrains()){
-            trainArrivingPhase3();
-        }
-
-        if(currentMin == 20){
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 no longer running\n");
-//            passengerEmbarkingFirst();
-//            passengerEmbarkingSecond();
-            System.out.println("Train 2 arrives at Mineola, " + arrives(7));
-            passengerEmbarking(6);
-            System.out.println("Train 3 arrives at Hicksville," + arrives(5));
-            passengerEmbarking(4);
-            System.out.println("Train 4 arrives at Syosset." + arrives(3));
-            passengerEmbarking(2);
-        }
-        if(currentMin == 25){
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 no longer running");
-            System.out.println("Train 2 no longer running");
-            System.out.println("Train 3 arrives at Mineola," + arrives(7));
-            passengerEmbarking(6);
-            System.out.println("Train 4 arrives at Hicksville " + arrives(5));
-            passengerEmbarking(4);
-
-        }
-        if(currentMin == 30){
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 no longer running");
-            System.out.println("Train 2 no longer running");
-            System.out.println("Train 3 no longer running");
-            System.out.println("Train 4 arrives at Mineola." + arrives(7));
-            passengerEmbarking(6);
-
-        }
-        if (currentMin == 35) {
-
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 no longer running");
-            System.out.println("Train 2 no longer running");
-            System.out.println("Train 3 no longer running");
-            System.out.println("Train 4 no longer running");
-        }
-    }
-    /**
-     * The function below represents the train in motion in phase 1 in which not all trains occupy each station
-     */
-    public void trainTransitPhase1(){
-        // phase 1 is any time when not all trains have reached the station. Ex: When numStop is < 4, Train 1 will still only be at station 3
-        for(int k = 1; k <= countNumStops; k++){
-            if(k == countNumStops){
-                int j = 0;
-                for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) { j = countNumStops * timeInterval-i; }
-                }
+            if(currentMin %5 == 0){
                 System.out.println("Trains:");
-                int temp = countNumStops + 1;
-                System.out.println("The value of j " + j);
-                for(int i = 0 ; i < countNumStops; i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
-                    temp--;
+                System.out.println(countNumStops);
+                for(int i = 0; i < countNumStops-4; i++){ // 4 represents number of stations\
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
                 }
-                for(int i = countNumStops; i < Train.getNumTrains(); i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
-                    j = j + 5;
-                }
-            }
-        }
-    }
-    /**
-     * The function below represents the train in motion in phase 2 in which all trains occupy each station
-     */
-    public void trainTransitPhase2(){
-        // Any phase when trains occupy all stations AKA. numTrain
-        for(int k = 1; k <= countNumStops; k++){
-            if(k == countNumStops){
-                int j = 0;
-                for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) { j = countNumStops * timeInterval-i; }
-                }
-                System.out.println("Trains:");
-                int temp = 4 + 1; // 4 represents number of Stations
-                for(int i = 0 ; i < 4; i++){ // 4 represents number of Stations
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
-                    temp--;
-                }
-                for(int i = 4; i < Train.getNumTrains(); i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
-                    j = j + 5;
-                }
-            }
-        }
-    }
-
-    /**
-     * The function below represents the train in motion in phase 3 in which not all trains occupy each station and are towards the last stop
-     */
-
-    public void trainTransitPhase3(){
-        //last train is on station 1;
-
-        for(int k = 1; k <= countNumStops; k++){
-            if(k == countNumStops){
-                int j = 0;
-                for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) j = countNumStops * timeInterval-i;
-                }
-                System.out.println("Trains:");
-                System.out.println("CountNum Stops:" + countNumStops);
-                for(int i = 4; i < countNumStops; i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " has stopped picking up passengers.");
-                }
-                int temp = 5; // count 5
-                for(int i = countNumStops; i <= numStops; i++){
-                    System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
-                    temp--;
+                //
+                int temp =  2 * 4 - 2; // Indexing for queueArray
+                for(int i = countNumStops-4; i <= numStops; i++){ // 4 represents number of stations
+                    if(temp>=0  && i < Train.getNumTrains()){
+                        System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                                + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                        passengerEmbarking(temp);
+                        temp = temp -2 ;
+                    }
                 }
             }
         }
@@ -415,15 +239,67 @@ public class Station {
      * The function below executes whenever all the trains are in motion
      */
     public void trainTransit() {
-        if(currentMin %5 !=0) {
+        if(currentMin %5 !=0 && countNumStops <= 3) {
             if (countNumStops <= 3) {
-                trainTransitPhase1();
+                for(int k = 1; k <= countNumStops; k++){
+                    if(k == countNumStops){
+                        int j = 0;
+                        for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                            if(currentMin == i) { j = countNumStops * timeInterval-i; }
+                        }
+                        System.out.println("Trains:");
+                        int temp = countNumStops + 1;
+                        System.out.println("The value of j " + j);
+                        for(int i = 0 ; i < countNumStops; i++){
+                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            temp--;
+                        }
+                        for(int i = countNumStops; i < Train.getNumTrains(); i++){
+                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
+                            j = j + 5;
+                        }
+                    }
+                }
             }
             if (countNumStops > 3 && countNumStops < Train.getNumTrains()) {
-                trainTransitPhase2();
+                for(int k = 1; k <= countNumStops; k++){
+                    if(k == countNumStops){
+                        int j = 0;
+                        for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                            if(currentMin == i) { j = countNumStops * timeInterval-i; }
+                        }
+                        System.out.println("Trains:");
+                        int temp = 4 + 1; // 4 represents number of Stations
+                        for(int i = 0 ; i < 4; i++){ // 4 represents number of Stations
+                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            temp--;
+                        }
+                        for(int i = 4; i < Train.getNumTrains(); i++){
+                            System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" min");
+                            j = j + 5;
+                        }
+                    }
+                }
             }
             if (countNumStops >= Train.getNumTrains()) {
-                trainTransitPhase3();
+                for(int k = 1; k <= countNumStops; k++){
+                    if(k == countNumStops){
+                        int j = 0;
+                        for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                            if(currentMin == i) j = countNumStops * timeInterval-i;
+                        }
+                        System.out.println("Trains:");
+                        System.out.println("CountNum Stops:" + countNumStops);
+                        for(int i = 4; i < countNumStops; i++){
+                            System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " has stopped picking up passengers.");
+                        }
+                        int temp = 5; // count 5
+                        for(int i = countNumStops; i <= numStops; i++){
+                            System.out.println("Train " + (Train.getTrainArray().get(i - 4).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
+                            temp--;
+                        }
+                    }
+                }
             }
         }
     }
