@@ -42,7 +42,7 @@ public class Station {
     public int currentMin;
     private static int lastArrival;
     public static int numStops = 4+Train.getNumTrains()-1;
-    public int countNumStops = 1;
+    public int countNumStops = 0;
     public int timeInterval = 5;
 
     public int getCurrentMin() { return currentMin; }
@@ -196,18 +196,6 @@ public class Station {
         }
     }
 
-    // Passengers only embark when there is a train
-    // if currentMin %5 == 0 && StationVisit = 1, embark from station 1 only
-    // if currentMin %5 == 0 && StationVisit = 2, embark from station 2,1 only
-    // if currentMin %5 == 0 && StationVisit = 3, embark from station 3,2,1 only
-    // if currentMin %5 == 0 && StationVisit = 4, embark from station 4,3,2,1 only
-    // if currentMin %5 == 0 && StationVisit = 5, embark from station 4,3,2 only
-    // if currentMin %5 == 0 && StationVisit = 6, embark from station 4,3 only
-    // if currentMin %5 == 0 && StationVisit = 7, embark from station 4
-    // 7 is the station visit --> Total time for final train to reach last destination: 35
-    // 7 --> number station + number of train - 1.. - 1because the first train is at Huntington at Time=0;
-
-
     /**
      * The function below is a helper function
      * @param i
@@ -229,7 +217,6 @@ public class Station {
             System.out.println("Trains:");
             System.out.println(countNumStops);
             int temp =  2 * countNumStops - 2; // Indexing for queueArray
-            int temp2 = 2 * countNumStops -2 ;
             for(int i = 0 ; i < countNumStops; i++){
                 System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i) +" There are "
                 + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
@@ -241,7 +228,52 @@ public class Station {
                 System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " +stationId(1) + " in " +  j +" minutes.");
                 j = j + 5;
             }
-            countNumStops++;
+        }
+    }
+    public void trainArrivingPhase2(){
+        if(currentMin %5 == 0 && currentMin >= 15){
+            int j = 0;
+            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                if(currentMin == i) j = countNumStops * timeInterval-i;
+            }
+            System.out.println("Trains:");
+            System.out.println(countNumStops);
+            for(int i = 0 ; i < countNumStops-3; i++){ // 4 represents number of stations\
+                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
+            }
+            int temp =  2 * 4 - 2; // Indexing for queueArray
+            for(int i = countNumStops-3; i <= Train.getNumTrains(); i++){ // 4 represents number of stations
+                if(temp>=0){
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                        + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                    passengerEmbarking(temp);
+                        temp = temp -2 ;
+                }
+            }
+        }
+    }
+    public void trainArrivingPhase3(){
+        if(currentMin %5 == 0 && countNumStops >= Train.getNumTrains()){
+            System.out.println("HELOO");
+            int j = 0;
+            for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
+                if(currentMin == i) j = countNumStops * timeInterval-i;
+            }
+            System.out.println("Trains:");
+            System.out.println(countNumStops);
+            for(int i = 0; i < countNumStops-4; i++){ // 4 represents number of stations\
+                System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " no longer running");
+            }
+            //
+            int temp =  2 * 4 - 2; // Indexing for queueArray
+            for(int i = countNumStops-4; i <= numStops; i++){ // 4 represents number of stations
+                if(temp>=0  && i < Train.getNumTrains()){
+                    System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " arrives at " + stationId(countNumStops-i + 1) +" There are "
+                            + queueArray[temp].size() + " in first class and " + queueArray[temp+1].size() + " in second class.");
+                    passengerEmbarking(temp);
+                    temp = temp -2 ;
+                }
+            }
         }
     }
 
@@ -249,50 +281,19 @@ public class Station {
      * The function below represents the train arriving and the executions of passengers embarking
      */
     public void trainArriving(){
-        if(currentMin %5 <= 15){ //15 is from 3(numStation-1);
+        if(currentMin %5 == 0){
+            countNumStops++;
+        }
+        if(currentMin %5 < 15){ //15 is from 3(numStation-1);
             trainArrivingPhase1();
         }
+        if (countNumStops > 3 && countNumStops < Train.getNumTrains()) {
+            trainArrivingPhase2();
+        }
+        if(countNumStops >= Train.getNumTrains()){
+            trainArrivingPhase3();
+        }
 
-        if(currentMin == 0){
-            System.out.println("Trains:");
-            System.out.println("Train 1 arrives at Huntington,"  + arrives(1));
-            passengerEmbarking(0);
-            System.out.println("Train 2 will arrive at Huntington in 5 minutes.");
-            System.out.println("Train 3 will arrive at Huntington in 10 minutes");
-            System.out.println("Train 4 will arrive at Huntington in 15 minutes");
-        }
-        if(currentMin == 5){
-
-            System.out.println("Trains:");
-            System.out.println("Train 1 arrives at Syosset," + arrives(3));
-            passengerEmbarking(2); // dequeue from syosset first class
-            System.out.println("Train 2 arrives at Huntington," + arrives(1));
-            passengerEmbarking(0); // deque from huntington
-            System.out.println("Train 3 will arrive at Huntington in 5 minutes");
-            System.out.println("Train 4 will arrive at Huntington in 10 minutes");
-        }
-        if(currentMin == 10){
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 arrives at Hicksville, " + arrives(5));
-            passengerEmbarking(4);
-            System.out.println("Train 2 arrives at Syosset," + arrives(3));
-            passengerEmbarking(2);
-            passengerEmbarkingSecond(2);
-            System.out.println("Train 3 arrives at Huntington," + arrives(1));
-            passengerEmbarking(0);
-            System.out.println("Train 4 will arrive at Huntington in 5 minutes");
-        }
-        if(currentMin == 15){
-            System.out.println("Trains:\n");
-            System.out.println("Train 1 arrives at Mineola," + arrives(7));
-            passengerEmbarking(6);
-            System.out.println("Train 2 arrives at Hicksville," + arrives(5));
-            passengerEmbarking(4);
-            System.out.println("Train 3 arrives at Syosset," + arrives(3));
-            passengerEmbarking(2);
-            System.out.println("Train 4 arrives at Huntington, " + arrives(1));
-            passengerEmbarking(0);
-        }
         if(currentMin == 20){
             System.out.println("Trains:\n");
             System.out.println("Train 1 no longer running\n");
@@ -304,7 +305,6 @@ public class Station {
             passengerEmbarking(4);
             System.out.println("Train 4 arrives at Syosset." + arrives(3));
             passengerEmbarking(2);
-
         }
         if(currentMin == 25){
             System.out.println("Trains:\n");
@@ -314,6 +314,7 @@ public class Station {
             passengerEmbarking(6);
             System.out.println("Train 4 arrives at Hicksville " + arrives(5));
             passengerEmbarking(4);
+
         }
         if(currentMin == 30){
             System.out.println("Trains:\n");
@@ -322,6 +323,7 @@ public class Station {
             System.out.println("Train 3 no longer running");
             System.out.println("Train 4 arrives at Mineola." + arrives(7));
             passengerEmbarking(6);
+
         }
         if (currentMin == 35) {
 
@@ -341,10 +343,11 @@ public class Station {
             if(k == countNumStops){
                 int j = 0;
                 for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) j = countNumStops * timeInterval-i;
+                    if(currentMin == i) { j = countNumStops * timeInterval-i; }
                 }
                 System.out.println("Trains:");
                 int temp = countNumStops + 1;
+                System.out.println("The value of j " + j);
                 for(int i = 0 ; i < countNumStops; i++){
                     System.out.println("Train " + (Train.getTrainArray().get(i).getTrainId()+1) + " will arrive in " + stationId(temp) +" in " + j +" min");
                     temp--;
@@ -365,7 +368,7 @@ public class Station {
             if(k == countNumStops){
                 int j = 0;
                 for(int i = 5 * countNumStops - 4 ; i <= (countNumStops * timeInterval - 1) ; i++){
-                    if(currentMin == i) j = countNumStops * timeInterval-i;
+                    if(currentMin == i) { j = countNumStops * timeInterval-i; }
                 }
                 System.out.println("Trains:");
                 int temp = 4 + 1; // 4 represents number of Stations
