@@ -1,11 +1,10 @@
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.Scanner;
 
 public class NintendoNetwork {
     public static boolean quitValue = false;
     public static Scanner input = new Scanner(System.in);
+    public static NetworkTree networkTree = new NetworkTree();
 
     public static void main(String[] args) throws FileNotFoundException {
         networkManager();
@@ -62,14 +61,10 @@ public class NintendoNetwork {
     }
 
     private static void load() throws FileNotFoundException {
-        System.out.print("Please enter filename: ");
-        String inputVal = input.next();
-        URL path = NintendoNetwork.class.getResource(inputVal);
-        File file = new File(path.getFile());
-        Scanner sc = new Scanner(file);
-
-        while (sc.hasNextLine())
-            System.out.println(sc.nextLine());
+//        System.out.print("Please enter filename: ");
+//        String inputVal = input.next();
+        networkTree.readFromFile("sbutopology.txt");
+        System.out.println(networkTree);
     }
 
     private static void print() {
