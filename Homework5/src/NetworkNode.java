@@ -32,12 +32,9 @@ public class NetworkNode {
     @Override
     public String toString() {
         return "NetworkNode{" +
-                "name='" + name + '\'' +
-                ", isNintendo=" + isNintendo +
-                ", isBroken=" + isBroken +
-                ", parent=" + parent +
-                ", children=" + Arrays.toString(children) +
-                ", maxChildren=" + maxChildren +
+                "\nname='" + name + '\'' +
+                ", \nparent=" + parent +
+                ", \nchildren=" + Arrays.toString(children) +
                 '}';
     }
 }

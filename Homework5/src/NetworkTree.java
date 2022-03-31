@@ -14,6 +14,9 @@ public class NetworkTree {
         this.root = root;
         this.cursor = cursor;
     }
+    public NetworkNode[] networkNodeDepth1 = new NetworkNode[9];
+    public NetworkNode[] networkNodeDepth2 = new NetworkNode[9];
+
     public void cursorToRoot(){}
 //    public NetworkNode cutCursor(){};
     public void addChild(int index, NetworkNode node){}
@@ -26,31 +29,57 @@ public class NetworkTree {
         URL path = NintendoNetwork.class.getResource("sbutopology.txt");
         File file = new File(path.getFile());
         Scanner sc = new Scanner(file);
-        NetworkNode[] networkNodeArray = new NetworkNode[9];
         int depth = 0;
         while (sc.hasNext()){
-            int lineNum = 1;
             String string = sc.nextLine();
             int i = 0;
             depth = 0;
+            if(Character.isLetter(string.charAt(i))){
+                networkTree.root = new NetworkNode(string);
+            }
+
             while(Character.isDigit(string.charAt(i))){
-                if(depth == 0 ){
-                    networkTree.root = new NetworkNode(string);
-                }
-                if(depth == 1 && string.charAt(i) == 1){
-                    networkNodeArray[0] = new NetworkNode(string);
-                    networkTree.root.setChildren(networkNodeArray);
-                }
                 depth++;
                 i++;
             }
-            System.out.println(depth);
+            i = 0;
+            while(Character.isDigit(string.charAt(i))){
+                int integer = string.charAt(i)-'0';
+                if(depth == 1){
+                    networkNodeDepth1[integer-1] = new NetworkNode(string);
+                    networkTree.root.setChildren(networkNodeDepth1);
+                }
+
+                //11Mendy
+                //21Tabler
+                //31West
+                //32GLS
+                //
+
+                //when i = 0
+                //Integer  1 2 3 3
+                //location C H W B
+                //depth =  2 2 2 2
+                //[]       0 1 2 2
+
+                //when i == 1
+                //Integer  1 1 1 2
+                //Integer  1 2 3 3
+                //[]       0 0 0 1
+
+                if(depth == 2){
+                    networkNodeDepth2[integer-1] = new NetworkNode(string);
+                    networkTree.root.getChildren()[integer-1].setChildren(networkNodeDepth2);
+                }
+
+                i++;
+            }
 
             //if no number, the string is a root, and the cursor should be there
             //and is the first element in node
 //                System.out.print(string.charAt(i));\
-            lineNum++;
         }
+
         return networkTree;
     };
 

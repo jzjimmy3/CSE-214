@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class NintendoNetwork {
     public static boolean quitValue = false;
     public static Scanner input = new Scanner(System.in);
-    public static NetworkTree networkTree = new NetworkTree();
 
     public static void main(String[] args) throws FileNotFoundException {
         networkManager();
@@ -63,8 +62,8 @@ public class NintendoNetwork {
     private static void load() throws FileNotFoundException {
 //        System.out.print("Please enter filename: ");
 //        String inputVal = input.next();
-        networkTree.readFromFile("sbutopology.txt");
-        System.out.println(networkTree);
+        NetworkTree.networkTree.readFromFile("sbutopology.txt");
+        System.out.println(NetworkTree.networkTree);
     }
 
     private static void print() {
