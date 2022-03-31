@@ -33,15 +33,8 @@ public class NetworkTree {
         }
         return depth;
     }
-    public int indexValue(String str,int index){
-        return str.charAt(index)-'0';
-    }
-    public NetworkTree buildTree(String str, int depth, int position){
-        if (depth == 0) networkTree.root = new NetworkNode(str);
-        if(networkTree.root.getChildren()[position] == null){
-            
-        }
-        return networkTree;
+    public NetworkNode[] createNodeArr(){
+        return new NetworkNode[9];
     }
 
     public NetworkTree readFromFile(String filename) throws FileNotFoundException {
@@ -51,7 +44,35 @@ public class NetworkTree {
         networkTree.root = null;
         while (sc.hasNext()){
             String str = sc.nextLine();
-
+            if (findDepth(str) == 0) networkTree.root = new NetworkNode(str);
+            if (findDepth(str) == 1){
+                int integer = str.charAt(0)- '0';
+                networkNodeDepth1[integer-1] = new NetworkNode(str);
+                networkTree.root.setChildren(networkNodeDepth1);
+            }
+            if(findDepth(str) == 2){
+                int integer0 = str.charAt(0)- '0';
+                int integer1 = str.charAt(1) -'0';
+                if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] == null){
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str);
+                }else{
+                    NetworkNode[] nodeArr = createNodeArr();
+                    nodeArr[integer1-1] = new NetworkNode(str);
+                    networkTree.root.getChildren()[integer0-1].setChildren(nodeArr);
+                }
+            }
+            if(findDepth(str) == 3){
+                int integer0 = str.charAt(0) -'0';
+                int integer1 = str.charAt(1) -'0';
+                int integer2 = str.charAt(2) -'0';
+                if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] == null){
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str);
+                }else{
+                    NetworkNode[] nodeArr = createNodeArr();
+                    nodeArr[integer2-1] = new NetworkNode(str);
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setChildren(nodeArr);
+                }
+            }
         }
         return networkTree;
     };
