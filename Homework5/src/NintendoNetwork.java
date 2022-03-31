@@ -62,7 +62,8 @@ public class NintendoNetwork {
     private static void load() throws FileNotFoundException {
 //        System.out.print("Please enter filename: ");
 //        String inputVal = input.next();
-        NetworkTree.networkTree.readFromFile("sbutopology.txt");
+        NetworkTree networkTree = new NetworkTree();
+        networkTree.readFromFile("sbutopology.txt");
         System.out.println(NetworkTree.networkTree);
     }
 

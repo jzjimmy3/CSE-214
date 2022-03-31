@@ -10,6 +10,7 @@ public class NetworkNode {
 
     public NetworkNode(String name) {
         this.name = name;
+        this.children = new NetworkNode[maxChildren];
     }
 
     public String getName() { return name; }
