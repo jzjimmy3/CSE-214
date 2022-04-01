@@ -20,6 +20,21 @@ public class NetworkTree {
     private NetworkNode root;
     private static NetworkNode cursor;
 
+    public NetworkNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(NetworkNode root) {
+        this.root = root;
+    }
+
+    public static NetworkNode getCursor() {
+        return cursor;
+    }
+
+    public static void setCursor(NetworkNode cursor) {
+        NetworkTree.cursor = cursor;
+    }
 
     /**
      * The function below represents the constructor for the NetworkTree
@@ -39,11 +54,37 @@ public class NetworkTree {
             cursor = networkTree.root;
         }
     }
-//    public NetworkNode cutCursor(){};
+    public NetworkNode cutCursor(){
+        if(root ==  null) return null;
+        NetworkNode temp = cursor;
+        for(int i = 0; i < temp.getChildren().length; i++){
+            temp.getChildren()[i] = null;
+        }
+        //remove node
+        for(int i = 0; i < temp.getParent().getChildren().length; i++){
+            if(temp.getParent().getChildren()[i] == cursor){
+                temp.getParent().getChildren()[i] = null;
+            }
+        }
+        //shift
+        for(int i = 0; i < temp.getParent().getChildren().length; i++){
+            if(i<7){
+                NetworkNode temp1 = temp.getParent().getChildren()[i];
+                temp.getParent().getChildren()[i] = temp.getParent().getChildren()[i+1];
+                temp.getParent().getChildren()[i+1] = temp1;
+            }
+        }
+        cursor = temp.getParent();
+        return temp;
+    };
     /**
      * The function below adds a child node after the cursor
      */
     public void addChild(int index, NetworkNode node){
+        System.out.println("CURSEOR Val: " + cursor.getName());
+        for(int i = 0; i <= findDepth(cursor.getName()); i++){
+            node.setName('1' + node.getName());
+        }
         if(cursor.getChildren()[index] != null) {
             System.out.println("There is a node there");
         }else if(cursor.getChildren()[index-1] == null){
@@ -69,7 +110,7 @@ public class NetworkTree {
     /**
      * The function below is a helper function, which finds the depth of a String
      */
-    public int findDepth(String str){
+    public static int findDepth(String str){
         int depth = 0;
         for(int i = 0; i < str.length(); i++){
             if(Character.isDigit(str.charAt(i))){
@@ -113,13 +154,13 @@ public class NetworkTree {
         while (sc.hasNext()){
             String str = sc.nextLine();
             if (findDepth(str) == 0) {
-                networkTree.root = new NetworkNode(str.substring(findDepth(str)), isLeaf(str));
+                networkTree.root = new NetworkNode(str, isLeaf(str));
                 cursor = networkTree.root;
             }
             if (findDepth(str) == 1){
                 NetworkNode temp = networkTree.root;
                 int integer0 = str.charAt(0)- '0';
-                networkNodeDepth1[integer0-1] = new NetworkNode(str.substring(findDepth(str)),isLeaf(str));
+                networkNodeDepth1[integer0-1] = new NetworkNode(str,isLeaf(str));
                 networkTree.root.setChildren(networkNodeDepth1);
                 networkTree.root.getChildren()[integer0-1].setParent(networkTree.root);
             }
@@ -127,11 +168,11 @@ public class NetworkTree {
                 int integer0 = str.charAt(0)- '0';
                 int integer1 = str.charAt(1) -'0';
                 if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str.substring(findDepth(str)),isLeaf(str));
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str,isLeaf(str));
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
                 }else{
                     NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer1-1] = new NetworkNode(str.substring(findDepth(str)),isLeaf(str));
+                    nodeArr[integer1-1] = new NetworkNode(str,isLeaf(str));
                     networkTree.root.getChildren()[integer0-1].setChildren(nodeArr);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
                 }
@@ -141,12 +182,12 @@ public class NetworkTree {
                 int integer1 = str.charAt(1) -'0';
                 int integer2 = str.charAt(2) -'0';
                 if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str.substring(findDepth(str)),isLeaf(str));
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str,isLeaf(str));
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
 
                 }else{
                     NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer2-1] = new NetworkNode(str.substring(findDepth(str)), isLeaf(str));
+                    nodeArr[integer2-1] = new NetworkNode(str,isLeaf(str));
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setChildren(nodeArr);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
                 }
@@ -164,6 +205,15 @@ public class NetworkTree {
     public void cursorToMinimalBrokenSubtree(){};
 
 
+    /**
+     * This function helps with indentation
+     * @param str
+     */
+    public static void indentation(String str){
+        for(int i = 0; i < findDepth(str); i++){
+            System.out.print("  ");
+        }
+    }
     /**
      * The function below prints the NetworkTree functions.
      * @return
@@ -192,12 +242,14 @@ public class NetworkTree {
             }
         }
         for(int i = 0; i < list.size(); i++){
+            String newStr = list.get(i);
+            indentation(list.get(i));
             if(list.get(i) == cursor.getName()){
-                System.out.println("->" + list.get(i) );
+                System.out.println("->" + newStr.substring(findDepth(newStr)));
             }else if(!isLeaf(list.get(i))) {
-                System.out.println("+" + list.get(i) );
+                System.out.println(" +" + newStr.substring(findDepth(newStr)));
             }else{
-                System.out.println("    " + list.get(i));
+                System.out.println(" " + newStr.substring(findDepth(newStr)));
 
             }
         }

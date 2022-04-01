@@ -1,4 +1,5 @@
 //Jimmy Zhang CSE 214 R02 ID: 112844431
+//is Ninetndo Leaf, check the plus sign and minus sign
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class NintendoNetwork {
     public static boolean quitValue = false;
     public static Scanner input = new Scanner(System.in);
+    public static NetworkNode pasteVal = null;
 
     public static void main(String[] args) throws FileNotFoundException {
         networkManager();
@@ -102,7 +104,7 @@ public class NintendoNetwork {
      * The function below adds a child
      */
     private static void addChild() {
-        NetworkTree.networkTree.addChild(4,new NetworkNode("HEER", false));
+        NetworkTree.networkTree.addChild(3,new NetworkNode("HEER", false));
 
     }
 
@@ -117,12 +119,14 @@ public class NintendoNetwork {
      * The function below removes the node and all of its children
      */
     private static void cut() {
+        pasteVal = NetworkTree.networkTree.cutCursor();
     }
 
     /**
      * The function below pastes the node and all of its children
      */
     private static void paste() {
+//        NetworkTree.networkTree.getCursor().setChildren(pasteVal.getChildren());
     }
 
     /**
