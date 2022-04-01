@@ -1,3 +1,5 @@
+//Jimmy Zhang CSE 214 R02 ID: 112844431
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -6,24 +8,41 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
+/**
+ * The class below represents the NetworkTree
+ * The main parameter are root and cursor, which are both Network Nodes
+ * @author Jimmy Zhang
+ */
 public class NetworkTree {
     public static NetworkTree networkTree = new NetworkTree();
     public static Scanner input = new Scanner(System.in);
 
     private NetworkNode root;
     private static NetworkNode cursor;
+
+
+    /**
+     * The function below represents the constructor for the NetworkTree
+     */
     public NetworkTree(){};
     public NetworkTree(NetworkNode root, NetworkNode cursor) {
         this.root = root;
         this.cursor = cursor;
     }
     public NetworkNode[] networkNodeDepth1 = new NetworkNode[9];
+
+    /**
+     * The function below moves the cursor node to the root of the tree.
+     */
     public void cursorToRoot(){
         if(networkTree.root != null){
             cursor = networkTree.root;
         }
     }
 //    public NetworkNode cutCursor(){};
+    /**
+     * The function below adds a child node after the cursor
+     */
     public void addChild(int index, NetworkNode node){
         if(cursor.getChildren()[index] != null) {
             System.out.println("There is a node there");
@@ -33,15 +52,23 @@ public class NetworkTree {
             cursor.getChildren()[index] = node;
         }
     }
+    /**
+     * The function moves the cursor node to its child
+     */
     public void cursorToChild(int index){
         if(cursor.getChildren()[index] != null){
             cursor = cursor.getChildren()[index];
         }
     };
+    /**
+     * The function moves the cursor node to its parents
+     */
     public void cursorToParent(){
         cursor = cursor.getParent();
     };
-
+    /**
+     * The function below is a helper function, which finds the depth of a String
+     */
     public int findDepth(String str){
         int depth = 0;
         for(int i = 0; i < str.length(); i++){
@@ -51,9 +78,19 @@ public class NetworkTree {
         }
         return depth;
     }
+
+    /**
+     * @return The create NodeArr creates a new NetworkNode
+     */
     public NetworkNode[] createNodeArr(){
         return new NetworkNode[9];
     }
+
+    /**
+     * The isLeaf function determine where a node is a leaf in the tree
+     * @param str
+     * @return
+     */
     public Boolean isLeaf(String str){
         for(int i = 0; i < str.length();i++){
             if(str.charAt(i) == '-'){
@@ -62,6 +99,12 @@ public class NetworkTree {
         }return false;
     }
 
+    /**
+     * The function below reads the file and builds a tree
+     * @param filename
+     * @return
+     * @throws FileNotFoundException
+     */
     public NetworkTree readFromFile(String filename) throws FileNotFoundException {
         URL path = NintendoNetwork.class.getResource("sbutopology.txt");
         File file = new File(path.getFile());
@@ -112,10 +155,19 @@ public class NetworkTree {
         return networkTree;
     };
 
+    /**
+     * The function below saves the binary to the file;
+     * @param tree
+     * @param filename
+     */
     public static void writeToFile(NetworkTree tree, String filename){};
     public void cursorToMinimalBrokenSubtree(){};
 
 
+    /**
+     * The function below prints the NetworkTree functions.
+     * @return
+     */
     @Override
     public String toString() {
         List<String> list = new ArrayList<>();

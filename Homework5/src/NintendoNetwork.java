@@ -1,6 +1,11 @@
+//Jimmy Zhang CSE 214 R02 ID: 112844431
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * The class below represents the NintendoNetwork which is the driver function
+ */
 public class NintendoNetwork {
     public static boolean quitValue = false;
     public static Scanner input = new Scanner(System.in);
@@ -12,6 +17,10 @@ public class NintendoNetwork {
             selectOption();
         }
     }
+
+    /**
+     * This function outputs the menuOptions
+     */
     public static void networkManager(){
         System.out.println("Welcome to the Nintendo Network Manager.\n" +
                 "\nMenu:\n" +
@@ -28,6 +37,11 @@ public class NintendoNetwork {
                 "    B) Mark cursor as broken/fixed\n" +
                 "    Q) Quit");
     }
+
+    /**
+     * This function allows user to select options
+     * @throws FileNotFoundException
+     */
     public static void selectOption() throws FileNotFoundException {
         switch(input.next().toUpperCase()){
             case "L" : load();
@@ -59,6 +73,10 @@ public class NintendoNetwork {
         }
     }
 
+    /**
+     * The function below loads the files
+     * @throws FileNotFoundException
+     */
     private static void load() throws FileNotFoundException {
 //        System.out.print("Please enter filename: ");
 //        String inputVal = input.next();
@@ -66,34 +84,56 @@ public class NintendoNetwork {
         networkTree.readFromFile("sbutopology.txt");
     }
 
+    /**
+     * The function below prints the file
+     */
     private static void print() {
         System.out.println(NetworkTree.networkTree);
     }
 
+    /**
+     * The function below moves the cursor to child
+     */
     private static void cursorToChild() {
         System.out.println("PLease choose an index");
         NetworkTree.networkTree.cursorToChild(input.nextInt());
     }
-
+    /**
+     * The function below adds a child
+     */
     private static void addChild() {
         NetworkTree.networkTree.addChild(4,new NetworkNode("HEER", false));
 
     }
 
+    /**
+     * The function below moves the cursor to the partner
+     */
     private static void cursorUp() {
         NetworkTree.networkTree.cursorToParent();
     }
 
+    /**
+     * The function below removes the node and all of its children
+     */
     private static void cut() {
     }
 
+    /**
+     * The function below pastes the node and all of its children
+     */
     private static void paste() {
     }
 
+    /**
+     * The function below moves the cursor to roots
+     */
     private static void cursorToRoot() {
         NetworkTree.networkTree.cursorToRoot();
     }
-
+    /**
+     * The function below saves the binary tree to a text file
+     */
     private static void save() {
     }
 
@@ -103,6 +143,9 @@ public class NintendoNetwork {
     private static void cursorBroken() {
     }
 
+    /**
+     * The function below exits the program
+     */
     public static void quit(){
         System.out.println("Make like a tree and leave!");
         quitValue = true;
