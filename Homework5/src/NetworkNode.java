@@ -8,9 +8,11 @@ public class NetworkNode {
     private NetworkNode[] children;
     final int maxChildren = 9;
 
-    public NetworkNode(String name) {
+    public NetworkNode(String name, boolean isNintendo) {
         this.name = name;
+        this.isNintendo = isNintendo;
         this.children = new NetworkNode[maxChildren];
+//        this.parent = parent;
     }
 
     public String getName() { return name; }
@@ -32,10 +34,13 @@ public class NetworkNode {
 
     @Override
     public String toString() {
-        return "NetworkNode{" +
-                "\nname='" + name + '\'' +
-                ", \nparent=" + parent +
+        return "\n NetworkNode{" +
+                "name='" + name + '\'' +
+                ", isNintendo=" + isNintendo +
+                ", isBroken=" + isBroken +
+                ", parent=" + parent +
                 ", \nchildren=" + Arrays.toString(children) +
+                ", maxChildren=" + maxChildren +
                 '}';
     }
 }

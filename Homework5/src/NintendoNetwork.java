@@ -64,19 +64,24 @@ public class NintendoNetwork {
 //        String inputVal = input.next();
         NetworkTree networkTree = new NetworkTree();
         networkTree.readFromFile("sbutopology.txt");
-        System.out.println(NetworkTree.networkTree);
     }
 
     private static void print() {
+        System.out.println(NetworkTree.networkTree);
     }
 
     private static void cursorToChild() {
+        System.out.println("PLease choose an index");
+        NetworkTree.networkTree.cursorToChild(input.nextInt());
     }
 
     private static void addChild() {
+        NetworkTree.networkTree.addChild(4,new NetworkNode("HEER", false));
+
     }
 
     private static void cursorUp() {
+        NetworkTree.networkTree.cursorToParent();
     }
 
     private static void cut() {
@@ -86,6 +91,7 @@ public class NintendoNetwork {
     }
 
     private static void cursorToRoot() {
+        NetworkTree.networkTree.cursorToRoot();
     }
 
     private static void save() {
