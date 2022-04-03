@@ -12,7 +12,7 @@ public class NintendoNetwork {
     public static Scanner input = new Scanner(System.in);
     public static NetworkNode pasteVal = null;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         networkManager();
         while(!quitValue){
             System.out.print("\nPlease select an option: ");
@@ -44,7 +44,7 @@ public class NintendoNetwork {
      * This function allows user to select options
      * @throws FileNotFoundException
      */
-    public static void selectOption() throws FileNotFoundException {
+    public static void selectOption() throws Exception {
         switch(input.next().toUpperCase()){
             case "L" : load();
                 break;
@@ -104,7 +104,7 @@ public class NintendoNetwork {
      * The function below adds a child
      */
     private static void addChild() {
-        NetworkTree.networkTree.addChild(3,new NetworkNode("HEER", false));
+        NetworkTree.networkTree.addChild(3,new NetworkNode("HEER", false, false));
 
     }
 
@@ -126,7 +126,9 @@ public class NintendoNetwork {
      * The function below pastes the node and all of its children
      */
     private static void paste() {
-//        NetworkTree.networkTree.getCursor().setChildren(pasteVal.getChildren());
+        System.out.println("Please enter an index: ");
+        int inputs = input.nextInt();
+        NetworkTree.networkTree.addChild(inputs,pasteVal);
     }
 
     /**
@@ -138,13 +140,16 @@ public class NintendoNetwork {
     /**
      * The function below saves the binary tree to a text file
      */
-    private static void save() {
+    private static void save() throws Exception {
+//        NetworkTree.writeToFile(NetworkTree.networkTree, "sbutopology1.txt");
     }
 
     private static void cursorToMinimal() {
+        NetworkTree.networkTree.cursorToMinimalBrokenSubtree();
     }
 
     private static void cursorBroken() {
+        NetworkTree.networkTree.cursorBrokenStatus();
     }
 
     /**

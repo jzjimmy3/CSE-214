@@ -1,7 +1,6 @@
 //Jimmy Zhang CSE 214 R02 ID: 112844431
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,7 @@ public class NetworkTree {
     }
     public NetworkNode cutCursor(){
         if(root ==  null) return null;
+        NetworkNode temp2= cursor;
         NetworkNode temp = cursor;
         for(int i = 0; i < temp.getChildren().length; i++){
             temp.getChildren()[i] = null;
@@ -75,7 +75,7 @@ public class NetworkTree {
             }
         }
         cursor = temp.getParent();
-        return temp;
+        return temp2;
     };
     /**
      * The function below adds a child node after the cursor
@@ -154,13 +154,13 @@ public class NetworkTree {
         while (sc.hasNext()){
             String str = sc.nextLine();
             if (findDepth(str) == 0) {
-                networkTree.root = new NetworkNode(str, isLeaf(str));
+                networkTree.root = new NetworkNode(str, isLeaf(str), false);
                 cursor = networkTree.root;
             }
             if (findDepth(str) == 1){
                 NetworkNode temp = networkTree.root;
                 int integer0 = str.charAt(0)- '0';
-                networkNodeDepth1[integer0-1] = new NetworkNode(str,isLeaf(str));
+                networkNodeDepth1[integer0-1] = new NetworkNode(str,isLeaf(str), false);
                 networkTree.root.setChildren(networkNodeDepth1);
                 networkTree.root.getChildren()[integer0-1].setParent(networkTree.root);
             }
@@ -168,11 +168,11 @@ public class NetworkTree {
                 int integer0 = str.charAt(0)- '0';
                 int integer1 = str.charAt(1) -'0';
                 if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str,isLeaf(str));
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str,isLeaf(str), false);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
                 }else{
                     NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer1-1] = new NetworkNode(str,isLeaf(str));
+                    nodeArr[integer1-1] = new NetworkNode(str,isLeaf(str), false);
                     networkTree.root.getChildren()[integer0-1].setChildren(nodeArr);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
                 }
@@ -182,12 +182,12 @@ public class NetworkTree {
                 int integer1 = str.charAt(1) -'0';
                 int integer2 = str.charAt(2) -'0';
                 if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str,isLeaf(str));
+                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str,isLeaf(str), false);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
 
                 }else{
                     NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer2-1] = new NetworkNode(str,isLeaf(str));
+                    nodeArr[integer2-1] = new NetworkNode(str,isLeaf(str), false);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setChildren(nodeArr);
                     networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
                 }
@@ -199,10 +199,45 @@ public class NetworkTree {
     /**
      * The function below saves the binary to the file;
      * @param tree
-     * @param filename
+     * @param fileName
      */
-    public static void writeToFile(NetworkTree tree, String filename){};
-    public void cursorToMinimalBrokenSubtree(){};
+    public static void writeToFile(NetworkTree tree, String fileName) throws Exception {
+//        FileWriter myWriter = new FileWriter("filename1.txt");
+//        tree.cursorToRoot();
+//        myWriter.write(cursor.getName());
+//        while(cursor != null){
+//            for(int i =0; i < 9; i++){
+//                if(cursor.getChildren()[i] != null){
+//                    cursor = cursor.getChildren()[i];
+//                    myWriter.write(cursor.getChildren()[i].getName());
+//                }
+//            }
+//        }
+//        myWriter.close();
+    };
+    public void cursorToMinimalBrokenSubtree(){
+        if(cursor == null) return;
+        while(cursor != null){
+            for(int i = 0; i<9; i++){
+                if(cursor.getChildren()[i].isBroken()){
+                    cursor = cursor.getChildren()[i];
+                    return;
+                }
+            }
+        }
+    };
+    /**
+     * The function below determines the broken status of the device and sets it accordingly
+     */
+    public void cursorBrokenStatus(){
+        if(cursor != null){
+            if(cursor.isBroken()){
+                cursor.setBroken(false);
+            }else{
+                cursor.setBroken(true);
+            }
+        }
+    }
 
 
     /**

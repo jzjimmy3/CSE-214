@@ -21,9 +21,10 @@ public class NetworkNode {
      * @param name
      * @param isNintendo
      */
-    public NetworkNode(String name, boolean isNintendo) {
+    public NetworkNode(String name, boolean isNintendo, boolean isBroken) {
         this.name = name;
         this.isNintendo = isNintendo;
+        this.isBroken = isBroken;
         this.children = new NetworkNode[maxChildren];
 //        this.parent = parent;
     }
