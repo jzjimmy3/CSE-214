@@ -109,7 +109,9 @@ public class NintendoNetwork {
      * The function below adds a child
      */
     private static void addChild() {
-        NetworkTree.networkTree.addChild(3,new NetworkNode("HEER", false, false));
+        System.out.println("Please enter an index");
+        int inputs = input.nextInt();
+        NetworkTree.networkTree.addChild(inputs,new NetworkNode("HEER", false, false));
 
     }
 
@@ -133,7 +135,7 @@ public class NintendoNetwork {
     private static void paste() {
         System.out.println("Please enter an index: ");
         int inputs = input.nextInt();
-        NetworkTree.networkTree.addChild(inputs,pasteVal);
+        NetworkTree.networkTree.pasteChild(inputs,pasteVal);
     }
 
     /**

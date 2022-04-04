@@ -25,6 +25,7 @@ public class NetworkNode {
         this.name = name;
         this.isNintendo = isNintendo;
         this.isBroken = isBroken;
+//        this.children = children;
         this.children = new NetworkNode[maxChildren];
 //        this.parent = parent;
     }

@@ -88,7 +88,24 @@ public class NetworkTree {
         }
         if(cursor.getChildren()[index] != null) {
             System.out.println("There is a node there");
-        }else if(cursor.getChildren()[index-1] == null){
+        }else if(index > 0 && cursor.getChildren()[index-1] == null){
+            System.out.println("By placing here, you make a hole in the array");
+        }else{
+            cursor.getChildren()[index] = node;
+        }
+    }
+    public void pasteChild(int index, NetworkNode node){
+        System.out.println("CURSEOR Val: " + cursor.getName());
+        node.setName(node.getName().substring(findDepth(node.getName())));
+        for(int i = 0; i <= findDepth(cursor.getName()); i++){
+            node.setName('1' + node.getName());
+        }
+        for(int i = 0; i< 9; i++){
+            System.out.println(node.getChildren()[i]);
+        }
+        if(cursor.getChildren()[index] != null) {
+            System.out.println("There is a node there");
+        }else if(index > 0 && cursor.getChildren()[index-1] == null){
             System.out.println("By placing here, you make a hole in the array");
         }else{
             cursor.getChildren()[index] = node;
@@ -265,9 +282,5 @@ public class NetworkTree {
             }
         }
         return"";
-
-//        return "NetworkTree{" +
-//                "root=" + networkTree.root +
-//                '}';
     }
 }
