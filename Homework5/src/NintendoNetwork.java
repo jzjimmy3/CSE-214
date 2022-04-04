@@ -79,11 +79,16 @@ public class NintendoNetwork {
      * The function below loads the files
      * @throws FileNotFoundException
      */
-    private static void load() throws FileNotFoundException {
-//        System.out.print("Please enter filename: ");
-//        String inputVal = input.next();
+    private static void load() throws Exception {
+        System.out.print("Please enter filename: ");
+        String inputVal = input.next();
         NetworkTree networkTree = new NetworkTree();
-        networkTree.readFromFile("sbutopology.txt");
+        try{
+            networkTree.readFromFile(inputVal);
+            System.out.println(inputVal + " loaded.");
+        }catch (Exception e){
+            System.out.println(inputVal + " not found.");
+        }
     }
 
     /**
@@ -97,7 +102,7 @@ public class NintendoNetwork {
      * The function below moves the cursor to child
      */
     private static void cursorToChild() {
-        System.out.println("PLease choose an index");
+        System.out.print("PLease choose an index: ");
         NetworkTree.networkTree.cursorToChild(input.nextInt());
     }
     /**

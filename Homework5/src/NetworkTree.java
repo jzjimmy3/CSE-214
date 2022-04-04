@@ -1,6 +1,7 @@
 //Jimmy Zhang CSE 214 R02 ID: 112844431
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,50 +148,25 @@ public class NetworkTree {
      * @throws FileNotFoundException
      */
     public NetworkTree readFromFile(String filename) throws FileNotFoundException {
-        URL path = NintendoNetwork.class.getResource("sbutopology.txt");
+        URL path = NintendoNetwork.class.getResource(filename);
         File file = new File(path.getFile());
         Scanner sc = new Scanner(file);
         networkTree.root = null;
         while (sc.hasNext()){
             String str = sc.nextLine();
+            NetworkNode newNode = new NetworkNode(str, isLeaf(str), false);
             if (findDepth(str) == 0) {
-                networkTree.root = new NetworkNode(str, isLeaf(str), false);
+                networkTree.root = newNode;
                 cursor = networkTree.root;
             }
-            if (findDepth(str) == 1){
+            if (findDepth(str) >= 1){
                 NetworkNode temp = networkTree.root;
-                int integer0 = str.charAt(0)- '0';
-                networkNodeDepth1[integer0-1] = new NetworkNode(str,isLeaf(str), false);
-                networkTree.root.setChildren(networkNodeDepth1);
-                networkTree.root.getChildren()[integer0-1].setParent(networkTree.root);
-            }
-            if(findDepth(str) == 2){
-                int integer0 = str.charAt(0)- '0';
-                int integer1 = str.charAt(1) -'0';
-                if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1] = new NetworkNode(str,isLeaf(str), false);
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
-                }else{
-                    NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer1-1] = new NetworkNode(str,isLeaf(str), false);
-                    networkTree.root.getChildren()[integer0-1].setChildren(nodeArr);
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setParent(networkTree.root.getChildren()[integer0-1]);
+                int position = str.charAt(findDepth(str)-1)-'0'-1;
+                for(int i = 0; i < findDepth(str) - 1; i++){
+                    temp = temp.getChildren()[(str.charAt(i) - '0')-1];
                 }
-            }
-            if(findDepth(str) == 3){
-                int integer0 = str.charAt(0) -'0';
-                int integer1 = str.charAt(1) -'0';
-                int integer2 = str.charAt(2) -'0';
-                if(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] == null){
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1] = new NetworkNode(str,isLeaf(str), false);
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
-
-                }else{
-                    NetworkNode[] nodeArr = createNodeArr();
-                    nodeArr[integer2-1] = new NetworkNode(str,isLeaf(str), false);
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].setChildren(nodeArr);
-                    networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1].getChildren()[integer2-1].setParent(networkTree.root.getChildren()[integer0-1].getChildren()[integer1-1]);
-                }
+                temp.getChildren()[position] = newNode;
+                temp.getChildren()[position].setParent(temp);
             }
         }
         return networkTree;
