@@ -61,7 +61,7 @@ public class NetworkNode {
                 "name='" + name + '\'' +
                 ", isNintendo=" + isNintendo +
                 ", isBroken=" + isBroken +
-//                ", parent=" + parent +
+                ", parent=" + parent +
                 ", \nchildren=" + Arrays.toString(children) +
                 ", maxChildren=" + maxChildren +
                 '}';

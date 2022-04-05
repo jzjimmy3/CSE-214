@@ -102,64 +102,112 @@ public class NintendoNetwork {
      * The function below moves the cursor to child
      */
     private static void cursorToChild() {
-        System.out.print("PLease choose an index: ");
-        NetworkTree.networkTree.cursorToChild(input.nextInt());
+        try{
+            System.out.print("PLease choose an index: ");
+            NetworkTree.networkTree.cursorToChild(input.nextInt());
+        }catch (Exception e){
+            System.out.println("Unable to move cursor to child. Please Try Again.");
+        }
     }
     /**
      * The function below adds a child
      */
     private static void addChild() {
-        System.out.println("Please enter an index");
-        int inputs = input.nextInt();
-        NetworkTree.networkTree.addChild(inputs,new NetworkNode("HEER", false, false));
-
+        Boolean isNintendo = false;
+        try{
+            System.out.print("Please enter an index: ");
+            int index = input.nextInt();
+            System.out.print("Please enter device name: ");
+            String device = input.next();
+            System.out.print("Is this Nintendo(y/n): ");
+            Character nintendo = input.next().charAt(0);
+            if(Character.toUpperCase(nintendo) == 'Y'){
+                isNintendo = true;
+            }else if(Character.toUpperCase(nintendo) == 'N'){
+                isNintendo = false;
+            }else{
+                throw new Exception("Invalid Input. Try Again. ");
+            }
+            NetworkTree.networkTree.addChild(index,new NetworkNode(device, isNintendo, false));
+            System.out.println("Nintendo added");
+        }catch (Exception e){
+            System.out.println("Unable to add child. Please Try Again.");
+        }
     }
 
     /**
      * The function below moves the cursor to the partner
      */
     private static void cursorUp() {
-        NetworkTree.networkTree.cursorToParent();
+        try{
+            NetworkTree.networkTree.cursorToParent();
+        }catch(Exception e){
+            System.out.println("Unable to move cursor to parent. Please Try Again.");
+        }
     }
 
     /**
      * The function below removes the node and all of its children
      */
     private static void cut() {
-        pasteVal = NetworkTree.networkTree.cutCursor();
+        try{
+            pasteVal = NetworkTree.networkTree.cutCursor();
+        }catch(Exception e){
+            System.out.println("Unable to cut cursor. Please Try Again.");
+        }
     }
 
     /**
      * The function below pastes the node and all of its children
      */
     private static void paste() {
-        System.out.println("Please enter an index: ");
-        int inputs = input.nextInt();
-        NetworkTree.networkTree.pasteChild(inputs,pasteVal);
+        try{
+            System.out.print("Please enter an index: ");
+            int inputs = input.nextInt();
+            NetworkTree.networkTree.pasteChild(inputs,pasteVal);
+        }catch(Exception e){
+            System.out.println("Unable to paste cursor. Please Try Again.");
+        }
     }
 
     /**
      * The function below moves the cursor to roots
      */
     private static void cursorToRoot() {
-        NetworkTree.networkTree.cursorToRoot();
+        try{
+            NetworkTree.networkTree.cursorToRoot();
+        }catch(Exception e){
+            System.out.println("Unable to paste cursor. Please Try Again.");
+        }
     }
     /**
      * The function below saves the binary tree to a text file
      */
     private static void save() throws Exception {
-        NetworkTree.networkTree.writeToFile(NetworkTree.networkTree, "sbutopology1.txt");
-        System.out.println("File Saved, you have now exited the program");
-        quitValue = true;
-
+        try{
+            String fileName = input.next();
+            NetworkTree.networkTree.writeToFile(NetworkTree.networkTree, fileName);
+            System.out.println("File Saved, you have now exited the program");
+            quitValue = true;
+        }catch (Exception e){
+            System.out.println("Unable to save file. Please Try Again");
+        }
     }
 
     private static void cursorToMinimal() {
-        NetworkTree.networkTree.cursorToMinimalBrokenSubtree();
+        try{
+            NetworkTree.networkTree.cursorToMinimalBrokenSubtree();
+        }catch (Exception e){
+            System.out.println("Unable to move cursor to minimal. Please Try Again");
+        }
     }
 
     private static void cursorBroken() {
-        NetworkTree.networkTree.cursorBrokenStatus();
+        try{
+            NetworkTree.networkTree.cursorBrokenStatus();
+        } catch (Exception e){
+            System.out.println("Unable to change cursor status. Please Try Again");
+        }
     }
 
     /**

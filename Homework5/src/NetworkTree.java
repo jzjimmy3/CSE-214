@@ -53,6 +53,7 @@ public class NetworkTree {
     public void cursorToRoot(){
         if(networkTree.root != null){
             cursor = networkTree.root;
+            System.out.println("Cursor moved to " + cursor.getName().substring(findDepth(cursor.getName())));
         }
     }
     public NetworkNode cutCursor(){
@@ -66,6 +67,7 @@ public class NetworkTree {
         for(int i = 0; i < temp.getParent().getChildren().length; i++){
             if(temp.getParent().getChildren()[i] == cursor){
                 temp.getParent().getChildren()[i] = null;
+                System.out.print(temp.getName().substring(findDepth(temp.getName()))+ " is cut. cursor is at ");
             }
         }
         //shift
@@ -77,47 +79,48 @@ public class NetworkTree {
             }
         }
         cursor = temp.getParent();
+        System.out.println(cursor.getName().substring(findDepth(cursor.getName())));
         return temp2;
     };
     /**
      * The function below adds a child node after the cursor
      */
     public void addChild(int index, NetworkNode node){
-        System.out.println("CURSEOR Val: " + cursor.getName());
         for(int i = 0; i <= findDepth(cursor.getName()); i++){
             node.setName('1' + node.getName());
         }
-        if(cursor.getChildren()[index] != null) {
+        if(cursor.getChildren()[index-1] != null) {
             System.out.println("There is a node there");
-        }else if(index > 0 && cursor.getChildren()[index-1] == null){
+        }else if(index-1 > 0 && cursor.getChildren()[index-2] == null){
             System.out.println("By placing here, you make a hole in the array");
         }else{
-            cursor.getChildren()[index] = node;
+            cursor.getChildren()[index-1] = node;
+            node.setParent(cursor);
+            cursor = cursor.getChildren()[index-1];
         }
     }
     public void pasteChild(int index, NetworkNode node){
-        System.out.println("CURSEOR Val: " + cursor.getName());
         node.setName(node.getName().substring(findDepth(node.getName())));
-        for(int i = 0; i <= findDepth(cursor.getName()); i++){
-            node.setName('1' + node.getName());
+        for(int i = 1; i <= findDepth(cursor.getName()+1); i++){
+            node.setName( 1 + node.getName());
         }
-        for(int i = 0; i< 9; i++){
-            System.out.println(node.getChildren()[i]);
-        }
-        if(cursor.getChildren()[index] != null) {
+        if(cursor.getChildren()[index-1] != null) {
             System.out.println("There is a node there");
-        }else if(index > 0 && cursor.getChildren()[index-1] == null){
+        }else if(index-1 > 0 && cursor.getChildren()[index-2] == null){
             System.out.println("By placing here, you make a hole in the array");
         }else{
-            cursor.getChildren()[index] = node;
+            cursor.getChildren()[index-1] = node;
+            System.out.println(node.getName().substring(findDepth(node.getName())) + " pasted as child of "
+            + cursor.getName().substring(findDepth(cursor.getName())));
         }
     }
     /**
      * The function moves the cursor node to its child
      */
     public void cursorToChild(int index){
-        if(cursor.getChildren()[index] != null){
-            cursor = cursor.getChildren()[index];
+        if(cursor.getChildren()[index-1] != null){
+            cursor = cursor.getChildren()[index-1];
+            System.out.println("Cursor moved to " + cursor.getName().substring(findDepth(cursor.getName())));
         }
     };
     /**
@@ -125,6 +128,7 @@ public class NetworkTree {
      */
     public void cursorToParent(){
         cursor = cursor.getParent();
+        System.out.println("Cursor moved to " + cursor.getName().substring(findDepth(cursor.getName())));
     };
     /**
      * The function below is a helper function, which finds the depth of a String
@@ -283,15 +287,22 @@ public class NetworkTree {
         for(int i = 0; i < list.size(); i++){
             String newStr = list.get(i);
             indentation(list.get(i));
+            List<NetworkNode> res = preOrder();
             if(list.get(i) == cursor.getName()){
-                System.out.println("->" + newStr.substring(findDepth(newStr)));
+                System.out.print("->" + newStr.substring(findDepth(newStr)));
             }else if(!isLeaf(list.get(i))) {
-                System.out.println(" +" + newStr.substring(findDepth(newStr)));
+                System.out.print(" +" + newStr.substring(findDepth(newStr)));
             }else{
-                System.out.println(" " + newStr.substring(findDepth(newStr)));
-
+                System.out.print(" " + newStr.substring(findDepth(newStr)));
             }
+            for(int j = 0; j< res.size();j++) {
+                if (list.get(i) == res.get(j).getName() && res.get(j).isBroken()) {
+                    System.out.print(" ~Fault~");
+                }
+            }
+            System.out.println();
         }
+
         return"";
     }
 }
