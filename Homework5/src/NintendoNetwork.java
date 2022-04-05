@@ -1,5 +1,6 @@
 //Jimmy Zhang CSE 214 R02 ID: 112844431
 //is Ninetndo Leaf, check the plus sign and minus sign
+//Change Path to Soruce file!
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -185,10 +186,10 @@ public class NintendoNetwork {
      */
     private static void save() throws Exception {
         try{
+            System.out.print("Please enter a filename: ");
             String fileName = input.next();
             NetworkTree.networkTree.writeToFile(NetworkTree.networkTree, fileName);
-            System.out.println("File Saved, you have now exited the program");
-            quitValue = true;
+            System.out.println("File saved.");
         }catch (Exception e){
             System.out.println("Unable to save file. Please Try Again");
         }
