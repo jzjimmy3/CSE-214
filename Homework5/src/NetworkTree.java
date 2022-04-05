@@ -2,6 +2,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,28 +195,38 @@ public class NetworkTree {
      * @param tree
      * @param fileName
      */
-    public static void writeToFile(NetworkTree tree, String fileName) throws Exception {
-//        FileWriter myWriter = new FileWriter("filename1.txt");
-//        tree.cursorToRoot();
-//        myWriter.write(cursor.getName());
-//        while(cursor != null){
-//            for(int i =0; i < 9; i++){
-//                if(cursor.getChildren()[i] != null){
-//                    cursor = cursor.getChildren()[i];
-//                    myWriter.write(cursor.getChildren()[i].getName());
-//                }
-//            }
-//        }
-//        myWriter.close();
+    public void writeToFile(NetworkTree tree, String fileName) throws Exception {
+        FileWriter myWriter = new FileWriter(fileName);
+        List<NetworkNode> res = preOrder();
+        for(int i = 0; i< res.size();i++){
+            myWriter.write(res.get(i).getName() + "\n");
+        }
+        myWriter.close();
     };
-    public void cursorToMinimalBrokenSubtree(){
-        if(cursor == null) return;
-        while(cursor != null){
-            for(int i = 0; i<9; i++){
-                if(cursor.getChildren()[i].isBroken()){
-                    cursor = cursor.getChildren()[i];
-                    return;
+
+    public List<NetworkNode> preOrder() {
+        List<NetworkNode> res = new ArrayList<>();
+        if(root == null){ return res; }
+        Stack<NetworkNode> stack = new Stack<>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            NetworkNode current = stack.peek();
+            stack.pop();
+            res.add(current);
+            for(int i = 8; i>=0; i--){
+                if(current.getChildren()[i] != null){
+                    stack.push(current.getChildren()[i]);
                 }
+            }
+        }
+        return res;
+    }
+    public void cursorToMinimalBrokenSubtree(){
+        List<NetworkNode> res = preOrder();
+        for(int i = 0; i< res.size();i++){
+            if(res.get(i).isBroken()){
+                cursor = res.get(i);
+                return;
             }
         }
     };

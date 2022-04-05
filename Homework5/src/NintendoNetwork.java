@@ -148,7 +148,10 @@ public class NintendoNetwork {
      * The function below saves the binary tree to a text file
      */
     private static void save() throws Exception {
-//        NetworkTree.writeToFile(NetworkTree.networkTree, "sbutopology1.txt");
+        NetworkTree.networkTree.writeToFile(NetworkTree.networkTree, "sbutopology1.txt");
+        System.out.println("File Saved, you have now exited the program");
+        quitValue = true;
+
     }
 
     private static void cursorToMinimal() {
