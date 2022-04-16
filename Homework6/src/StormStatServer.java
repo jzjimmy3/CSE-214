@@ -1,3 +1,9 @@
+//Javadocs
+//Need to solve edit method, when pressing enter, is should skip in scanner
+//Need to solve delete and save and automatically load data.
+
+
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +79,6 @@ public class StormStatServer {
     private static void addStorm() {
         try{
             Storm.addStorm();
-            writeToFile();
         }catch (Exception e){
             System.out.println("Couldn't add storm, try again");
         }
@@ -150,6 +155,7 @@ public class StormStatServer {
 
     private static void saveAndQuit() throws Exception {
         writeToFile();
+        System.out.println("File saved to hurricane.ser; feel free to use the weather channel in the meantime. ");
         quitValue = true;
     }
 
@@ -173,5 +179,7 @@ public class StormStatServer {
     private static void Quit() {
         System.out.println("Goodbye, it's hard to hold an (electric) candle in the cold November (and April!) rain!.");
         quitValue = true;
+        File myObj = new File("hurricane.ser");
+        myObj.delete();
     }
 }
