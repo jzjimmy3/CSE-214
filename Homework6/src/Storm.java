@@ -50,6 +50,7 @@ public class Storm implements Serializable {
         Storm storm = null;
         if(StormStatServer.getDatabase().containsKey(name)){
             storm = StormStatServer.getDatabase().get(name);
+            System.out.println(storm.toString());
         }else{
             System.out.println("Storm is not in record and cannot be looked up");
         }
@@ -101,11 +102,7 @@ public class Storm implements Serializable {
 
     @Override
     public String toString() {
-        return "Storm{" +
-                "name='" + name + '\'' +
-                ", precipitation=" + precipitation +
-                ", windSpeed=" + windSpeed +
-                ", date='" + date + '\'' +
-                '}';
+        System.out.print(name + "       " + windSpeed + "       " + precipitation + "    " + date );
+        return "";
     }
 }
