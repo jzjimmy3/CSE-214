@@ -1,8 +1,4 @@
-//Javadocs
-//Need to solve edit method, when pressing enter, is should skip in scanner
-//Need to solve delete and save and automatically load data.
-
-
+//Jimmy Zhang CSE 214 R02 ID: 112844431
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +6,9 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * this class represents the driver class for the storm
+ */
 public class StormStatServer {
     public static Scanner input = new Scanner(System.in);
     public static boolean quitValue = false;
@@ -22,25 +21,29 @@ public class StormStatServer {
     public static void setDatabase(HashMap<String, Storm> database) {
         StormStatServer.database = database;
     }
-
-
-
+    /**
+     * the function below represents the main method
+     */
     public static void main(String[] args) throws Exception {
         System.out.println("\nWelcome to the StormStatServer, we may not be able to make it rain, but we sure can tell you when it happened!\n");
-        displayMenu();
-//        writeToFile();
         File file = new File("hurricane.ser");
         if(file.isFile()){
             readFile();
+            System.out.println("hurricane.ser was found and loaded.\n");
         }else{
             System.out.println("No previous data found\n");
         }
+
+        displayMenu();
         while(!quitValue){
             menuOptions();
         }
     }
+    /**
+     * the function below displays the menu when it is called
+     */
     public static void displayMenu(){
-        System.out.println("" +
+        System.out.println("Menu:\n" +
                 "    A) Add A Storm\n" +
                 "    L) Look Up A Storm\n" +
                 "    D) Delete A Storm\n" +
@@ -50,7 +53,9 @@ public class StormStatServer {
                 "    X) Save and quit\n" +
                 "    Q) Quit and delete saved data ");
     }
-
+    /**
+     *the function below asks for user inputs and properly executes a list of functions
+     */
     public static void menuOptions() throws Exception {
         System.out.print("\nPlease select an option: ");
         switch (input.next().toUpperCase()){
@@ -75,7 +80,9 @@ public class StormStatServer {
                 break;
         }
     }
-
+    /**
+     * the function below adds a storm to the data base
+     */
     private static void addStorm() {
         try{
             Storm.addStorm();
@@ -83,7 +90,9 @@ public class StormStatServer {
             System.out.println("Couldn't add storm, try again");
         }
     }
-
+    /**
+     * the function below looks up a storm to the data base
+     */
     private static void lookStorm() {
         try{
             Storm.lookStorm();
@@ -91,7 +100,9 @@ public class StormStatServer {
             System.out.println("Couldn't look up storm, try again");
         }
     }
-
+    /**
+     * the function below removes a storm to the data base
+     */
     private static void removeStorm() {
         try{
             Storm.removeStorm();
@@ -99,7 +110,9 @@ public class StormStatServer {
             System.out.println("Couldn't remove storm, try again");
         }
     }
-
+    /**
+     * the function below edits a storm to the data base
+     */
     private static void editStorm() {
         try{
             Storm.editStorm();
@@ -107,6 +120,9 @@ public class StormStatServer {
             System.out.println("Unable to edit storm, try again");
         }
     }
+    /**
+     * the function below prints the storm in the data base by the value of precipitation
+     */
     private static void printByRain() {
         Set<String> keySet = database.keySet();
         ArrayList<Storm> stormList = new ArrayList<Storm>();
@@ -129,7 +145,9 @@ public class StormStatServer {
             System.out.println(stormList.get(k));
         }
     }
-
+    /**
+     * the function below prints the storm in the data base by the value of windspeed
+     */
     private static void printByWind() {
         Set<String> keySet = database.keySet();
         ArrayList<Storm> stormList = new ArrayList<Storm>();
@@ -152,13 +170,18 @@ public class StormStatServer {
             System.out.println(stormList.get(k));
         }
     }
-
+    /**
+     * the function below saves and quits the function
+     */
     private static void saveAndQuit() throws Exception {
         writeToFile();
         System.out.println("File saved to hurricane.ser; feel free to use the weather channel in the meantime. ");
         quitValue = true;
     }
 
+    /**
+     * the function below writes the database to a serializable file
+     */
     public static void writeToFile() throws Exception {
 //        database.put("A",new Storm("A",2.3,23,"ASdf"));
         FileOutputStream fileOut = new FileOutputStream("hurricane.ser");
@@ -167,7 +190,9 @@ public class StormStatServer {
         out.close();
         fileOut.close();
     }
-
+    /**
+     * the function below reads a file and deserializes it
+     */
     private static void readFile() throws IOException, ClassNotFoundException {
         FileInputStream fileInput = new FileInputStream("hurricane.ser");
         ObjectInputStream in = new ObjectInputStream(fileInput);
@@ -176,6 +201,9 @@ public class StormStatServer {
         fileInput.close();
     }
 
+    /**
+     * the function below quits the function
+     */
     private static void Quit() {
         System.out.println("Goodbye, it's hard to hold an (electric) candle in the cold November (and April!) rain!.");
         quitValue = true;

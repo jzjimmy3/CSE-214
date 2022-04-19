@@ -1,12 +1,15 @@
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+//Jimmy Zhang CSE 214 R02 ID: 112844431
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
-
+/**
+ * This class represents the Storm class and it implements serializable.
+ * The class has private fields of name, precipitation, and windspeed
+ * @author Jimmy Zhang
+ */
 public class Storm implements Serializable {
     private String name;
     private double precipitation;
@@ -14,6 +17,14 @@ public class Storm implements Serializable {
     private String date = "YYYY-MM-DD";
     public static Scanner input = new Scanner(System.in);
 
+
+    /**
+     * The function below represents the Storm constructor
+     * @param name
+     * @param precipitation
+     * @param windSpeed
+     * @param date
+     */
     public Storm(String name, double precipitation, double windSpeed, String date) {
         this.name = name;
         this.precipitation = precipitation;
@@ -21,6 +32,10 @@ public class Storm implements Serializable {
         this.date = date;
     }
 
+
+    /**
+     * The code below represents the getter and setter for the fileds
+     */
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -33,6 +48,10 @@ public class Storm implements Serializable {
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
 
+
+    /**
+     * The code below adds a storm to the database
+     */
     public static void addStorm() throws ParseException {
         System.out.print("Please enter name: ");
         String name = input.next();
@@ -55,18 +74,24 @@ public class Storm implements Serializable {
         System.out.println(name + " added.");
     }
 
+    /**
+     * The code below looks up a storm in the data base and prints out the respective fields
+     */
     public static void lookStorm(){
         System.out.print("Please enter name: ");
         String name = input.next();
         Storm storm = null;
         if(StormStatServer.getDatabase().containsKey(name)){
             storm = StormStatServer.getDatabase().get(name);
-            System.out.println("Storm " + storm.getName() +": Date " + storm.getDate() +", " + storm.getWindSpeed()
+            System.out.println("\nStorm " + storm.getName() +": Date " + storm.getDate() +", " + storm.getWindSpeed()
                     + " km/h winds, " + storm.getPrecipitation() + " cm of rain");
         }else{
             System.out.println("Storm is not in record and cannot be looked up");
         }
     }
+    /**
+     * the code below removes the storm from the database
+     */
     public static void removeStorm(){
         System.out.print("Please enter name: ");
         String name = input.next();
@@ -78,6 +103,10 @@ public class Storm implements Serializable {
             System.out.println("Storm " + name + " does not exist.");
         }
     }
+
+    /**
+     * the code below edits the storm in the data base by using the setter methods
+     */
     public static void editStorm() throws ParseException {
         System.out.print("Please enter name: ");
         String name = input.next();
@@ -105,21 +134,9 @@ public class Storm implements Serializable {
         }
     }
 
-    public class AppendingObjectOutputStream extends ObjectOutputStream {
-
-        public AppendingObjectOutputStream(OutputStream out) throws IOException {
-            super(out);
-        }
-
-        @Override
-        protected void writeStreamHeader() throws IOException {
-            // do not write a header, but reset:
-            // this line added after another question
-            // showed a problem with the original
-            reset();
-        }
-
-    }
+    /**
+     * the method below represents the toString method
+     */
 
     @Override
     public String toString() {
