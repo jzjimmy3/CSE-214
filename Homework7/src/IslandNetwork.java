@@ -1,8 +1,13 @@
+//Jimmy Zhang 112844431 CSE-214 R02
+
 import big.data.DataSource;
 import org.w3c.dom.Node;
 
 import java.util.*;
-
+/**
+ * The class below represents the Island Network, this is where the graphs are created.
+ * @author Jimmy Zhang
+ */
 public class IslandNetwork {
     public HashMap<String, LinkedList<String>> adjList = new HashMap();
     public HashMap<String, Integer> indexes = new HashMap<>();
@@ -12,7 +17,9 @@ public class IslandNetwork {
     public static ArrayList<String> str3 = new ArrayList<>();
 //    public static ArrayList<String> str4 = new ArrayList<>();
 //    public static ArrayList<Integer> weight = new ArrayList<>();
-
+    /**
+     * The functionality below represents the getter and setter functionality for the class
+     */
     public static ArrayList<String> getStr1() {
         return str1;
     }
@@ -31,6 +38,9 @@ public class IslandNetwork {
 
     int index = -1;
 //    public IslandNetwork() {};
+    /**
+     * The code below represents the constructor for the class and takes in ArrayList<String> vertices
+     */
     public IslandNetwork(ArrayList<String> vertices) {
         for (int i = 0; i <vertices.size() ; i++) {
             String vertex = vertices.get(i);
@@ -39,6 +49,9 @@ public class IslandNetwork {
             indexes.put(vertex, ++index);
         }
     }
+    /**
+     * The code below represents and empty constructor
+     */
     public IslandNetwork() { }
     public static IslandNetwork graphs = new IslandNetwork(vertices);
 
@@ -46,6 +59,11 @@ public class IslandNetwork {
         return graphs;
     }
 
+    /**
+     * The code below creates an edge by taking source and destination parameters
+     * @param source
+     * @param destination
+     */
     public void addEdge(String source, String destination) {
         //add forward edge
         LinkedList<String> list;
@@ -53,7 +71,10 @@ public class IslandNetwork {
         list.addFirst(destination);
         adjList.put(source, list);
     }
-
+    /**
+     * The code below represents the depth- first search algorithm and takes in a string source
+     * @param sources
+     */
     public void DFS(String sources){
         int vertices = adjList.size();
         boolean [] visited = new boolean[vertices];
@@ -61,6 +82,11 @@ public class IslandNetwork {
             DFSUtil(sources, visited);
         }
     }
+    /**
+     * The code below represents the depth-first search algorithm and takes in a String source, and destination
+     * @param sources
+     * @param Destination
+     */
     public void DFS(String sources, String Destination){
         int vertices = adjList.size();
         boolean [] visited = new boolean[vertices];
@@ -69,6 +95,11 @@ public class IslandNetwork {
             DFSUtil(sources, visited);
         }
     }
+    /**
+     * The code below is a helper function for the DFS method, it determines whether a vertex was visited or not
+     * @param source
+     * @param visited
+     */
     public void DFSUtil(String source, boolean[] visited){
         //mark this visited
         visited[indexes.get(source)] = true;
@@ -81,6 +112,9 @@ public class IslandNetwork {
         }
     }
 
+    /**
+     * The fucntioanlity below prints the graph
+     */
     public void printGraph() {
         Set<String> set = adjList.keySet();
         Iterator<String> iterator = set.iterator();
@@ -95,7 +129,9 @@ public class IslandNetwork {
             System.out.println();
         }
     }
-
+    /**
+     * The functionality below loads the file and sorts it from a given file
+     */
     public static void loadFromFile(){
         HashMap<String, Node> cities = new HashMap<String,Node>();
         DataSource ds = DataSource.connectXML("https://www.cs.stonybrook.edu/~cse214/hw/hw7-images/hw7.xml");
