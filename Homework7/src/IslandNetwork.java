@@ -5,11 +5,13 @@ import java.util.*;
 
 public class IslandNetwork {
     public HashMap<String, LinkedList<String>> adjList = new HashMap();
-    public HashMap<String, Integer>  indexes = new HashMap<>();
+    public HashMap<String, Integer> indexes = new HashMap<>();
     public static ArrayList<String> vertices = new ArrayList<>();
     public static ArrayList<String> str1 = new ArrayList<>();
     public static ArrayList<String> str2 = new ArrayList<>();
     public static ArrayList<String> str3 = new ArrayList<>();
+//    public static ArrayList<String> str4 = new ArrayList<>();
+//    public static ArrayList<Integer> weight = new ArrayList<>();
 
     public static ArrayList<String> getStr1() {
         return str1;
@@ -33,15 +35,11 @@ public class IslandNetwork {
         for (int i = 0; i <vertices.size() ; i++) {
             String vertex = vertices.get(i);
             LinkedList<String> list = new LinkedList<>();
-            System.out.println('a');
             adjList.put(vertex, list);
-            System.out.println('b');
             indexes.put(vertex, ++index);
         }
     }
-    public IslandNetwork() {
-
-    }
+    public IslandNetwork() { }
     public static IslandNetwork graphs = new IslandNetwork(vertices);
 
     public IslandNetwork getGraphs() {
@@ -62,11 +60,16 @@ public class IslandNetwork {
         if(!visited[indexes.get(sources)]){
             DFSUtil(sources, visited);
         }
-
     }
-
+    public void DFS(String sources, String Destination){
+        int vertices = adjList.size();
+        boolean [] visited = new boolean[vertices];
+        if(visited[indexes.get(Destination)])
+        if(!visited[indexes.get(sources)]){
+            DFSUtil(sources, visited);
+        }
+    }
     public void DFSUtil(String source, boolean[] visited){
-
         //mark this visited
         visited[indexes.get(source)] = true;
         System.out.print(source + " ");
@@ -102,7 +105,6 @@ public class IslandNetwork {
         String roadNamesStr=ds.fetchString("roads");
         String[] roadNames=roadNamesStr.substring(1,roadNamesStr.length()-1).split("\",\"");
 
-
         System.out.println("Map Loaded.\n\nCities: ");
         System.out.println("---------------------");
         Arrays.sort(cityNames);
@@ -117,36 +119,13 @@ public class IslandNetwork {
             str1.add(roadNames[i].substring(0,roadNames[i].indexOf(",")));
             str2.add(roadNames[i].substring(roadNames[i].indexOf(",")+1));
             str3.add(str2.get(i).substring(0,str2.get(i).indexOf(",")));
-
-//            String str1 = roadNames[i].substring(0,roadNames[i].indexOf(","));
-//            String str2 = roadNames[i].substring(roadNames[i].indexOf(",")+1);
-//            String str3 = str2.substring(0,str2.indexOf(","));
-//            graph.addEdge(str1,str3);
+//            str4.add(str2.get(i).substring(str2.get(i).indexOf(",")+1));
+//            weight.add(Integer.parseInt(str4.get(i).replaceAll("\\s","")));
         }
         for(int i = 0; i < roadNames.length; i++){
             roadNames[i]=roadNames[i].replaceFirst(",", " to ");
             roadNames[i]=roadNames[i].replaceFirst(",", "                    ");
             System.out.println(roadNames[i]);
         }
-//        vertices.add('A');
-//        vertices.add('B');
-//        vertices.add('C');
-//        vertices.add('D');
-//        vertices.add('E');
-//        vertices.add('F');
-//        vertices.add('G');
-//        System.out.println("vertices: " + vertices.toString());
-//        graphs.addEdge('A', 'B');
-//        graphs.addEdge('A', 'C');
-//        graphs.addEdge('B', 'D');
-//        graphs.addEdge('B', 'E');
-//        graphs.addEdge('C', 'D');
-//        graphs.addEdge('D', 'E');
-//        graphs.addEdge('G', 'E');
-//        graphs.addEdge('A', 'G');
-//        System.out.println("graphs: " + graphs.toString());
-//        graphs.printGraph();
-//        System.out.println("---------------Depth First Traversal------------");
-//        graphs.DFS();
     }
 }
