@@ -1,35 +1,42 @@
-import big.data.DataSource;
-import org.w3c.dom.Node;
-
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class IslandDesigner {
     public static Scanner input = new Scanner(System.in);
     public static boolean quitValue = false;
+//    public static IslandNetwork graph = new IslandNetwork(IslandNetwork.vertices);
 
     public static void main(String[] args) throws Exception {
-        mainMenu();
+//        ArrayList<Object> vertices = new ArrayList<>();
+//        vertices.add('A');
+//        vertices.add('B');
+//        vertices.add('C');
+//        vertices.add('D');
+//        vertices.add('E');
+//        vertices.add('F');
+//        vertices.add('G');
         loadMap();
+        IslandNetwork graph = new IslandNetwork(IslandNetwork.vertices);
+        for(int i = 0; i < IslandNetwork.getStr1().size();i++){
+            graph.addEdge(IslandNetwork.getStr1().get(i),IslandNetwork.getStr3().get(i));
+        }
+//        graph.addEdge('A', 'B');
+//        graph.addEdge('A', 'C');
+//        graph.addEdge('B', 'D');
+//        graph.addEdge('B', 'E');
+//        graph.addEdge('C', 'D');
+//        graph.addEdge('D', 'E');
+//        graph.addEdge('G', 'E');
+//        graph.addEdge('A', 'G');
+        graph.printGraph();
+        System.out.println("---------------Depth First Traversal------------");
+        graph.DFS("University");
+        mainMenu();
         while(!quitValue){
             selectMenu();
         }
     }
     public static void loadMap() throws Exception {
-        HashMap<String, Node> cities = new HashMap<String,Node>();
-        DataSource ds = DataSource.connectXML("https://www.cs.stonybrook.edu/~cse214/hw/hw7-images/hw7.xml");
-        ds.load();
-        String cityNamesStr=ds.fetchString("cities");
-        String[] cityNames=cityNamesStr.substring(1,cityNamesStr.length()-1).replace("\"","").split(",");
-        String roadNamesStr=ds.fetchString("roads");
-        String[] roadNames=roadNamesStr.substring(1,roadNamesStr.length()-1).split("\",\"");
-        for(int i = 0; i < cityNames.length; i++){
-            System.out.println(cityNames[i]);
-        }
-        System.out.println("--------------------");
-        for(int i = 0; i < roadNames.length; i++){
-            System.out.println(roadNames[i]);
-        }
+        IslandNetwork.loadFromFile();
     }
 
     public static void mainMenu(){
