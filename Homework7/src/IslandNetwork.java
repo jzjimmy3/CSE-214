@@ -9,6 +9,8 @@ import java.util.*;
  * @author Jimmy Zhang
  */
 public class IslandNetwork {
+    public static Scanner input = new Scanner(System.in).useDelimiter("\n");
+    private static HashMap<String, City> graph;
     public HashMap<String, LinkedList<String>> adjList = new HashMap();
     public HashMap<String, Integer> indexes = new HashMap<>();
     public static ArrayList<String> vertices = new ArrayList<>();
@@ -90,7 +92,6 @@ public class IslandNetwork {
     public void DFS(String sources, String Destination){
         int vertices = adjList.size();
         boolean [] visited = new boolean[vertices];
-        if(visited[indexes.get(Destination)])
         if(!visited[indexes.get(sources)]){
             DFSUtil(sources, visited);
         }
@@ -113,28 +114,14 @@ public class IslandNetwork {
     }
 
     /**
-     * The fucntioanlity below prints the graph
-     */
-    public void printGraph() {
-        Set<String> set = adjList.keySet();
-        Iterator<String> iterator = set.iterator();
-
-        while(iterator.hasNext()){
-            Object vertex = iterator.next();
-            System.out.print("Vertex " + vertex + " is connected to: ");
-            LinkedList<String> list = adjList.get(vertex);
-            for (int i = 0; i <list.size() ; i++) {
-                System.out.print(list.get(i) + " ");
-            }
-            System.out.println();
-        }
-    }
-    /**
      * The functionality below loads the file and sorts it from a given file
      */
     public static void loadFromFile(){
+        System.out.println("Welcome to the Island Designer, because, when you're trying to stay above water, Seas get degrees!");
         HashMap<String, Node> cities = new HashMap<String,Node>();
-        DataSource ds = DataSource.connectXML("https://www.cs.stonybrook.edu/~cse214/hw/hw7-images/hw7.xml");
+        System.out.print("Please enter an url: ");
+//        "https://www.cs.stonybrook.edu/~cse214/hw/hw7-images/hw7.xml"
+        DataSource ds = DataSource.connectXML(input.next());
         ds.load();
         String cityNamesStr=ds.fetchString("cities");
         String[] cityNames=cityNamesStr.substring(1,cityNamesStr.length()-1).replace("\"","").split(",");
@@ -155,8 +142,6 @@ public class IslandNetwork {
             str1.add(roadNames[i].substring(0,roadNames[i].indexOf(",")));
             str2.add(roadNames[i].substring(roadNames[i].indexOf(",")+1));
             str3.add(str2.get(i).substring(0,str2.get(i).indexOf(",")));
-//            str4.add(str2.get(i).substring(str2.get(i).indexOf(",")+1));
-//            weight.add(Integer.parseInt(str4.get(i).replaceAll("\\s","")));
         }
         for(int i = 0; i < roadNames.length; i++){
             roadNames[i]=roadNames[i].replaceFirst(",", " to ");

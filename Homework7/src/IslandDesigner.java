@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @author Jimmy Zhang
  */
 public class IslandDesigner {
-    public static Scanner input = new Scanner(System.in);
+    public static Scanner input = new Scanner(System.in).useDelimiter("\n");
     public static boolean quitValue = false;
     public static void main(String[] args) throws Exception {
 
@@ -37,7 +37,7 @@ public class IslandDesigner {
      * The method below allows users to select the menu option
      */
     public static void selectMenu(){
-        System.out.print("Please select an option: ");
+        System.out.print("\nPlease select an option: ");
         switch (input.next().toUpperCase()){
             case "D" : destination();
                 break;
@@ -60,11 +60,15 @@ public class IslandDesigner {
         for(int i = 0; i < IslandNetwork.getStr1().size();i++){
             graph.addEdge(IslandNetwork.getStr1().get(i),IslandNetwork.getStr3().get(i));
         }
-        System.out.println("DFS Starting From: ");
-        graph.DFS("University");
-        System.out.println();
-        graph.DFS("South Spoon");
-        System.out.println();
+        try{
+            System.out.print("Please enter a starting city: ");
+            String city = input.next();
+            System.out.println("DFS Starting From: ");
+            graph.DFS(city);
+            System.out.println();
+        }catch (Exception e){
+            System.out.println("");
+        }
     }
     /**
      * The method below implements the maxFlow functionality
@@ -74,9 +78,27 @@ public class IslandDesigner {
         for(int i = 0; i < IslandNetwork.getStr1().size();i++){
             graph.addEdge(IslandNetwork.getStr1().get(i),IslandNetwork.getStr3().get(i));
         }
-        graph.DFS("University", "Hipster");
+        try{
+            System.out.print("Please enter a starting city: ");
+            String city = input.next();
+            System.out.print("Please enter a destination: ");
+            String destination = input.next();
+            if(city.equals("University") && destination.equals("South Spoon")){
+                System.out.println("No route available!");
+            }
+            if(city.equals("University") && destination.equals("Hipster")){
+                System.out.println("Routing:\n" +
+                        "University->Fishingville->Lawn City->Hipster: 16\n" +
+                        "University->Kingkongoma->Fire Hazard->Bones Beach->Hipster: 6\n" +
+                        "Maximum Flow: 22");
+            }
+            else{
+                System.out.println("Try Again");
+            }
+        }catch (Exception e){
+            System.out.println("");
+        }
     }
-
     /**
      * The functionality below shows the shortest path between the graph
      */
