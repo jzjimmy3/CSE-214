@@ -2,6 +2,31 @@ public class Heaps {
     private int[] storeData;
     private int heapSize;
     private int maxSize;
+
+    public int[] getStoreData() {
+        return storeData;
+    }
+
+    public void setStoreData(int[] storeData) {
+        this.storeData = storeData;
+    }
+
+    public int getHeapSize() {
+        return heapSize;
+    }
+
+    public void setHeapSize(int heapSize) {
+        this.heapSize = heapSize;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    public void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
+    }
+
     public Heaps(int maximumSize){
         maxSize = maximumSize < 1  ? 100 : maximumSize;
         storeData = new int[maxSize];
@@ -16,6 +41,8 @@ public class Heaps {
             swap(position, (position-1)/2);
             position = (position-1)/2;
         }
+        printHeap();
+        System.out.println();
     }
     public Boolean isFull(int[] data){
         return data.length > maxSize;
@@ -42,7 +69,7 @@ public class Heaps {
         fixHeap();
         return answer;
     }
-    private void fixHeap() {
+    public void fixHeap() {
         int position = 0; int childPos;
         while (position*2 + 1 < heapSize) {
             childPos = position*2 + 1;
@@ -52,6 +79,19 @@ public class Heaps {
                 return;
             swap(position, childPos);
             position = childPos;
+        }
+    }
+    public void selectionSort(int[] data, int n) {
+        int i,j,item;
+        for (i = 1; i <= n-1; i++) {
+            item = data[i];  j = i;
+            while (j > 0 && data[j-1] > item) {
+                data[j] = data[j-1];
+                j--;
+            }
+            data[j] = item;
+            printHeap();
+            System.out.println();
         }
     }
 }

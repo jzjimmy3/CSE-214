@@ -21,6 +21,7 @@ public class HeapDriver {
             selectMenu();
         }
     }
+
     public static void mainMenu(){
         System.out.println("Welcome to the main menu: " +
                 "\nI) Insert Element to Heap" +
@@ -37,11 +38,20 @@ public class HeapDriver {
                 break;
             case "P" : print();
                 break;
+            case "F" : fixHeaps();
+                break;
+            case "S" : selectionSort();
+                break;
             case "Q" : quit();
                 break;
             default:
                 System.out.println("Sorry, Try again");
         }
+    }
+
+    private static void selectionSort() {
+        newHeap.selectionSort(newHeap.getStoreData(), newHeap.getHeapSize());
+        System.out.println("Selection sorted");
     }
 
     private static void insert() {
@@ -50,10 +60,14 @@ public class HeapDriver {
     }
 
     private static void remove() {
-        newHeap.removeData();
+        int removed = newHeap.removeData();
+        System.out.println(removed + " removed.");
     }
     private static void print() {
         newHeap.printHeap();
+    }
+    private static void fixHeaps(){
+        newHeap.fixHeap();
     }
 
     private static void quit() {
